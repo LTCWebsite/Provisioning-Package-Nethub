@@ -1,4 +1,4 @@
-import { Cottage, CreditCard, DisplaySettings, PersonOutline } from '@mui/icons-material'
+import { Cottage, CreditCard, CreditScore, DisplaySettings, Group, HomeWork, PersonOutline, ScreenshotMonitor } from '@mui/icons-material'
 import React from 'react'
 import logo from '../../Image/logo-2.png'
 import { Scrollbars } from 'react-custom-scrollbars'
@@ -39,25 +39,25 @@ function SideBar({ height }) {
                 <img src={logo} className="logo-bar" alt='logo' />
                 <div className={location.pathname === "/app" ? "bar bar-active" : "bar"} onClick={() => ChangeRoute("/app")}>
                     <FadeIn visible={effect.home}>
-                        <Cottage className='bar-icon' />
+                        {effect.home && location.pathname === '/app' ? <HomeWork className='bar-icon' /> : <Cottage className='bar-icon' />}
                         <div>HOME</div>
                     </FadeIn>
                 </div>
                 <div className={location.pathname === "/app/crm" ? "bar bar-active" : "bar"} onClick={() => ChangeRoute("/app/crm")}>
                     <FadeIn visible={effect.crm}>
-                        <DisplaySettings className='bar-icon' />
+                        {effect.crm && location.pathname === '/app/crm' ? <ScreenshotMonitor className="bar-icon" /> : <DisplaySettings className='bar-icon' />}
                         <div>CRM</div>
                     </FadeIn>
                 </div>
                 <div className={location.pathname === "/app/card" ? "bar bar-active" : "bar"} onClick={() => ChangeRoute("/app/card")}>
                     <FadeIn visible={effect.card}>
-                        <CreditCard className='bar-icon' />
+                        {effect.card && location.pathname === "/app/card" ? <CreditScore className='bar-icon' /> : <CreditCard className='bar-icon' />}
                         <div>CARD</div>
                     </FadeIn>
                 </div>
                 <div className={location.pathname === "/app/user" ? "bar bar-active" : "bar"} onClick={() => ChangeRoute("/app/user")}>
                     <FadeIn visible={effect.user}>
-                        <PersonOutline className='bar-icon' />
+                        {effect.user && location.pathname === "/app/user" ? <Group className='bar-icon' /> : <PersonOutline className='bar-icon' />}
                         <div>USER</div>
                     </FadeIn>
                 </div>
