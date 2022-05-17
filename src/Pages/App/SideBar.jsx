@@ -1,34 +1,35 @@
 import { Cottage, CreditCard, DisplaySettings, PersonOutline } from '@mui/icons-material'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import logo from '../../Image/logo-2.png'
 import { Scrollbars } from 'react-custom-scrollbars'
-import { useLocation, useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
+import FadeIn from 'react-fade-in'
 
 function SideBar({ height }) {
-    // const match = matchPath()
-    const location = useLocation()
     const history = useHistory()
-    const [path, setPath] = useState('')
-    // useEffect(() => {
-    //     setRoute(match.url)
-    // }, [match])
+    const location = useLocation()
+    const ChangeRoute = (e) => {
+        history.push(e)
+    }
     return (
         <div style={{ flexDirection: 'column', width: 130, backgroundColor: '#fff', textAlign: 'center', overflowY: 'scroll' }}>
             <Scrollbars style={{ height: (height - 40) }}>
                 <img src={logo} className="logo-bar" alt='logo' />
-                <div className="bar bar-active">
-                    <Cottage className='bar-icon' />
-                    <div>HOME</div>
-                </div>
-                <div className="bar" onClick={() => history.push("/crm")}>
+                <FadeIn>
+                    <div className={location.pathname === "/app" ? "bar bar-active" : "bar"} onClick={() => ChangeRoute("/app")}>
+                        <Cottage className='bar-icon' />
+                        <div>HOME</div>
+                    </div>
+                </FadeIn>
+                <div className={location.pathname === "/app/crm" ? "bar bar-active" : "bar"} onClick={() => ChangeRoute("/app/crm")}>
                     <DisplaySettings className='bar-icon' />
                     <div>CRM</div>
                 </div>
-                <div className="bar">
+                <div className={location.pathname === "/app/card" ? "bar bar-active" : "bar"} onClick={() => ChangeRoute("/app/card")}>
                     <CreditCard className='bar-icon' />
                     <div>CARD</div>
                 </div>
-                <div className="bar">
+                <div className={location.pathname === "/app/user" ? "bar bar-active" : "bar"} onClick={() => ChangeRoute("/app/user")}>
                     <PersonOutline className='bar-icon' />
                     <div>USER</div>
                 </div>
