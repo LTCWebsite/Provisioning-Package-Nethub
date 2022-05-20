@@ -1,4 +1,4 @@
-import { ArrowForward } from '@mui/icons-material'
+import { ArrowForwardIos } from '@mui/icons-material'
 import React from 'react'
 import { useHistory } from 'react-router-dom'
 import Cookies from "js-cookie";
@@ -22,5 +22,5 @@ export const BarTitle = ({ page }) => {
     const GoBack = () => {
         history.push("/app")
     }
-    return <div className='underline'><u className='h1'><p onClick={GoBack}>Home</p> &nbsp;<ArrowForward />&nbsp; {page}</u></div>
+    return <div className='underline'><u className='h1'><p onClick={GoBack}>Home</p> &nbsp;<ArrowForwardIos />&nbsp; {page}</u></div>
 }

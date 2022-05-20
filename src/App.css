@@ -637,7 +637,7 @@ td.MuiTableCell-root{
   align-items: center;
 }
 .underline u{
-  border-bottom: 5px solid #CD1E2B!important;
+  /* border-bottom: 5px solid #CD1E2B!important; */
   width: 200px;
 }
 .underline p{
@@ -657,4 +657,21 @@ td.MuiTableCell-root{
 }
 .MuiTabPanel-root{
   padding: 5px!important;
+}
+.padd{
+  padding: 5px 10px;
+  display: flex;
+}
+.padd u{
+  margin-top: 7px;
+}
+.bg-red{
+  background-color: red;
+}
+.textInput{
+  padding: 0px 30px 0px 30px!important;
+}
+.css-ghsjzk-MuiInputBase-root-MuiInput-root, .css-11nizae-MuiInputBase-root-MuiInput-root{
+  padding: 0px!important;
+  margin: 5px 0px 0px 0px!important;
 }

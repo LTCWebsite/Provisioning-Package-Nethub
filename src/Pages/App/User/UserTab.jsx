@@ -1,33 +1,33 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
+import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import TabContext from '@mui/lab/TabContext';
-import TabList from '@mui/lab/TabList';
-import TabPanel from '@mui/lab/TabPanel';
+import { TabContext, TabPanel } from '@mui/lab';
 import UserEdit from './UserEdit';
 
 export default function UserTab() {
-  const [value, setValue] = React.useState('1');
+  const [value, setValue] = React.useState('1')
 
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    setValue(newValue)
   }
 
   return (
-    <Box sx={{ width: '100%', typography: 'body1', justifyContent: 'center' }}>
-      <TabContext value={value}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <TabList onChange={handleChange} aria-label="lab API tabs example">
-            <Tab label="Item One" value="1" />
-            <Tab label="ແກ້ໄຂຂໍ້ມູນສ່ວນໂຕ" value="2" />
-          </TabList>
-        </Box>
-        <TabPanel value="1">Item One</TabPanel>
-        <TabPanel value="2">
-            <UserEdit />
-        </TabPanel>
-      </TabContext>
-    </Box>
+    <TabContext value={value}>
+      <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
+        <Tabs value={value} onChange={handleChange} centered>
+          <Tab label="ຈັດການຂໍ້ມູນຜູ້ໃຊ້" value={"1"} />
+          <Tab label="ແກ້ໄຂຂໍມູນສ່ວນໂຕ" value={"2"} />
+        </Tabs>
+      </Box>
+      <TabPanel value='1'>
+        hi
+      </TabPanel>
+      <TabPanel value='2'>
+        <UserEdit />
+      </TabPanel>
+    </TabContext>
   );
 }
+
 
