@@ -1,22 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { UserID, UserToken } from '../../Components/AutoFC'
-import { AxiosAPI } from '../../Components/Axios'
 import FadeIn from 'react-fade-in/lib/FadeIn'
+import { MyCrypt } from '../../Components/MyCrypt'
 
 function TopBar({ width }) {
     const [topData, setTopData] = useState({ data: [] })
 
-    let sendData = {
-        staff_id: UserID(),
-        token: UserToken()
-    }
     const loadTopMenu = () => {
-        AxiosAPI.post("get-user-detail", sendData).then(res => {
-            if (res.status === 200) {
-                setTopData({ ...topData, data: res.data })
-                // console.log(res.data)
-            }
-        })
+        let data = MyCrypt("de", localStorage.getItem("ONE_USER_ROLE"))
+        setTopData({ ...topData, data: data })
     }
 
     useEffect(() => {

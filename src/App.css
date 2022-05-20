@@ -649,3 +649,12 @@ td.MuiTableCell-root{
 .underline p:hover{
   color: #4E73DF;
 }
+.Mui-selected{
+  color: #CD1E2B!important;
+}
+.MuiTabs-indicator{
+  background-color: #CD1E2B!important;
+}
+.MuiTabPanel-root{
+  padding: 5px!important;
+}

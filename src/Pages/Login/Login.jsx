@@ -15,6 +15,7 @@ import { Grid } from '@material-ui/core';
 import { useHistory } from 'react-router-dom'
 import LoadingLottie from '../../Components/LoadingLottie';
 import FadeIn from 'react-fade-in';
+import { AxiosAPI } from '../../Components/Axios';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -104,12 +105,21 @@ export default function Login() {
                 if (res.status === 200 && res.data.responseActive === true) {
                     let user_detail = res.data.employeeDetail.empDetail
                     let token = res.data.tokenActive.token
-                    Auth.login(() => {
-                        Cookies.set("ONE_TOKEN", token, { expires: 8 / 24 })
-                        localStorage.setItem("ONE_DETAIL", Crypt({ Type: "crypt", Value: JSON.stringify(user_detail) }))
-                        setTimeout(() => {
-                            history.push("/app")
-                        }, 1000)
+
+                    let sendData = {
+                        staff_id: user_detail.empIDNo,
+                        token: token
+                    }
+
+                    loadTopMenu(sendData, (user_role) => {
+                        Auth.login(() => {
+                            Cookies.set("ONE_TOKEN", token, { expires: 8 / 24 })
+                            localStorage.setItem("ONE_DETAIL", Crypt({ Type: "crypt", Value: JSON.stringify(user_detail) }))
+                            localStorage.setItem("ONE_USER_ROLE", Crypt({ Type: "crypt", Value: JSON.stringify(user_role) }))
+                            setTimeout(() => {
+                                history.push("/app")
+                            }, 1000)
+                        })
                     })
                 } else {
                     setAlert({ ...alert, text: "ລະຫັດ OTP ຜິດພາດ !!", use: true })
@@ -120,6 +130,14 @@ export default function Login() {
                 setBtn({ ...btn, c_otp: false })
             })
         }
+    }
+
+    const loadTopMenu = (sendData, cb) => {
+        AxiosAPI.post("get-user-detail", sendData).then(res => {
+            if (res.status === 200) {
+                cb(res.data)
+            }
+        })
     }
 
     const PressBtn = (e) => {

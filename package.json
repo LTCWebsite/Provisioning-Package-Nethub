@@ -11,6 +11,7 @@
     "@material-ui/lab": "^4.0.0-alpha.57",
     "@material-ui/pickers": "^3.2.8",
     "@mui/icons-material": "^5.1.1",
+    "@mui/lab": "^5.0.0-alpha.82",
     "@mui/material": "^5.1.1",
     "@react-hook/window-size": "^3.0.7",
     "@syncfusion/ej2-react-buttons": "^19.2.55",
