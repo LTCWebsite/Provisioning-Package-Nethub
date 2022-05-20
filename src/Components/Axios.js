@@ -1,6 +1,9 @@
 import axios from 'axios'
 
-const Axios = axios.create({
-    baseURL: "http://10.30.6.148:28899/",
+export const AxiosAPI = axios.create({
+    baseURL: "http://172.28.14.48:3001/",
+    auth: {
+        username: "isd",
+        password: "#Ltc1qaz2wsx@isd"
+    }
 })
-export default Axios

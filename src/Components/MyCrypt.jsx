@@ -1,10 +1,9 @@
 import CryptoJS from 'crypto-js'
 
-const Crypt = ({ Type, Value }) => {
-    if (Type === 'crypt') {
+export const MyCrypt = (Type, Value) => {
+    if (Type === 'en') {
         return CryptoJS.AES.encrypt(Value, "secret_key_the_one").toString()
-    } else if (Type === 'decrypt') {
+    } else if (Type === 'de') {
         return JSON.parse(CryptoJS.AES.decrypt(Value, "secret_key_the_one").toString(CryptoJS.enc.Utf8))
     }
 }
-export default Crypt

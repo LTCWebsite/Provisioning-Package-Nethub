@@ -9,6 +9,8 @@ import { createTheme, MuiThemeProvider } from "@material-ui/core/styles"
 import Login from './Pages/Login/Login';
 import Defualt from './Pages/App/Defualt';
 
+import 'react-perfect-scrollbar/dist/css/styles.css';
+
 const theme = createTheme({
   overrides: {
     MuiSwitch: {

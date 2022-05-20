@@ -1,44 +1,37 @@
-import React from 'react'
-import { Scrollbars } from 'react-custom-scrollbars'
+import React, { useEffect, useState } from 'react'
+import { UserID, UserToken } from '../../Components/AutoFC'
+import { AxiosAPI } from '../../Components/Axios'
+import FadeIn from 'react-fade-in/lib/FadeIn'
 
 function TopBar({ width }) {
-    const menu = [
-        { text: 'CRM', link: '', width: '' },
-        { text: 'Bill Query', link: '', width: 100 },
-        { text: 'BSS', link: '', width: '' },
-        { text: 'Check Card', link: '', width: 125 },
-        { text: 'SPNV', link: '', width: '' },
-        { text: 'UPCC', link: '', width: '' },
-        { text: 'CRM', link: '', width: '' },
-        { text: 'Bill Query', link: '', width: 100 },
-        { text: 'BSS', link: '', width: '' },
-        { text: 'Check Card', link: '', width: 125 },
-        { text: 'SPNV', link: '', width: '' },
-        { text: 'UPCC', link: '', width: '' },
-        { text: 'CRM', link: '', width: '' },
-        { text: 'Bill Query', link: '', width: 100 },
-        { text: 'BSS', link: '', width: '' },
-        { text: 'Check Card', link: '', width: 125 },
-        { text: 'SPNV', link: '', width: '' },
-        { text: 'UPCC', link: '', width: '' },
-        { text: 'CRM', link: '', width: '' },
-        { text: 'Bill Query', link: '', width: 100 },
-        { text: 'BSS', link: '', width: '' },
-        { text: 'Check Card', link: '', width: 125 },
-        { text: 'SPNV', link: '', width: '' },
-        { text: 'UPCC', link: '', width: '' },
-    ]
+    const [topData, setTopData] = useState({ data: [] })
+
+    let sendData = {
+        staff_id: UserID(),
+        token: UserToken()
+    }
+    const loadTopMenu = () => {
+        AxiosAPI.post("get-user-detail", sendData).then(res => {
+            if (res.status === 200) {
+                setTopData({ ...topData, data: res.data })
+                // console.log(res.data)
+            }
+        })
+    }
+
+    useEffect(() => {
+        loadTopMenu()
+    }, [])
+
     return (
         <>
-            <Scrollbars style={{ width: width, height: 40 }}>
-                <div className='tab' style={{ width: '100%' }}>
-                    {menu.map((row, idx) => {
-                        return (
-                            <div className='list' key={idx} style={{ minWidth: row.width }}>{row.text}</div>
-                        )
-                    })}
-                </div>
-            </Scrollbars>
+            <div className='frame'>
+                {topData.data.map((row, idx) => {
+                    return (
+                        <div className='list' key={idx} style={{ width: parseInt(row.Width) }}><FadeIn>{row.Name}</FadeIn></div>
+                    )
+                })}
+            </div>
         </>
     )
 }

@@ -36,6 +36,7 @@
     "react-image": "^4.0.3",
     "react-ios-switch": "^0.1.19",
     "react-lottie": "^1.2.3",
+    "react-perfect-scrollbar": "^1.5.8",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "react-sidebar": "^3.0.2",

@@ -526,7 +526,41 @@ td.MuiTableCell-root{
   background-color: #fff;
   font-size: 18px;
   display: flex;
+  overflow: scroll!important;
+  height: 50px!important;
 }
+
+
+.frame {
+  height: 45px!important;
+  font-size: 18px;
+  display: flex;
+  background-color: #fff;
+  overflow-x: auto;
+  width: 100%;
+  line-height: 1.5em;
+  scroll-padding: 10px!important;
+}
+
+.frame::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+
+.frame::-webkit-scrollbar:vertical {
+  width: 9px!important;
+}
+
+.frame::-webkit-scrollbar:horizontal {
+  height: 9px!important;
+}
+
+.frame::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  border: 0px solid white; /* should match background, can't be transparent */
+  background-color: rgba(0, 0, 0, .4);
+}
+
+
 .list{
   flex-direction: column;
   font-weight: 500;
@@ -535,6 +569,7 @@ td.MuiTableCell-root{
   align-items: center;
   padding: 5.5px 10px;
   justify-content: center;
+  white-space: nowrap!important;
 }
 .list:hover{
   background-color: #CD1E2B;
@@ -592,4 +627,25 @@ td.MuiTableCell-root{
 }
 .bar-active .bar-icon, .bar-active div{
   color: #fff!important;
+}
+.h1{
+  margin-left: 10px;
+  font-size: 25px;
+  font-weight: bold;
+  color: #5A5C69;
+  display: flex;
+  align-items: center;
+}
+.underline u{
+  border-bottom: 5px solid #CD1E2B!important;
+  width: 200px;
+}
+.underline p{
+  padding: 0px!important;
+  cursor: pointer;
+  margin: 0px!important;
+  z-index: 1000;
+}
+.underline p:hover{
+  color: #4E73DF;
 }
