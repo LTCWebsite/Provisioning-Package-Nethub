@@ -3,6 +3,9 @@ import { Button, CircularProgress, Grid, TextField } from '@mui/material'
 import React from 'react'
 import { MyCrypt } from '../../../Components/MyCrypt'
 import FadeIn from 'react-fade-in/lib/FadeIn'
+import { UserID } from '../../../Components/AutoFC'
+import { AxiosAPI } from '../../../Components/Axios'
+import { toast_error, toast_success } from '../../../Components/Toast'
 
 function UserEdit() {
     const [top, setTop] = React.useState({ data: [] })
@@ -46,12 +49,33 @@ function UserEdit() {
 
     const SaveUserRole = () => {
         setLoading({ ...loading, btn: true })
-        console.log(top.data)
         localStorage.setItem("ONE_USER_ROLE", MyCrypt("en", JSON.stringify(top.data)))
+        try {
+            let s_data = top.data.map(row => {
+                delete row.password
+                return row
+            })
+            let sendData = {
+                staff_id: UserID(),
+                users: s_data
+            }
+            AxiosAPI.post("insert-user", sendData).then(res => {
+                if (res.status === 200) {
+                    console.log(res.data)
+                    setTimeout(() => {
+                        setLoading({ ...loading, btn: false })
+                        toast_success({ text: res.data.message })
+                    }, 500)
+                }
+            }).catch(er => {
+                setTimeout(() => {
+                    setLoading({ ...loading, btn: false })
+                    toast_error({ text: "API Error" })
+                }, 1000)
+            })
+        } catch (error) {
 
-        setTimeout(() => {
-            setLoading({ ...loading, btn: false })
-        }, 1000)
+        }
     }
 
     return (
@@ -89,7 +113,7 @@ function UserEdit() {
                                             color='primary'
                                             margin='dense'
                                             label={"password ( " + row.Name + " )"}
-                                            // type={"password"}
+                                            type={"password"}
                                             InputLabelProps={{
                                                 shrink: true
                                             }}
