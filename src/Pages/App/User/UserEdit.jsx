@@ -8,8 +8,21 @@ function UserEdit() {
     const [top, setTop] = React.useState({ data: [] })
     const [loading, setLoading] = React.useState({ btn: false })
 
+    const loadTop = () => {
+        try {
+            let data = MyCrypt("de", localStorage.getItem("ONE_USER_ROLE"))
+            let new_data = data?.map(row => {
+                row.password = row.Password === null || row.Password === '' ? '' : MyCrypt("de", row.Password)
+                return row
+            })
+            setTop({ ...top, data: new_data })
+        } catch (error) {
+
+        }
+    }
+
     React.useEffect(() => {
-        setTop({ ...top, data: MyCrypt("de", localStorage.getItem("ONE_USER_ROLE")) })
+        loadTop()
     }, [])
 
     const Change = (value, id, type) => {
@@ -20,17 +33,22 @@ function UserEdit() {
                 }
             })
         } else {
-            top.data.map(row => {
+            let new_data = top.data.map(row => {
                 if (row.ID === id) {
-                    row.Password = value
+                    row.Password = MyCrypt("en", JSON.stringify(value))
+                    row.password = value
                 }
+                return row
             })
+            setTop({ ...top, data: new_data })
         }
     }
 
     const SaveUserRole = () => {
         setLoading({ ...loading, btn: true })
+        console.log(top.data)
         localStorage.setItem("ONE_USER_ROLE", MyCrypt("en", JSON.stringify(top.data)))
+
         setTimeout(() => {
             setLoading({ ...loading, btn: false })
         }, 1000)
@@ -71,10 +89,11 @@ function UserEdit() {
                                             color='primary'
                                             margin='dense'
                                             label={"password ( " + row.Name + " )"}
+                                            // type={"password"}
                                             InputLabelProps={{
                                                 shrink: true
                                             }}
-                                            value={top.data[idx].Password}
+                                            value={top.data[idx].password}
                                             onChange={(e) => Change(e.target.value, row.ID, "password")}
                                         />
                                     </div>

@@ -671,7 +671,7 @@ td.MuiTableCell-root{
 .textInput{
   padding: 0px 30px 0px 30px!important;
 }
-.css-ghsjzk-MuiInputBase-root-MuiInput-root, .css-11nizae-MuiInputBase-root-MuiInput-root{
+.textInput .css-ghsjzk-MuiInputBase-root-MuiInput-root, .textInput .css-11nizae-MuiInputBase-root-MuiInput-root{
   padding: 0px!important;
   margin: 5px 0px 0px 0px!important;
 }
