@@ -576,6 +576,9 @@ td.MuiTableCell-root{
   color: #fff;
   cursor: pointer;
 }
+.p-right{
+  padding-right: 40px!important;
+}
 .body{
   background-color: #DCDCDC;
 }
@@ -674,4 +677,13 @@ td.MuiTableCell-root{
 .textInput .css-ghsjzk-MuiInputBase-root-MuiInput-root, .textInput .css-11nizae-MuiInputBase-root-MuiInput-root{
   padding: 0px!important;
   margin: 5px 0px 0px 0px!important;
+}
+.link-btn{
+  border: 0px !important;
+  background-color: transparent!important;
+  margin: 0px!important;
+  padding: 0px!important;
+  font-size: 18px!important;
+  font-weight: 500!important;
+  color: #5A5C69;
 }

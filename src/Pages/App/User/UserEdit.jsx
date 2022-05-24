@@ -9,19 +9,18 @@ import { toast_error, toast_success } from '../../../Components/Toast'
 
 function UserEdit() {
     const [top, setTop] = React.useState({ data: [] })
-    const [loading, setLoading] = React.useState({ btn: false })
+    const [loading, setLoading] = React.useState({ btn: false, data: false })
 
     const loadTop = () => {
-        try {
-            let data = MyCrypt("de", localStorage.getItem("ONE_USER_ROLE"))
-            let new_data = data?.map(row => {
-                row.password = row.Password === null || row.Password === '' ? '' : MyCrypt("de", row.Password)
-                return row
-            })
-            setTop({ ...top, data: new_data })
-        } catch (error) {
-
-        }
+        setLoading({ ...loading, data: false })
+        let data = MyCrypt("de", localStorage.getItem("ONE_USER_ROLE"))
+        let new_data = data?.map(row => {
+            row.password = row.Password === null || row.Password === '' ? '' : MyCrypt("de", row.Password)
+            row.Username = row.Username === 'null' || row.Username === null ? '' : row.Username
+            return row
+        })
+        setTop({ ...top, data: new_data })
+        setLoading({ ...loading, data: true })
     }
 
     React.useEffect(() => {
@@ -30,11 +29,13 @@ function UserEdit() {
 
     const Change = (value, id, type) => {
         if (type === 'username') {
-            top.data.map(row => {
+            let new_data = top.data.map(row => {
                 if (row.ID === id) {
                     row.Username = value
                 }
+                return row
             })
+            setTop({ ...top, data: new_data })
         } else {
             let new_data = top.data.map(row => {
                 if (row.ID === id) {
@@ -61,7 +62,6 @@ function UserEdit() {
             }
             AxiosAPI.post("insert-user", sendData).then(res => {
                 if (res.status === 200) {
-                    console.log(res.data)
                     setTimeout(() => {
                         setLoading({ ...loading, btn: false })
                         toast_success({ text: res.data.message })
@@ -81,7 +81,7 @@ function UserEdit() {
     return (
         <FadeIn>
             <Grid container>
-                {top.data?.map((row, idx) => {
+                {loading.data && top.data?.map((row, idx) => {
                     return (
                         <Grid item lg={6} xs={12} key={idx}>
                             <div className="padd">
@@ -113,7 +113,7 @@ function UserEdit() {
                                             color='primary'
                                             margin='dense'
                                             label={"password ( " + row.Name + " )"}
-                                            type={"password"}
+                                            // type={"password"}
                                             InputLabelProps={{
                                                 shrink: true
                                             }}
@@ -127,16 +127,18 @@ function UserEdit() {
                     )
                 })}
                 <Grid item xs={12}>
-                    <div style={{ marginTop: 20, marginBottom: 30, textAlign: 'right', paddingRight: 30 }}>
-                        <Button
-                            variant='contained'
-                            color='success'
-                            onClick={SaveUserRole}
-                            disabled={loading.btn}
-                        >
-                            {loading.btn ? <CircularProgress size={25} /> : <>ບັນທຶກ <Save /></>}
-                        </Button>
-                    </div>
+                    {loading.data && <>
+                        <div style={{ marginTop: 20, marginBottom: 30, textAlign: 'right', paddingRight: 30 }}>
+                            <Button
+                                variant='contained'
+                                color='success'
+                                onClick={SaveUserRole}
+                                disabled={loading.btn}
+                            >
+                                {loading.btn ? <CircularProgress size={25} /> : <>ບັນທຶກ <Save /></>}
+                            </Button>
+                        </div>
+                    </>}
                 </Grid>
             </Grid>
         </FadeIn>
