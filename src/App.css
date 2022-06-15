@@ -688,22 +688,11 @@ td.MuiTableCell-root{
   color: #5A5C69;
 }
 
-.link-box{
-  padding: 0px 5px 0px 5px;
-  border-bottom: 1px solid #dee2e6;
+.link-box-success, .link-box-error, .link-box{
+  padding: 0px 10px 0px 10px;
+  border-bottom: 0.5px solid #979292;
   color: #5A5C69;
-}
-.link-box-success{
-  padding: 0px 5px 0px 5px;
-  border-bottom: 1px solid #80ed99;
-  color: #5A5C69;
-  background-color: #d9ed92;
-}
-.link-box-error{
-  padding: 0px 5px 0px 5px;
-  border-bottom: 1px solid #ef233c;
-  color: #fff;
-  background-color: #f4978e;
+  box-shadow: 0.5px .5px 0px .8px #888888;
 }
 .text-right div{
   text-align: right;

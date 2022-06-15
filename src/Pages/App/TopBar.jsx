@@ -8,7 +8,7 @@ function TopBar() {
     const loadTopMenu = () => {
         let data = MyCrypt("de", localStorage.getItem("ONE_USER_ROLE"))
         setTopData({ ...topData, data: data })
-        console.log(data)
+        // console.log(data)
     }
 
     useEffect(() => {
