@@ -45,12 +45,14 @@
     "react-switch": "^6.0.0",
     "react-toastify": "^9.0.1",
     "request-promise": "^4.2.6",
+    "tunnel": "^0.0.6",
     "web-vitals": "^1.0.1",
     "yarn": "^1.22.17",
     "yup": "^0.32.9"
   },
   "scripts": {
     "start": "react-scripts start",
+    "starthttps": "HTTPS=true SSL_CRT_FILE=./.cert/cert.pem SSL_KEY_FILE=./.cert/key.pem react-scripts start",
     "winBuild": "set \"GENERATE_SOURCEMAP=false\" && react-scripts build",
     "macbuild": "GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test",

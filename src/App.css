@@ -687,3 +687,51 @@ td.MuiTableCell-root{
   font-weight: 500!important;
   color: #5A5C69;
 }
+
+.link-box{
+  padding: 0px 5px 0px 5px;
+  border-bottom: 1px solid #dee2e6;
+  color: #5A5C69;
+}
+.link-box-success{
+  padding: 0px 5px 0px 5px;
+  border-bottom: 1px solid #80ed99;
+  color: #5A5C69;
+  background-color: #d9ed92;
+}
+.link-box-error{
+  padding: 0px 5px 0px 5px;
+  border-bottom: 1px solid #ef233c;
+  color: #fff;
+  background-color: #f4978e;
+}
+.text-right div{
+  text-align: right;
+  padding-top: 5px;
+}
+.text-right{
+  text-align: right;
+}
+.link-icon{
+  margin-top: 5px;
+}
+.link-box-success .link-icon{
+  color: #08a045;
+  text-align: center!important;
+}
+div{
+  font-size: 14px!important;
+}
+.box-crm{
+  padding: 5px;
+}
+.text-left{
+  text-align: left;
+  padding-top: 5px;
+}
+.MuiSwitch-colorPrimary{
+  color: #08a045;
+}
+.css-8je8zh-MuiTouchRipple-root{
+  color: #08a045!important;
+}
