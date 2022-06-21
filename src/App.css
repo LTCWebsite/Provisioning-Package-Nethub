@@ -626,7 +626,10 @@ td.MuiTableCell-root{
   font-size: 18px;
 }
 .bar-active{
-  background-color: #CD1E2B!important;
+  background-color: #2F3292!important;
+}
+.MuiSvgIcon-colorPrimary{
+  color: #2F3292!important;
 }
 .bar-active .bar-icon, .bar-active div{
   color: #fff!important;
@@ -689,10 +692,10 @@ td.MuiTableCell-root{
 }
 
 .link-box-success, .link-box-error, .link-box{
-  padding: 0px 10px 0px 10px;
-  border-bottom: 0.5px solid #979292;
+  padding: 5px 10px 0px 10px;
+  /* border-bottom: 0.5px solid #979292; */
   color: #5A5C69;
-  box-shadow: 0.5px .5px 0px .8px #888888;
+  box-shadow: 0.1px .1px 0px .5px #888888;
 }
 .text-right div{
   text-align: right;
@@ -723,4 +726,37 @@ div{
 }
 .css-8je8zh-MuiTouchRipple-root{
   color: #08a045!important;
+}
+.next{
+  margin-top: 10px!important;
+}
+.bg-green{
+  background-color: #26A65B;
+}
+.link-box-green{
+  padding: 5px 10px 0px 10px;
+  color: #fff;
+  box-shadow: 0.5px .5px 0px .8px #fff;
+  background-color: #26A65B;
+}
+.link-box-red{
+  padding: 5px 10px 0px 10px;
+  color: #fff;
+  box-shadow: 0.1px .1px 0px .5px #fff;
+  background-color: #CD1E2B;
+  cursor: pointer;
+}
+.wave{
+  padding: 10px 0px 0px 0px!important;
+}
+.link-box-defult{
+  padding: 5px 10px 5px 10px;
+  /* border-bottom: 0.5px solid #979292; */
+  color: #5A5C69;
+  box-shadow: 0.1px .1px 0px .5px #888888;
+}
+.blue{
+  background-color: #EDE3FA;
+  padding: 2px 10px;
+  border-radius: 2px 2px;
 }

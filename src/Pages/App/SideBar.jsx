@@ -37,27 +37,28 @@ function SideBar({ height }) {
         <div style={{ flexDirection: 'column', width: 130, backgroundColor: '#fff', textAlign: 'center', overflowY: 'scroll' }}>
             <Scrollbars style={{ height: (height - 40) }}>
                 <img src={logo} className="logo-bar" alt='logo' />
+
                 <div className={location.pathname === "/app" ? "bar bar-active" : "bar"} onClick={() => ChangeRoute("/app")}>
                     <FadeIn visible={effect.home}>
-                        {effect.home && location.pathname === '/app' ? <HomeWork className='bar-icon' /> : <Cottage color='error' className='bar-icon' />}
+                        {effect.home && location.pathname === '/app' ? <HomeWork className='bar-icon' /> : <Cottage color='primary' className='bar-icon' />}
                         <div>HOME</div>
                     </FadeIn>
                 </div>
                 <div className={location.pathname === "/app/crm" ? "bar bar-active" : "bar"} onClick={() => ChangeRoute("/app/crm")}>
                     <FadeIn visible={effect.crm}>
-                        {effect.crm && location.pathname === '/app/crm' ? <ScreenshotMonitor className="bar-icon" /> : <DisplaySettings color='error' className='bar-icon' />}
+                        {effect.crm && location.pathname === '/app/crm' ? <ScreenshotMonitor className="bar-icon" /> : <DisplaySettings color='primary' className='bar-icon' />}
                         <div>CRM</div>
                     </FadeIn>
                 </div>
                 <div className={location.pathname === "/app/card" ? "bar bar-active" : "bar"} onClick={() => ChangeRoute("/app/card")}>
                     <FadeIn visible={effect.card}>
-                        {effect.card && location.pathname === "/app/card" ? <CreditScore className='bar-icon' /> : <CreditCard color='error' className='bar-icon' />}
+                        {effect.card && location.pathname === "/app/card" ? <CreditScore className='bar-icon' /> : <CreditCard color='primary' className='bar-icon' />}
                         <div>CARD</div>
                     </FadeIn>
                 </div>
                 <div className={location.pathname === "/app/user" ? "bar bar-active" : "bar"} onClick={() => ChangeRoute("/app/user")}>
                     <FadeIn visible={effect.user}>
-                        {effect.user && location.pathname === "/app/user" ? <Group className='bar-icon' /> : <PersonOutline color='error' className='bar-icon' />}
+                        {effect.user && location.pathname === "/app/user" ? <Group className='bar-icon' /> : <PersonOutline color='primary' className='bar-icon' />}
                         <div>USER</div>
                     </FadeIn>
                 </div>

@@ -1,15 +1,21 @@
 import { PhoneIphone } from '@material-ui/icons'
 import { CheckCircle, PersonOutline } from '@mui/icons-material'
 import { Grid, Switch } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { AxiosReq } from '../../../Components/Axios'
+import { MyCrypt } from '../../../Components/MyCrypt'
+import Balance from './Col1/Balance'
+import LifeCycle from './Col1/LifeCycle'
+import Network from './Col1/Network'
 
 function Col1() {
     const [check, setCheck] = useState({ n_3g: false, n_4g: false })
+    
     return (
         <>
             <Grid container>
                 <Grid item xs={12} md={12} lg={6} className="box-crm">
-                    <Grid item xs={12}><h2>Info</h2></Grid>
+                    <Grid item xs={12}><h2 className='blue'>Info</h2></Grid>
                     <Grid item container xs={12} className='link-box'>
                         <Grid item xs={4}><PhoneIphone /></Grid>
                         <Grid item xs={8}><div className='text-right'>2059944454</div></Grid>
@@ -43,10 +49,17 @@ function Col1() {
                         <Grid item xs={6}><div>Product ID OCS : </div></Grid>
                         <Grid item xs={6}><div className='text-right'>30000012</div></Grid>
                     </Grid>
+
+                    <Balance />
+
+                    <Network />
+
+                    <LifeCycle />
+
                 </Grid>
 
                 <Grid item xs={12} md={12} lg={6} className="box-crm">
-                    <h2>Life Cycle</h2>
+                    <h2 className='blue'>Life Cycle</h2>
                     <Grid item container xs={12} className='link-box'>
                         <Grid item xs={4}><PhoneIphone /></Grid>
                         <Grid item xs={8}><div className='text-right'>2059944454</div></Grid>

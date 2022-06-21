@@ -1,6 +1,7 @@
 import { Grid } from '@mui/material'
-import axios from 'axios'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { AxiosReq } from '../../../Components/Axios'
+import Crypt from '../../../Components/Crypt'
 import Col1 from './Col1'
 import Col2 from './Col2'
 
@@ -26,6 +27,18 @@ function CRM() {
   //     console.log(err)
   //   })
   // }, [])
+  const [ready, setReady] = useState({ load: false })
+  useEffect(() => {
+    setReady({ ...ready, load: true })
+    let phone = "2059944454"
+    AxiosReq.get("NewNetworkType?msisdn=" + phone).then(res => {
+      if (res.status === 200) {
+        // console.log(res.data)
+        localStorage.setItem("ONE_NETWORK", Crypt({ Type: "crypt", Value: JSON.stringify(res.data) }))
+        setReady({ ...ready, load: false })
+      }
+    })
+  }, [])
   return (
     <>
       <Grid container>
