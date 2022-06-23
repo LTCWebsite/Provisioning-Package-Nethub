@@ -4,33 +4,47 @@ import logo from '../../Image/logo-2.png'
 import { Scrollbars } from 'react-custom-scrollbars'
 import { useHistory, useLocation } from 'react-router-dom'
 import FadeIn from 'react-fade-in'
+import { toast_error } from '../../Components/Toast'
 
 function SideBar({ height }) {
     const history = useHistory()
     const location = useLocation()
     const [effect, setEffect] = React.useState({ home: true, crm: true, card: true, user: true })
     const ChangeRoute = (e) => {
-        history.push(e)
         if (e === '/app') {
             setEffect({ ...effect, home: false })
             setTimeout(() => {
                 setEffect({ ...effect, home: true })
             }, 500)
+            history.push(e)
         } else if (e === '/app/crm') {
-            setEffect({ ...effect, crm: false })
-            setTimeout(() => {
-                setEffect({ ...effect, crm: true })
-            }, 500)
+            CheckNumber(e)
         } else if (e === '/app/card') {
             setEffect({ ...effect, card: false })
             setTimeout(() => {
                 setEffect({ ...effect, card: true })
             }, 500)
+            history.push(e)
         } else if (e === '/app/user') {
             setEffect({ ...effect, user: false })
             setTimeout(() => {
                 setEffect({ ...effect, user: true })
             }, 500)
+            history.push(e)
+        }
+    }
+    const CheckNumber = (e) => {
+        try {
+            let phone = localStorage.getItem("ONE_PHONE")
+            if (phone.length > 0) {
+                setEffect({ ...effect, crm: false })
+                setTimeout(() => {
+                    setEffect({ ...effect, crm: true })
+                }, 500)
+                history.push(e)
+            }
+        } catch (error) {
+            toast_error({ text: "ກະລຸນາປ້ອນເບີ !!" })
         }
     }
     return (

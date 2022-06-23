@@ -4,6 +4,7 @@ import { Grid, Switch } from '@mui/material'
 import React, { useState, useEffect } from 'react'
 import { AxiosReq } from '../../../Components/Axios'
 import { MyCrypt } from '../../../Components/MyCrypt'
+import Register3Grab from './Col1/3grab/Register3Grab'
 import Balance from './Col1/Balance'
 import LifeCycle from './Col1/LifeCycle'
 import Network from './Col1/Network'
@@ -39,16 +40,8 @@ function Col1() {
                         <Grid item xs={5} className="text-right"><div>Online</div></Grid>
                         <Grid item xs={1}><CheckCircle className='link-icon' /></Grid>
                     </Grid>
-                    <Grid item container xs={12} className='link-box-success'>
-                        <Grid item xs={6}><div>3Grab status : </div></Grid>
-                        <Grid item xs={5} className="text-right"><div>Registerd</div></Grid>
-                        <Grid item xs={1}><CheckCircle className='link-icon' /></Grid>
-                    </Grid>
-
-                    <Grid item container xs={12} className='link-box'>
-                        <Grid item xs={6}><div>Product ID OCS : </div></Grid>
-                        <Grid item xs={6}><div className='text-right'>30000012</div></Grid>
-                    </Grid>
+                    
+                    <Register3Grab />
 
                     <Balance />
 

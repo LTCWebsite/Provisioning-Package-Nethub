@@ -697,9 +697,47 @@ td.MuiTableCell-root{
   color: #5A5C69;
   box-shadow: 0.1px .1px 0px .5px #888888;
 }
+
+.link-box-dev{
+  padding: 8px 10px 5px 10px;
+  /* border-bottom: 0.5px solid #979292; */
+  color: #5A5C69;
+  box-shadow: 0.1px .1px 0px .5px #888888;
+}
+
+.link-box-success-click{
+  padding: 5px 10px 0px 10px;
+  cursor: pointer;
+  color: #fff;
+  background-color: #26A65B;
+  box-shadow: 0.1px .1px 0px .5px #888888;
+}
+.link-box-success-click .link-icon-success{
+  color: #fff;
+  padding-top: 4px;
+  text-align: center!important;
+}
+
+.link-box-error-click{
+  padding: 5px 10px 0px 10px;
+  cursor: pointer;
+  color: #fff;
+  background-color: #CD1E2B;
+  box-shadow: 0.1px .1px 0px .5px #888888;
+}
+.link-box-error-click .link-icon-error{
+  color: #fff;
+  padding-top: 4px;
+  text-align: center!important;
+}
+
+
+
+
 .text-right div{
   text-align: right;
   padding-top: 5px;
+  padding-right: 5px;
 }
 .text-right{
   text-align: right;

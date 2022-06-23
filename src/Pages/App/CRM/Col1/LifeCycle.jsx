@@ -12,7 +12,7 @@ function LifeCycle() {
         let phone = "2059944454"
         AxiosReq.get("NewQuerySubLifeCycle?msisdn=" + phone).then(res => {
             if (res.status === 200) {
-                console.log(res.data)
+                // console.log(res.data)
                 let active = res.data.list[0].statusExpireTime
                 let barring = res.data.list[1].statusExpireTime
                 let suspend = res.data.list[2].statusExpireTime
