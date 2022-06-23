@@ -7,7 +7,7 @@ function Network() {
     return (
         <Grid item xs={12} container className='next'>
             <Grid item container xs={12} className='link-box'>
-                <Grid item xs={6}><div>Network Namde : </div></Grid>
+                <Grid item xs={6}><div>Network Name : </div></Grid>
                 <Grid item xs={6}><div className='text-right'>{type?.NETWORK_NAME}</div></Grid>
             </Grid>
             <Grid item container xs={12} className='link-box'>

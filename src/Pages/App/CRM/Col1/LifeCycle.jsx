@@ -3,7 +3,7 @@ import { Grid, Skeleton } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { AxiosReq } from '../../../../Components/Axios'
 
-function LifeCycle() {
+function LifeCycle({ cb }) {
     const [cycle, setCycle] = useState([])
     const [show, setShow] = useState(false)
     const [date, setDate] = useState({ active: '', barring: '', suspend: '' })
@@ -23,6 +23,7 @@ function LifeCycle() {
                     suspend: suspend.substring(0, 4) + '-' + suspend.substring(4, 6) + '-' + suspend.substring(6, 8) + ' ' + suspend.substring(8, 10) + ':' + suspend.substring(10, 12) + ':' + suspend.substring(12, 14)
                 })
                 setCycle(res.data)
+                cb(res.data)
                 setShow(true)
             }
         })
@@ -37,14 +38,6 @@ function LifeCycle() {
         <>
             {show ?
                 <Grid item xs={12} container className='next'>
-                    <Grid Grid item container xs={12} className={cycle?.blacklistStatus === 1 ? 'link-box-red' : 'link-box-green'} onClick={() => unBlackList(cycle?.blacklistStatus)}>
-                        <Grid item xs={6}><div>Black List : </div></Grid>
-                        <Grid item xs={6}><div className='text-right'>{cycle?.blacklistStatus === 0 ? <>
-                            No
-                        </> : <>
-                            Yes
-                        </>}</div></Grid>
-                    </Grid >
                     <Grid item container xs={12} className='link-box-defult'>
                         <Grid item xs={4}><div>Active Stop : </div></Grid>
                         <Grid item xs={8}><div className='text-right'>{date.active}</div></Grid>
@@ -59,9 +52,6 @@ function LifeCycle() {
                     </Grid>
                 </Grid > :
                 <Grid item xs={12} container>
-                    <Grid item xs={12}>
-                        <Skeleton animation="wave" className="wave" />
-                    </Grid>
                     <Grid item xs={12}>
                         <Skeleton animation="wave" className="wave" />
                     </Grid>

@@ -1,4 +1,4 @@
-import { Cancel, CheckCircle, } from '@mui/icons-material'
+import { CheckCircle, } from '@mui/icons-material'
 import { Grid, Skeleton } from '@mui/material'
 import React from 'react'
 import { useState } from 'react'

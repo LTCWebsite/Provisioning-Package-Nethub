@@ -310,8 +310,14 @@ div{
   /* font-weight: bold !important; */
   /* color: #858796 */
 }
-.error{
-  background-color: #e74a3b;
+.error, .error-u{
+  background-color: #dc2f02;
+  color: white!important;
+  padding: 1px 5px;
+  border-radius: 5%;
+}
+.success-u{
+  background-color: #08a045;
   color: white!important;
   padding: 1px 5px;
   border-radius: 5%;
@@ -707,7 +713,7 @@ td.MuiTableCell-root{
 
 .link-box-success-click{
   padding: 5px 10px 0px 10px;
-  cursor: pointer;
+  /* cursor: pointer; */
   color: #fff;
   background-color: #26A65B;
   box-shadow: 0.1px .1px 0px .5px #888888;
@@ -717,10 +723,24 @@ td.MuiTableCell-root{
   padding-top: 4px;
   text-align: center!important;
 }
+.link-box-success-click-hover{
+  padding: 5px 10px 0px 10px;
+  cursor: pointer;
+  color: #fff;
+  background-color: #26A65B;
+  box-shadow: 0.1px .1px 0px .5px #888888;
+}
+.link-box-success-click-hover:hover{
+  padding: 5px 10px 0px 10px;
+  cursor: pointer;
+  color: #fff;
+  background-color: #006400;
+  box-shadow: 0.1px .1px 0px .5px #888888;
+}
 
 .link-box-error-click{
   padding: 5px 10px 0px 10px;
-  cursor: pointer;
+  /* cursor: pointer; */
   color: #fff;
   background-color: #CD1E2B;
   box-shadow: 0.1px .1px 0px .5px #888888;
@@ -797,4 +817,12 @@ div{
   background-color: #EDE3FA;
   padding: 2px 10px;
   border-radius: 2px 2px;
+}
+.m-body{
+  padding: 20px;
+  width: 800px!important;
+}
+.down{
+  border-bottom: 1px solid #ced4da;
+  padding: 5px 0px;
 }
