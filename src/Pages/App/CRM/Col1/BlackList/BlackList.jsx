@@ -64,7 +64,7 @@ function BlackList({ data }) {
 
                 </>}
                 <Grid item xs={5} className="text-right"><div>{bl === 0 ? 'No' : 'Yes'}</div></Grid>
-                <Grid item xs={1}>{bl === 0 ? <Cancel className='link-icon' /> : <CheckCircle className='link-icon' />}</Grid>
+                <Grid item xs={1}>{bl !== 0 ? <Cancel className='link-icon' /> : <CheckCircle className='link-icon' />}</Grid>
             </Grid>
             <Grid item container xs={12} className="link-box-text">
                 <Grid item xs={5}><div>Point : </div></Grid>

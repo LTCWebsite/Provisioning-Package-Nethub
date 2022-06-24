@@ -3,7 +3,7 @@ import React from 'react'
 import { useState } from 'react'
 
 function MobileService() {
-    const [check, setCheck] = useState({ n_3g: false, n_4g: false, RBT: false })
+    const [check, setCheck] = useState({ n_3g: true, n_4g: true, RBT: false })
     return (
         <>
             <Grid item container xs={12} className='link-box-dev'>

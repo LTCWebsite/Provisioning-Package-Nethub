@@ -94,8 +94,8 @@ function TopBar() {
         } else if (id === '11') {
             return <>
                 <form name="Loggingin" action="http://10.30.6.148:8899/Account/Login?ReturnUrl=%2F" method="post" target='_blank'>
-                    <input name="Email" value={topData[10]?.Username} type={"hidden"} />
-                    <input name="Password" value={topData[10]?.Password} type={"hidden"} />
+                    <input name="Email" value="boualy-thi@laotel.com" type={"hidden"} />
+                    <input name="Password" value="#Ltc1qaz2wsx@bl" type={"hidden"} />
                     <input type="submit" className='link-btn list' value={name} />
                 </form>
             </>
