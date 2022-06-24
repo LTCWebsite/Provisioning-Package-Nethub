@@ -7,7 +7,7 @@ function Balance() {
     const [show, setShow] = useState(false)
     useEffect(() => {
         setShow(false)
-        let phone = "2059944454"
+        let phone = localStorage.getItem("ONE_PHONE")
         AxiosReq.get("NewQueryBalance?msisdn=" + phone).then(res => {
             if (res.status === 200) {
                 setBalance(res.data.list)
@@ -29,8 +29,8 @@ function Balance() {
                 balance?.map((row, key) => {
                     return (
                         <Grid item container xs={12} className='link-box-green' key={key}>
-                            <Grid item xs={6}><div>{row.balanceTypeName} : </div></Grid>
-                            <Grid item xs={6}><div className='text-right'>{parseInt(row.totalAmount).toLocaleString()}</div></Grid>
+                            <Grid item xs={8}><div>{row.balanceTypeName} : </div></Grid>
+                            <Grid item xs={4}><div className='text-right'>{parseInt(row.totalAmount).toLocaleString()}</div></Grid>
                         </Grid>
                     )
                 })}

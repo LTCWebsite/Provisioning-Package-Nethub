@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 import { AxiosReq } from '../../../../../Components/Axios'
 import Can from '@material-ui/icons/Cancel'
+import { Visibility } from '@material-ui/icons'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -44,7 +45,8 @@ function BssRegister({ cb }) {
                 </Grid> :
                 <>
                     <Grid item container xs={12} className={data.statusBSSDesc === "Activated" ? 'link-box-success-click-hover' : 'link-box-error-click'} onClick={BSS}>
-                        <Grid item xs={6}><div>BSS Status : </div></Grid>
+                        <Grid item xs={1}><Visibility style={{ paddingTop: 4 }} /></Grid>
+                        <Grid item xs={5}><div style={{ paddingTop: 4 }}>&nbsp;BSS Status : </div></Grid>
                         <Grid item xs={5} className="text-right">
                             <div>{data.statusBSSDesc}</div>
                         </Grid>

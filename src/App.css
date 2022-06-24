@@ -703,6 +703,11 @@ td.MuiTableCell-root{
   color: #5A5C69;
   box-shadow: 0.1px .1px 0px .5px #888888;
 }
+.link-box-text{
+  padding: 8px 10px 5px 10px;
+  color: #5A5C69;
+  box-shadow: 0.1px .1px 0px .5px #888888;
+}
 
 .link-box-dev{
   padding: 8px 10px 5px 10px;
@@ -710,10 +715,14 @@ td.MuiTableCell-root{
   color: #5A5C69;
   box-shadow: 0.1px .1px 0px .5px #888888;
 }
+.link-box-dev-amount{
+  padding: 8px 10px 5px 10px!important;
+  color: #5A5C69;
+  box-shadow: 0.1px .1px 0px .5px #888888;
+}
 
 .link-box-success-click{
   padding: 5px 10px 0px 10px;
-  /* cursor: pointer; */
   color: #fff;
   background-color: #26A65B;
   box-shadow: 0.1px .1px 0px .5px #888888;
@@ -749,6 +758,13 @@ td.MuiTableCell-root{
   color: #fff;
   padding-top: 4px;
   text-align: center!important;
+}
+.link-box-error-click-hover{
+  padding: 5px 10px 0px 10px;
+  cursor: pointer;
+  color: #fff;
+  background-color: #CD1E2B;
+  box-shadow: 0.1px .1px 0px .5px #888888;
 }
 
 
@@ -792,7 +808,7 @@ div{
   background-color: #26A65B;
 }
 .link-box-green{
-  padding: 5px 10px 0px 10px;
+  padding: 8px 10px 5px 10px;
   color: #fff;
   box-shadow: 0.5px .5px 0px .8px #fff;
   background-color: #26A65B;
@@ -825,4 +841,19 @@ div{
 .down{
   border-bottom: 1px solid #ced4da;
   padding: 5px 0px;
+}
+.m-body-sm{
+  padding: 20px;
+  width: 500px!important;
+}
+.center{
+  text-align: center!important;
+}
+.date-sm{
+  padding: 0px!important;
+  margin: 0px!important;
+}
+.MuiFormControl-root, .MuiFormControl-fullWidth{
+  padding: 0px!important;
+  margin: 0px!important;
 }
