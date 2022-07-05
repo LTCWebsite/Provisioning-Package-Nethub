@@ -2,7 +2,7 @@ import { Grid } from '@mui/material'
 import React from 'react'
 import Banking from './Col2/Banking/Banking'
 import BillQuery from './Col2/BillQuery/BillQuery'
-import Packages from './Col2/Packge/Packages'
+import Packages from './Col2/Package/Packages'
 
 function Col2() {
   return (

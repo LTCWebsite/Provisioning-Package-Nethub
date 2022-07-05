@@ -75,7 +75,6 @@ export default function useAutocomplete(props) {
       autoSelect = _props$autoSelect === void 0 ? false : _props$autoSelect,
       _props$blurOnSelect = props.blurOnSelect,
       blurOnSelect = _props$blurOnSelect === void 0 ? false : _props$blurOnSelect,
-      disabledProp = props.disabled,
       _props$clearOnBlur = props.clearOnBlur,
       clearOnBlur = _props$clearOnBlur === void 0 ? !props.freeSolo : _props$clearOnBlur,
       _props$clearOnEscape = props.clearOnEscape,
@@ -88,6 +87,7 @@ export default function useAutocomplete(props) {
       disableClearable = _props$disableClearab === void 0 ? false : _props$disableClearab,
       _props$disableCloseOn = props.disableCloseOnSelect,
       disableCloseOnSelect = _props$disableCloseOn === void 0 ? false : _props$disableCloseOn,
+      disabledProp = props.disabled,
       _props$disabledItemsF = props.disabledItemsFocusable,
       disabledItemsFocusable = _props$disabledItemsF === void 0 ? false : _props$disabledItemsF,
       _props$disableListWra = props.disableListWrap,
@@ -105,10 +105,6 @@ export default function useAutocomplete(props) {
 
     return (_option$label = option.label) != null ? _option$label : option;
   } : _props$getOptionLabel,
-      _props$isOptionEqualT = props.isOptionEqualToValue,
-      isOptionEqualToValue = _props$isOptionEqualT === void 0 ? function (option, value) {
-    return option === value;
-  } : _props$isOptionEqualT,
       groupBy = props.groupBy,
       _props$handleHomeEndK = props.handleHomeEndKeys,
       handleHomeEndKeys = _props$handleHomeEndK === void 0 ? !props.freeSolo : _props$handleHomeEndK,
@@ -116,6 +112,10 @@ export default function useAutocomplete(props) {
       _props$includeInputIn = props.includeInputInList,
       includeInputInList = _props$includeInputIn === void 0 ? false : _props$includeInputIn,
       inputValueProp = props.inputValue,
+      _props$isOptionEqualT = props.isOptionEqualToValue,
+      isOptionEqualToValue = _props$isOptionEqualT === void 0 ? function (option, value) {
+    return option === value;
+  } : _props$isOptionEqualT,
       _props$multiple = props.multiple,
       multiple = _props$multiple === void 0 ? false : _props$multiple,
       onChange = props.onChange,
@@ -373,7 +373,7 @@ export default function useAutocomplete(props) {
     if (reason === 'keyboard') {
       option.classList.add('Mui-focusVisible');
     } // Scroll active descendant into view.
-    // Logic copied from https://www.w3.org/TR/wai-aria-practices/examples/listbox/js/listbox.js
+    // Logic copied from https://www.w3.org/WAI/ARIA/apg/example-index/combobox/js/select-only.js
     //
     // Consider this API instead once it has a better browser support:
     // .scrollIntoView({ scrollMode: 'if-needed', block: 'nearest' });
@@ -585,7 +585,7 @@ export default function useAutocomplete(props) {
   };
 
   var handleValue = function handleValue(event, newValue, reason, details) {
-    if (Array.isArray(value)) {
+    if (multiple) {
       if (value.length === newValue.length && value.every(function (val, i) {
         return val === newValue[i];
       })) {
@@ -677,7 +677,10 @@ export default function useAutocomplete(props) {
       return;
     }
 
-    handleClose(event, 'toggleInput');
+    if (inputValue === '') {
+      handleClose(event, 'toggleInput');
+    }
+
     var nextTag = focusedTag;
 
     if (focusedTag === -1) {

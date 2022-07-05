@@ -186,30 +186,32 @@ export default function Login() {
                                                 color='secondary'
                                                 onClick={SendOTP}
                                                 disabled={btn.otp}
-                                            ><b>{btn.otp ? <CircularProgress size={17} color="secondary" /> : 'ຂໍ OTP'}</b></Button>
+                                            ><b>{btn.otp ? <CircularProgress size={10} style={{ marginTop: 8, padding: 0 }} color="secondary" /> : 'ຂໍ OTP'}</b></Button>
                                         </div>
                                     </Grid>
                                 </Grid>
-                                <TextField
-                                    fullWidth
-                                    variant='standard'
-                                    margin='normal'
-                                    label="ລະຫັດ OTP"
-                                    placeholder='ປ້ອນລະຫັດ OTP'
-                                    onKeyUp={(e) => PressBtn(e)}
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                    disabled={
-                                        !alert.sendOTP
-                                    }
-                                    value={otp.text}
-                                    onChange={(e) => {
-                                        setOtp({ ...otp, text: e.target.value, alert: e.target.value.length > 0 ? false : true })
-                                    }}
-                                    error={otp.alert}
-                                    helperText={otp.alert && 'ກະລຸນາປ້ອນລະຫັດ OTP'}
-                                />
+                                <div style={{ marginTop: 20 }}>
+                                    <TextField
+                                        fullWidth
+                                        variant='standard'
+                                        margin='normal'
+                                        label="ລະຫັດ OTP"
+                                        placeholder='ປ້ອນລະຫັດ OTP'
+                                        onKeyUp={(e) => PressBtn(e)}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                        disabled={
+                                            !alert.sendOTP
+                                        }
+                                        value={otp.text}
+                                        onChange={(e) => {
+                                            setOtp({ ...otp, text: e.target.value, alert: e.target.value.length > 0 ? false : true })
+                                        }}
+                                        error={otp.alert}
+                                        helperText={otp.alert && 'ກະລຸນາປ້ອນລະຫັດ OTP'}
+                                    />
+                                </div>
 
                                 <Button
                                     style={{ marginTop: 20 }}
