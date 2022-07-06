@@ -703,11 +703,22 @@ td.MuiTableCell-root{
   color: #5A5C69;
   box-shadow: 0.1px .1px 0px .5px #888888;
 }
+.link-box-pointer{
+  padding: 5px 10px 0px 10px;
+  cursor: pointer;
+  color: #5A5C69;
+  box-shadow: 0.1px .1px 0px .5px #888888;
+}
+.link-box-pointer:hover{
+  background-color: #26A65B;
+  color: #fff;
+}
 .link-box-text{
   padding: 8px 10px 5px 10px;
   color: #5A5C69;
   box-shadow: 0.1px .1px 0px .5px #888888;
 }
+
 
 .link-box-dev{
   padding: 8px 10px 5px 10px;
@@ -856,4 +867,11 @@ div{
 .MuiFormControl-root, .MuiFormControl-fullWidth{
   padding: 0px!important;
   margin: 0px!important;
+}
+.right .icon{
+  padding: 20px;
+}
+.right .icon:hover{
+  cursor: pointer;
+  color: #CD1E2B;
 }
