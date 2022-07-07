@@ -1,9 +1,9 @@
-*{
-  font-family: 'font', Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji" !important;
+* {
+  font-family: 'font', Nunito, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
 }
 
 @import "../node_modules/@syncfusion/ej2-base/styles/material.css";
-@import "../node_modules/@syncfusion/ej2-buttons/styles/material.css"; 
+@import "../node_modules/@syncfusion/ej2-buttons/styles/material.css";
 
 @font-face {
   font-family: 'font';
@@ -24,81 +24,95 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
-body{
-  padding: 0px!important;
-  margin: 0px!important;
-  font-family: 'font', Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji" !important;
+
+body {
+  padding: 0px !important;
+  margin: 0px !important;
+  font-family: 'font', Nunito, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
 }
-.MuiTabs-indicator{
-  background-color: #4E73DF!important;
+
+.MuiTabs-indicator {
+  background-color: #4E73DF !important;
 }
-.tab-tab .MuiTabs-indicator{
-  background-color: #fff!important;
+
+.tab-tab .MuiTabs-indicator {
+  background-color: #fff !important;
 }
-span .MuiTab-wrapper{
-  color:  hsl(0, 1%, 32%);
+
+span .MuiTab-wrapper {
+  color: hsl(0, 1%, 32%);
   font-weight: bold;
 }
-.tab-tab span.MuiTab-wrapper{
-  color:  #fff;
+
+.tab-tab span.MuiTab-wrapper {
+  color: #fff;
   font-weight: bold;
 }
-.colorText span.MuiTab-wrapper{
-  color:  #fff;
+
+.colorText span.MuiTab-wrapper {
+  color: #fff;
   font-weight: bold;
 }
-.colorText .MuiTabs-indicator{
-  background-color: #fff!important;
+
+.colorText .MuiTabs-indicator {
+  background-color: #fff !important;
 }
 
 
 
 
-.icon-tab{
+.icon-tab {
   margin-top: 4px;
   width: 38px;
   height: 38px;
 }
-.right-tab{
-  font-family: 'font', Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji" !important;
+
+.right-tab {
+  font-family: 'font', Nunito, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
   display: flex;
   justify-content: flex-end;
   padding: 0px 10px;
 }
-.center{
-  text-align: center!important;
+
+.center {
+  text-align: center !important;
 }
-.bold{
-  font-family: 'font', Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji" !important;
-  font-weight: bold!important;
+
+.bold {
+  font-family: 'font', Nunito, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+  font-weight: bold !important;
 }
-.content-1 div{
-  font-family: 'font', Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji" !important;
+
+.content-1 div {
+  font-family: 'font', Nunito, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
   color: #3a3838;
   padding: 1px 0px;
 
 }
-.content-1-link{
-  font-family: 'font', Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji" !important;
+
+.content-1-link {
+  font-family: 'font', Nunito, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
   color: #3a3838;
-  padding: 10px 5px!important;
-  font-size: 11px!important;
+  padding: 10px 5px !important;
+  font-size: 11px !important;
 
 }
-.danger-link{
+
+.danger-link {
   color: #CD1E2B;
-  font-size: 16px!important;
+  font-size: 16px !important;
 }
 
 
-b{
-  font-weight: bold!important;
+b {
+  font-weight: bold !important;
 }
-.content-1 h2{
+
+.content-1 h2 {
   margin: 3px 0px;
 }
 
-.input{
+.input {
   padding: 7px 10px;
   width: 100%;
   border-top: 1px solid whitesmoke;
@@ -109,29 +123,35 @@ b{
   background-color: #EDE9E9;
   font-weight: bold;
 }
+
 .input:focus {
   padding: 7px 10px;
   outline: none !important;
-  border:1px solid whitesmoke;
+  border: 1px solid whitesmoke;
   box-shadow: 0 0 5px #5A5C69;
 }
-.red{
-  color: #e74a3b!important;
+
+.red {
+  color: #e74a3b !important;
 }
-.success{
+
+.success {
   color: #1cc88a;
-  font-size: 23px!important;
+  font-size: 23px !important;
 }
-.danger{
+
+.danger {
   color: #e74a3b;
-  font-size: 23px!important;
+  font-size: 23px !important;
 }
-.menu-padding{
+
+.menu-padding {
   padding-top: 50px;
 }
+
 @media only screen and (max-width: 1278px) {
-  .menu-padding{
-    padding-top: 80px!important;
+  .menu-padding {
+    padding-top: 80px !important;
   }
 }
 
@@ -144,195 +164,234 @@ Style All System Page
   padding-right: 70px;
   padding-left: 70px;
 }
- .align-btn-open{
-   display: flex;
-   justify-content: flex-end;
- }
+
+.align-btn-open {
+  display: flex;
+  justify-content: flex-end;
+}
 
 
 
- /* ----------------------------------------
+/* ----------------------------------------
 Style BageAmount
 -------------------------------------------*/
 
-.bageStyle{
+.bageStyle {
   margin-top: -50px !important;
   position: absolute;
 }
-.logo-image{
+
+.logo-image {
   width: 200px;
   height: 200px;
 }
-.logo-text{
+
+.logo-text {
   text-align: center;
   text-decoration: underline;
-  padding: 0px 0px!important;
-}
-.btn-login{
-  font-size: 22px!important;
+  padding: 0px 0px !important;
 }
 
-.btn-defualt{
-  background-color: #fff!important;
-  color: black!important;
-  font-weight: bold !important;
+.btn-login {
+  font-size: 22px !important;
 }
-.btn-defualt:hover{
-  background-color: #DCDCDC!important;
-  color: black!important;
+
+.btn-defualt {
+  background-color: #fff !important;
+  color: black !important;
   font-weight: bold !important;
 }
 
-.btn-danger{
-  background-color: #CD1E2B!important;
-  color: white!important;
-  font-weight: bold !important;
-}
-.btn-success{
-  background-color: #1cc88a!important;
-  color: white!important;
-  font-weight: bold !important;
-}
-.btn-success:hover{
-  background-color: #1aa572!important;
-  color: white!important;
-  font-weight: bold !important;
-}
-.btn-danger:hover{
-  background-color: hsl(356, 74%, 37%)!important;
-  color: white!important;
-  font-weight: bold !important;
-}
-.btn-danger[disabled],.btn-danger:disabled, .btn-primary[disabled], .btn-primary:disabled{
-  background-color: hsl(0, 10%, 92%)!important;
-  color: #979292!important;
+.btn-defualt:hover {
+  background-color: #DCDCDC !important;
+  color: black !important;
   font-weight: bold !important;
 }
 
-.btn-primary{
-  background-color: #4E73DF!important;
-  color: white!important;
+.btn-danger {
+  background-color: #CD1E2B !important;
+  color: white !important;
+  font-weight: bold !important;
+}
+
+.btn-success {
+  background-color: #1cc88a !important;
+  color: white !important;
+  font-weight: bold !important;
+}
+
+.btn-success:hover {
+  background-color: #1aa572 !important;
+  color: white !important;
+  font-weight: bold !important;
+}
+
+.btn-danger:hover {
+  background-color: hsl(356, 74%, 37%) !important;
+  color: white !important;
+  font-weight: bold !important;
+}
+
+.btn-danger[disabled],
+.btn-danger:disabled,
+.btn-primary[disabled],
+.btn-primary:disabled {
+  background-color: hsl(0, 10%, 92%) !important;
+  color: #979292 !important;
+  font-weight: bold !important;
+}
+
+.btn-primary {
+  background-color: #4E73DF !important;
+  color: white !important;
   font-weight: bold !important;
   box-shadow: 0.5px 0.5px 2px 0.5px lightgrey;
   height: 38px;
 }
-.btn-primary:hover{
-  background-color: hsl(225, 62%, 50%)!important;
-  color: white!important;
+
+.btn-primary:hover {
+  background-color: hsl(225, 62%, 50%) !important;
+  color: white !important;
   font-weight: bold !important;
 }
-.btn-info{
-  background-color: #47a6dd!important;
-  color: white!important;
+
+.btn-info {
+  background-color: #47a6dd !important;
+  color: white !important;
   font-weight: bold !important;
   box-shadow: 0.5px 0.5px 2px 0.5px lightgrey;
 }
-.btn-info:hover{
-  background-color: hsl(204, 69%, 49%)!important;
-  color: white!important;
+
+.btn-info:hover {
+  background-color: hsl(204, 69%, 49%) !important;
+  color: white !important;
   font-weight: bold !important;
 }
-.pointer{
+
+.pointer {
   cursor: pointer;
 }
-.switch{
-  margin-top: 2px!important;
+
+.switch {
+  margin-top: 2px !important;
 }
 
 /* Switch */
-.e-switch-on, .e-switch{
-  background-color: rgb(227, 241, 226)!important;
+.e-switch-on,
+.e-switch {
+  background-color: rgb(227, 241, 226) !important;
 }
-.e-switch-active{
-  background-color: #1cc88a!important;
+
+.e-switch-active {
+  background-color: #1cc88a !important;
 }
+
 /* table */
-thead th{
-  background-color: whitesmoke!important;
+thead th {
+  background-color: whitesmoke !important;
   font-weight: bold !important;
-  font-size: 18px!important;
-  
+  font-size: 18px !important;
+
 }
-tr:hover{
-  background-color: whitesmoke!important;
+
+tr:hover {
+  background-color: whitesmoke !important;
 }
-td, th{
-  padding: 10px 15px!important;
-  color:hsl(0, 1%, 32%)!important;
+
+td,
+th {
+  padding: 10px 15px !important;
+  color: hsl(0, 1%, 32%) !important;
 }
-.grey{
-  color: grey!important;
+
+.grey {
+  color: grey !important;
 }
-.more{
+
+.more {
   text-align: center;
-  margin-top: 10px!important;
+  margin-top: 10px !important;
 }
-.dialog-header{
-  background-color: #5A5C69!important;
-  position: fixed!important;
+
+.dialog-header {
+  background-color: #5A5C69 !important;
+  position: fixed !important;
 }
-.dialog-body{
-  padding: 10px 20px!important;
-  padding-top: 70px!important;
-  padding-bottom: 30px!important;
+
+.dialog-body {
+  padding: 10px 20px !important;
+  padding-top: 70px !important;
+  padding-bottom: 30px !important;
 }
-.dialog-center{
-  padding: 100px 20px 50px 20px!important;
-  text-align: center!important;
+
+.dialog-center {
+  padding: 100px 20px 50px 20px !important;
+  text-align: center !important;
   color: grey;
 }
-.footer{
-  background-color: whitesmoke!important;
+
+.footer {
+  background-color: whitesmoke !important;
   padding: 5px 10px !important;
   width: 100%;
   text-align: center;
-  font-family: 'font', Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji" !important;
-  color: grey!important;
-}
-.active{
-  background-color: #1cc88a;
-  color: white!important;
-  border-radius: 8px;
-  padding: 1px 5px;
-}
-.dis_active{
-  background-color: #e74a3b;
-  color: white!important;
-  border-radius: 8px;
-  padding: 1px 5px;
-}
-u{
-  text-decoration: none!important;
+  font-family: 'font', Nunito, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+  color: grey !important;
 }
 
-div{
-  font-family: 'font', Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"  !important;
+.active {
+  background-color: #1cc88a;
+  color: white !important;
+  border-radius: 8px;
+  padding: 1px 5px;
+}
+
+.dis_active {
+  background-color: #e74a3b;
+  color: white !important;
+  border-radius: 8px;
+  padding: 1px 5px;
+}
+
+u {
+  text-decoration: none !important;
+}
+
+div {
+  font-family: 'font', Nunito, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
   /* font-weight: bold !important; */
   /* color: #858796 */
 }
-.error, .error-u{
+
+.error,
+.error-u {
   background-color: #dc2f02;
-  color: white!important;
+  color: white !important;
   padding: 1px 5px;
   border-radius: 5%;
 }
-.success-u{
+
+.success-u {
   background-color: #08a045;
-  color: white!important;
+  color: white !important;
   padding: 1px 5px;
   border-radius: 5%;
 }
-.border-body{
+
+.border-body {
   box-shadow: 1px 2px 2px 2px grey;
   border-radius: 5px;
-  padding: 20px!important;
+  padding: 20px !important;
 }
-.green{
-  color:#1cc88a!important;
+
+.green {
+  color: #1cc88a !important;
 }
-.Mui-selected{
-  color: #4E73DF!important;
+
+.Mui-selected {
+  color: #4E73DF !important;
 }
+
 /* .my-switch span, span span{
   height: 23px!important;
   width: 45px!important;
@@ -340,128 +399,154 @@ div{
 .my-switch span span{
   width: 23px!important;
 } */
-.my-switch, .MuiSwitch-input{
-  margin: 0px!important;
-  padding: 0px!important;
+.my-switch,
+.MuiSwitch-input {
+  margin: 0px !important;
+  padding: 0px !important;
 }
 
-.Mui-checked{
-  color: #1cc88a!important;
+.Mui-checked {
+  color: #1cc88a !important;
 }
 
-.center-cf{
-  text-align: center!important;
-  font-size: 25px!important;
+.center-cf {
+  text-align: center !important;
+  font-size: 25px !important;
 }
-.custom-ui{
-  background-color: whitesmoke!important;
-  box-shadow: 0px 1px 1px 1px lightgrey!important;
+
+.custom-ui {
+  background-color: whitesmoke !important;
+  box-shadow: 0px 1px 1px 1px lightgrey !important;
   border-radius: 10px;
-  padding: 30px 100px!important;
+  padding: 30px 100px !important;
 }
-.MuiSwitch-input{
-  padding: 0px!important;
-  margin: 0px!important;
+
+.MuiSwitch-input {
+  padding: 0px !important;
+  margin: 0px !important;
 }
-.MuiGrid-root .MuiGrid-item .MuiGrid-grid-xs-6{
-  padding: 4px 0px!important;
+
+.MuiGrid-root .MuiGrid-item .MuiGrid-grid-xs-6 {
+  padding: 4px 0px !important;
 }
-input.PrivateSwitchBase-input-25 .MuiSwitch-input{
-  padding: 0px!important;
+
+input.PrivateSwitchBase-input-25 .MuiSwitch-input {
+  padding: 0px !important;
 }
-div.my-switch{
-  padding: 0px!important;
+
+div.my-switch {
+  padding: 0px !important;
 }
-.MuiGrid-root .MuiGrid-item .MuiGrid-grid-xs-6{
-  padding: 0px!important;
+
+.MuiGrid-root .MuiGrid-item .MuiGrid-grid-xs-6 {
+  padding: 0px !important;
 }
-.MuiGrid-root .MuiGrid-item .MuiGrid-grid-xs-6 div{
-  padding-top: 5px!important;
-  min-height: 30px!important;
+
+.MuiGrid-root .MuiGrid-item .MuiGrid-grid-xs-6 div {
+  padding-top: 5px !important;
+  min-height: 30px !important;
 }
-b.link{
-  color:hsl(210, 67%, 47%);
-  text-align: center!important;
+
+b.link {
+  color: hsl(210, 67%, 47%);
+  text-align: center !important;
 }
-.right{
-  text-align: right!important;
+
+.right {
+  text-align: right !important;
 }
-.link{
-  color:hsl(210, 67%, 47%)!important;
+
+.link {
+  color: hsl(210, 67%, 47%) !important;
   cursor: pointer;
 }
-.abc div{
-  color: #3A3838!important;
+
+.abc div {
+  color: #3A3838 !important;
   padding: 2px 0px;
 }
-.hr{
+
+.hr {
   border-top: 1px solid lightgrey;
 }
-.rrr{
+
+.rrr {
   background-color: rgb(252, 139, 139);
 }
 
-.box{
-  margin: 15px 8px!important;
+.box {
+  margin: 15px 8px !important;
   background-color: #f8f9fc !important;
   box-shadow: rgb(226, 228, 231) 1px 5px 6px 0.8px !important;
 }
-.box-link{
-  margin: 1.5px!important;
-  padding: 0px!important;
+
+.box-link {
+  margin: 1.5px !important;
+  padding: 0px !important;
   /* background-color: #FAFAFA !important; */
   /* box-shadow: rgb(226, 228, 231) 1px 5px 6px 0.8px !important; */
 }
-.box-link:hover{
-  background-color: white!important;
+
+.box-link:hover {
+  background-color: white !important;
 }
 
-.box:hove{
+.box:hove {
   cursor: pointer;
   transform: scale(0.7);
 }
 
 
 
-.MuiRadio-root{
-  padding: 0px 8px 5px 8px!important;
-} 
-.MuiTooltip-tooltip{
-  font-size: 14px!important;
+.MuiRadio-root {
+  padding: 0px 8px 5px 8px !important;
 }
-.abc{
+
+.MuiTooltip-tooltip {
+  font-size: 14px !important;
+}
+
+.abc {
   color: rgb(156, 103, 22);
 }
-.warn_active{
+
+.warn_active {
   background-color: #f56e15;
-  color: white!important;
+  color: white !important;
   border-radius: 8px;
   padding: 1px 5px;
 }
-.text-error{
+
+.text-error {
   color: #e74a3b;
 }
-.MuiDialog-container{
+
+.MuiDialog-container {
   background-color: rgba(255, 255, 255, 0.3);
- -webkit-backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(5px);
 }
+
 .MuiDialog-paper {
   opacity: 0.8;
 }
-.MuiDialog-paperFullScreen{
-  opacity: 0.8!important;
+
+.MuiDialog-paperFullScreen {
+  opacity: 0.8 !important;
 }
-.profile{
+
+.profile {
   opacity: 1;
 }
-td{
-  font-weight: 600!important;
+
+td {
+  font-weight: 600 !important;
 }
-.login-container{
+
+.login-container {
   margin-top: 50px;
   background-color: rgba(255, 255, 255, 0.7);
- -webkit-backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(5px);
   padding: 50px;
   border-radius: 10px;
@@ -469,13 +554,15 @@ td{
   box-shadow: 0px 1px 2px 0px grey;
   min-width: 600px;
 }
-.login-icon{
-  background-color: rgba(255, 255, 255, 0.7)!important;
- -webkit-backdrop-filter: blur(10px);
+
+.login-icon {
+  background-color: rgba(255, 255, 255, 0.7) !important;
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(5px);
 }
-.login-bg{
-  background: url('./Image/ltc.jpeg') no-repeat center center fixed; 
+
+.login-bg {
+  background: url('./Image/ltc.jpeg') no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -489,63 +576,77 @@ td{
   position: fixed;
   opacity: 0.9;
 }
-.left{
-  text-align: left!important;
+
+.left {
+  text-align: left !important;
 }
-.error-alert{
+
+.error-alert {
   color: red;
   font-size: 12px;
-  text-align: left!important;
+  text-align: left !important;
   margin-top: 5px;
 }
-.error-input{
+
+.error-input {
   color: red;
 }
-.MuiSelect-filled{
-  padding: 9px!important;
+
+.MuiSelect-filled {
+  padding: 9px !important;
 }
-.label{
-  margin: 0px!important;
-  padding-left: 10px!important;
-  margin-left: 10px!important;
+
+.label {
+  margin: 0px !important;
+  padding-left: 10px !important;
+  margin-left: 10px !important;
 }
-.option{
-  color: #3A3838!important;
-  font-size: 14px!important;
+
+.option {
+  color: #3A3838 !important;
+  font-size: 14px !important;
 }
-td.MuiTableCell-root{
-  padding: 2px 10px!important;
-  font-size: 12px!important;
+
+td.MuiTableCell-root {
+  padding: 2px 10px !important;
+  font-size: 12px !important;
 }
-.MuiTableCell-head, td.MuiTableCell-body{
-  padding: 5px 10px!important;
+
+.MuiTableCell-head,
+td.MuiTableCell-body {
+  padding: 5px 10px !important;
 }
-.my-table td, .my-table th, .my-table tr{
-  background-color: #DCDCDC!important;
-  border: 1px solid #fff!important;
+
+.my-table td,
+.my-table th,
+.my-table tr {
+  background-color: #DCDCDC !important;
+  border: 1px solid #fff !important;
 }
-.btn-otp{
+
+.btn-otp {
   padding: 0px 0px 0px 10px;
   margin-top: 10px;
 }
-.tab{
+
+.tab {
   background-color: #fff;
   font-size: 18px;
   display: flex;
-  overflow: scroll!important;
-  height: 50px!important;
+  overflow: scroll !important;
+  height: 50px !important;
 }
 
 
 .frame {
-  height: 45px!important;
+  height: 45px !important;
   font-size: 18px;
   display: flex;
   background-color: #fff;
   overflow-x: auto;
   width: 100%;
   line-height: 1.5em;
-  scroll-padding: 10px!important;
+  scroll-padding: 10px !important;
 }
 
 .frame::-webkit-scrollbar {
@@ -553,21 +654,22 @@ td.MuiTableCell-root{
 }
 
 .frame::-webkit-scrollbar:vertical {
-  width: 9px!important;
+  width: 9px !important;
 }
 
 .frame::-webkit-scrollbar:horizontal {
-  height: 9px!important;
+  height: 9px !important;
 }
 
 .frame::-webkit-scrollbar-thumb {
   border-radius: 8px;
-  border: 0px solid white; /* should match background, can't be transparent */
+  border: 0px solid white;
+  /* should match background, can't be transparent */
   background-color: rgba(0, 0, 0, .4);
 }
 
 
-.list{
+.list {
   flex-direction: column;
   font-weight: 500;
   text-align: center;
@@ -575,52 +677,64 @@ td.MuiTableCell-root{
   align-items: center;
   padding: 5.5px 10px;
   justify-content: center;
-  white-space: nowrap!important;
+  white-space: nowrap !important;
 }
-.list:hover{
+
+.list:hover {
   background-color: #CD1E2B;
   color: #fff;
   cursor: pointer;
 }
-.p-right{
-  padding-right: 40px!important;
+
+.p-right {
+  padding-right: 40px !important;
 }
-.body{
+
+.body {
   background-color: #DCDCDC;
 }
-.logo-bar{
+
+.logo-bar {
   width: 100%;
   margin: 10px 0px;
 }
-.bar{
+
+.bar {
   padding: 10px 0px;
   cursor: pointer;
 }
-.bar:hover{
+
+.bar:hover {
   background-color: #EDE9E9;
 }
-.bar div{
+
+.bar div {
   color: #5A5C69;
   font-weight: bold;
 }
-.bar-icon{
-  font-size: 60px!important;
+
+.bar-icon {
+  font-size: 60px !important;
   color: #5A5C69;
 }
-.search{
-  width: 100%!important;
-  position: fixed!important;
-  z-index: 1000!important;
+
+.search {
+  width: 100% !important;
+  position: fixed !important;
+  z-index: 1000 !important;
 }
-.v-input{
-  border-radius: 0px!important;
-  background-color: #e5e5e5!important;
-  font-size: 18px!important;
-  padding: 4px 10px!important;
+
+.v-input {
+  border-radius: 0px !important;
+  background-color: #e5e5e5 !important;
+  font-size: 18px !important;
+  padding: 4px 10px !important;
   margin-top: 5px;
-  width: 100%!important;
+  width: 100% !important;
 }
-.input-1, textarea{
+
+.input-1,
+textarea {
   padding: 10px 15px;
   border-top: 1px solid #EEECEC;
   border-bottom: 1px solid #EEECEC;
@@ -628,19 +742,24 @@ td.MuiTableCell-root{
   border-right: 1px solid #EEECEC;
   border-radius: 5px;
   font-weight: bold;
-  color: grey!important;
+  color: grey !important;
   font-size: 18px;
 }
-.bar-active{
-  background-color: #2F3292!important;
+
+.bar-active {
+  background-color: #2F3292 !important;
 }
-.MuiSvgIcon-colorPrimary{
-  color: #2F3292!important;
+
+.MuiSvgIcon-colorPrimary {
+  color: #2F3292 !important;
 }
-.bar-active .bar-icon, .bar-active div{
-  color: #fff!important;
+
+.bar-active .bar-icon,
+.bar-active div {
+  color: #fff !important;
 }
-.h1{
+
+.h1 {
   margin-left: 10px;
   font-size: 25px;
   font-weight: bold;
@@ -648,109 +767,131 @@ td.MuiTableCell-root{
   display: flex;
   align-items: center;
 }
-.underline u{
+
+.underline u {
   /* border-bottom: 5px solid #CD1E2B!important; */
   width: 200px;
 }
-.underline p{
-  padding: 0px!important;
+
+.underline p {
+  padding: 0px !important;
   cursor: pointer;
-  margin: 0px!important;
+  margin: 0px !important;
   z-index: 1000;
 }
-.underline p:hover{
+
+.underline p:hover {
   color: #4E73DF;
 }
-.Mui-selected{
-  color: #CD1E2B!important;
+
+.Mui-selected {
+  color: #CD1E2B !important;
 }
-.MuiTabs-indicator{
-  background-color: #CD1E2B!important;
+
+.MuiTabs-indicator {
+  background-color: #CD1E2B !important;
 }
-.MuiTabPanel-root{
-  padding: 5px!important;
+
+.MuiTabPanel-root {
+  padding: 5px !important;
 }
-.padd{
+
+.padd {
   padding: 5px 10px;
   display: flex;
 }
-.padd u{
+
+.padd u {
   margin-top: 7px;
 }
-.bg-red{
+
+.bg-red {
   background-color: red;
 }
-.textInput{
-  padding: 0px 30px 0px 30px!important;
+
+.textInput {
+  padding: 0px 30px 0px 30px !important;
 }
-.textInput .css-ghsjzk-MuiInputBase-root-MuiInput-root, .textInput .css-11nizae-MuiInputBase-root-MuiInput-root{
-  padding: 0px!important;
-  margin: 5px 0px 0px 0px!important;
+
+.textInput .css-ghsjzk-MuiInputBase-root-MuiInput-root,
+.textInput .css-11nizae-MuiInputBase-root-MuiInput-root {
+  padding: 0px !important;
+  margin: 5px 0px 0px 0px !important;
 }
-.link-btn{
+
+.link-btn {
   border: 0px !important;
-  background-color: transparent!important;
-  margin: 0px!important;
-  padding: 0px!important;
-  font-size: 18px!important;
-  font-weight: 500!important;
+  background-color: transparent !important;
+  margin: 0px !important;
+  padding: 0px !important;
+  font-size: 18px !important;
+  font-weight: 500 !important;
   color: #5A5C69;
 }
 
-.link-box-success, .link-box-error, .link-box{
+.link-box-success,
+.link-box-error,
+.link-box {
   padding: 5px 10px 0px 10px;
   /* border-bottom: 0.5px solid #979292; */
   color: #5A5C69;
   box-shadow: 0.1px .1px 0px .5px #888888;
 }
-.link-box-pointer{
+
+.link-box-pointer {
   padding: 5px 10px 0px 10px;
   cursor: pointer;
   color: #5A5C69;
   box-shadow: 0.1px .1px 0px .5px #888888;
 }
-.link-box-pointer:hover{
+
+.link-box-pointer:hover {
   background-color: #26A65B;
   color: #fff;
 }
-.link-box-text{
+
+.link-box-text {
   padding: 8px 10px 5px 10px;
   color: #5A5C69;
   box-shadow: 0.1px .1px 0px .5px #888888;
 }
 
 
-.link-box-dev{
+.link-box-dev {
   padding: 8px 10px 5px 10px;
   /* border-bottom: 0.5px solid #979292; */
   color: #5A5C69;
   box-shadow: 0.1px .1px 0px .5px #888888;
 }
-.link-box-dev-amount{
-  padding: 8px 10px 5px 10px!important;
+
+.link-box-dev-amount {
+  padding: 8px 10px 5px 10px !important;
   color: #5A5C69;
   box-shadow: 0.1px .1px 0px .5px #888888;
 }
 
-.link-box-success-click{
+.link-box-success-click {
   padding: 5px 10px 0px 10px;
   color: #fff;
   background-color: #26A65B;
   box-shadow: 0.1px .1px 0px .5px #888888;
 }
-.link-box-success-click .link-icon-success{
+
+.link-box-success-click .link-icon-success {
   color: #fff;
   padding-top: 4px;
-  text-align: center!important;
+  text-align: center !important;
 }
-.link-box-success-click-hover{
+
+.link-box-success-click-hover {
   padding: 5px 10px 0px 10px;
   cursor: pointer;
   color: #fff;
   background-color: #26A65B;
   box-shadow: 0.1px .1px 0px .5px #888888;
 }
-.link-box-success-click-hover:hover{
+
+.link-box-success-click-hover:hover {
   padding: 5px 10px 0px 10px;
   cursor: pointer;
   color: #fff;
@@ -758,19 +899,21 @@ td.MuiTableCell-root{
   box-shadow: 0.1px .1px 0px .5px #888888;
 }
 
-.link-box-error-click{
+.link-box-error-click {
   padding: 5px 10px 0px 10px;
   /* cursor: pointer; */
   color: #fff;
   background-color: #CD1E2B;
   box-shadow: 0.1px .1px 0px .5px #888888;
 }
-.link-box-error-click .link-icon-error{
+
+.link-box-error-click .link-icon-error {
   color: #fff;
   padding-top: 4px;
-  text-align: center!important;
+  text-align: center !important;
 }
-.link-box-error-click-hover{
+
+.link-box-error-click-hover {
   padding: 5px 10px 0px 10px;
   cursor: pointer;
   color: #fff;
@@ -781,97 +924,132 @@ td.MuiTableCell-root{
 
 
 
-.text-right div{
+.text-right div {
   text-align: right;
   padding-top: 5px;
   padding-right: 5px;
 }
-.text-right{
+
+.text-right {
   text-align: right;
 }
-.link-icon{
+
+.link-icon {
   margin-top: 5px;
 }
-.link-box-success .link-icon{
+
+.link-box-success .link-icon {
   color: #08a045;
-  text-align: center!important;
+  text-align: center !important;
 }
-div{
-  font-size: 14px!important;
+
+div {
+  font-size: 14px !important;
 }
-.box-crm{
+
+.box-crm {
   padding: 5px;
 }
-.text-left{
+
+.text-left {
   text-align: left;
   padding-top: 5px;
 }
-.MuiSwitch-colorPrimary{
+
+.MuiSwitch-colorPrimary {
   color: #08a045;
 }
-.css-8je8zh-MuiTouchRipple-root{
-  color: #08a045!important;
+
+.css-8je8zh-MuiTouchRipple-root {
+  color: #08a045 !important;
 }
-.next{
-  margin-top: 10px!important;
+
+.next {
+  margin-top: 10px !important;
 }
-.bg-green{
+
+.bg-green {
   background-color: #26A65B;
 }
-.link-box-green{
+
+.link-box-green {
   padding: 8px 10px 5px 10px;
   color: #fff;
   box-shadow: 0.5px .5px 0px .8px #fff;
   background-color: #26A65B;
 }
-.link-box-red{
+
+.link-box-red {
   padding: 5px 10px 0px 10px;
   color: #fff;
   box-shadow: 0.1px .1px 0px .5px #fff;
   background-color: #CD1E2B;
   cursor: pointer;
 }
-.wave{
-  padding: 10px 0px 0px 0px!important;
+
+.wave {
+  padding: 10px 0px 0px 0px !important;
 }
-.link-box-defult{
+
+.link-box-defult {
   padding: 5px 10px 5px 10px;
   /* border-bottom: 0.5px solid #979292; */
   color: #5A5C69;
   box-shadow: 0.1px .1px 0px .5px #888888;
 }
-.blue{
+
+.blue {
   background-color: #EDE3FA;
   padding: 2px 10px;
   border-radius: 2px 2px;
 }
-.m-body{
+
+.m-body {
   padding: 20px;
-  width: 800px!important;
+  width: 800px !important;
 }
-.down{
+
+.down {
   border-bottom: 1px solid #ced4da;
   padding: 5px 0px;
 }
-.m-body-sm{
+
+.m-body-sm {
   padding: 20px;
-  width: 500px!important;
+  width: 500px !important;
 }
-.center{
-  text-align: center!important;
+
+.center {
+  text-align: center !important;
 }
-.date-sm{
-  padding: 0px!important;
-  margin: 0px!important;
+
+.date-sm {
+  padding: 0px !important;
+  margin: 0px !important;
 }
-.MuiFormControl-root, .MuiFormControl-fullWidth{
-  padding: 0px!important;
-  margin: 0px!important;
+
+.MuiFormControl-root,
+.MuiFormControl-fullWidth {
+  padding: 0px !important;
+  margin: 0px !important;
 }
-.right .icon{
+
+.right .icon {
   padding: 20px;
 }
-.right .icon:hover{
+
+.right .icon:hover {
   cursor: pointer;
   color: #CD1E2B;
+}
+tr .css-1q1u3t4-MuiTableRow-root{
+  height: 0px!important;
+}
+.css-1q1u3t4-MuiTableRow-root {
+  padding: 0px !important;
+  margin: 0px !important;
+}
+.head{
+  background-color: #ced4da!important;
+  /* font-size: 16px!important; */
 }
