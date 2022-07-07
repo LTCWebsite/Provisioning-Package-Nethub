@@ -1,5 +1,5 @@
 import { AccountTree, AddBox, AddToPhotos, Inventory2 } from '@mui/icons-material'
-import { Grid } from '@mui/material'
+import { Grid, Skeleton } from '@mui/material'
 import React, { useState, useEffect } from 'react'
 import { AxiosReq } from '../../../../../Components/Axios'
 import PackageHistory from './Model/PackageHistory'
@@ -31,18 +31,22 @@ function Packages() {
             <Grid item xs={12} container className='link-box-pointer' onClick={() => setPh({ ...ph, show: true })}>
                 <Grid item xs={2}><AccountTree /></Grid>
                 <Grid item xs={6}>Package History :</Grid>
-                <Grid item xs={4}><div className='text-right'>{ph.count}</div></Grid>
+                <Grid item xs={4}>
+                    {ph.load ? <Skeleton animation="wave" /> : <div className='text-right'>{ph.count}</div>}
+                </Grid>
             </Grid>
             {list.map((row, idx) => {
                 return (
                     <Grid item xs={12} container className='link-box-pointer' key={idx}>
                         <Grid item xs={2}>{row.icon}</Grid>
                         <Grid item xs={6}>{row.name} :</Grid>
-                        <Grid item xs={4}><div className='text-right'>{row.count}</div></Grid>
+                        <Grid item xs={4}>
+                            <div className='text-right'>{row.count}</div>
+                        </Grid>
                     </Grid>
                 )
             })}
-            <PackageHistory open={ph.show} cb={(e) => setPh({ ...ph, show: e })} />
+            <PackageHistory open={ph.show} cb={(e) => setPh({ ...ph, show: e })} total={ph.count} />
         </Grid>
     )
 }
