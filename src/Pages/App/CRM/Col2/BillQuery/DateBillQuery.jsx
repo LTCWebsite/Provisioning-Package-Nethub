@@ -1,11 +1,6 @@
 import * as React from 'react';
-import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
-import { Button, Grid } from '@mui/material';
-import { Paid, Search } from '@mui/icons-material';
+import { Grid } from '@mui/material';
+import { Paid } from '@mui/icons-material';
 
 export default function DateBillQuery() {
     const [value, setValue] = React.useState(new Date());
@@ -26,45 +21,15 @@ export default function DateBillQuery() {
 
     return (
         <>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <Stack>
-                    <Grid container spacing={2}>
-                        <Grid item xs={5}>
-                            <DesktopDatePicker
-                                label="Date Start"
-                                inputFormat="dd-MM-yyyy"
-                                className='date-sm'
-                                value={value}
-                                onChange={handleChange}
-                                renderInput={(params) => <TextField fullWidth variant='standard' {...params} />}
-                            />
-                        </Grid>
-                        <Grid item xs={5}>
-                            <DesktopDatePicker
-                                label="Date End"
-                                inputFormat="dd-MM-yyyy"
-                                className='date-sm'
-                                value={value}
-                                onChange={handleChange}
-                                renderInput={(params) => <TextField fullWidth variant='standard' {...params} />}
-                            />
-                        </Grid>
-                        <Grid item xs={2}>
-                            <Button
-                                style={{ marginTop: 10 }}
-                                fullWidth
-                                variant='contained'
-                            >
-                                <Search />
-                            </Button>
-                        </Grid>
-                    </Grid>
-                </Stack>
-            </LocalizationProvider>
             <Grid container>
+                <Grid item xs={12}>
+                    <div className='center'>
+                        <h4> * ຂໍ້ມູນສະເພາະໄລຍະເວລາ 3 ເດືອນຍ້ອນຫລັງ * </h4>
+                    </div>
+                </Grid>
                 {list.map((row, idx) => {
                     return (
-                        <Grid container item xs={6} lg={4} className="link-box-dev-amount next" key={idx}>
+                        <Grid container item xs={6} lg={4} className="link-box-dev-amount" key={idx}>
 
                             <Grid item xs={2} className="center"><div><Paid /></div></Grid>
                             <Grid item xs={4}><div>{row.name} : </div></Grid>

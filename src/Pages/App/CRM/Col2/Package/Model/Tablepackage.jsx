@@ -16,7 +16,7 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
-import { Dialog, DialogTitle, Grid, Table, TableBody, TableCell, TableHead, TableRow, Tooltip } from '@mui/material'
+import { Dialog, DialogTitle, Grid, Skeleton, Table, TableBody, TableCell, TableHead, TableRow, Tooltip } from '@mui/material'
 import { AxiosReq } from '../../../../../../Components/Axios';
 import { Close, YoutubeSearchedFor } from '@mui/icons-material';
 
@@ -54,27 +54,29 @@ export default function Tablepackage({ total }) {
   const Columns = [
     // { title: 'TransID', field: 'trans_id', maxWidth: 50, sorting: false, render: row => row.trans_id.length < 5 ? row.trans_id : <Tooltip title={row.trans_id}><div>...{row.trans_id?.substring(row.trans_id.length - 5, row.trans_id.length)}</div></Tooltip> },
     { title: 'Msisdn', field: 'msisdn', minWidth: 150, sorting: false, render: row => row.msisdn.length <= 10 ? <div>{row.msisdn}</div> : <Tooltip title={row.msisdn}><div>{row.msisdn?.substring(row.msisdn.length - 10, row.msisdn.length)}</div></Tooltip> },
-    { title: 'StartDate', field: 'start_date', minWidth: 400, render: row => TextToDate(row.start_date) },
-    { title: 'StopDate', field: 'stop_date', minWidth: 400, render: row => TextToDate(row.stop_date) },
+    { title: 'StartDate', field: 'start_date', minWidth: 200, render: row => TextToDate(row.start_date) },
+    { title: 'StopDate', field: 'stop_date', minWidth: 200, render: row => TextToDate(row.stop_date) },
     { title: 'UserID', field: 'user_id', minWidth: 100 },
     // { title: 'Chanel', field: 'chanel', maxWidth: 100 },
     // { title: 'DataCharging', field: 'data_charging', minWidth: 100 },
     { title: 'PkCode', field: 'pkcode', minWidth: 100 },
     { title: 'PkType', field: 'pktype', minWidth: 100 },
-    { title: 'SrvType', field: 'srvtype', minWidth: 200 },
-    { title: 'Amount', field: 'amount', minWidth: 200, type: 'numeric', render: row => row.amount?.toLocaleString() },
+    { title: 'SrvType', field: 'srvtype', minWidth: 50 },
+    { title: 'Amount', field: 'amount', minWidth: 100, type: 'numeric', render: row => row.amount?.toLocaleString() },
     // { title: 'ResultCode', field: 'resultCode', maxWidth: 200 },
-    { title: 'ResultDesc', field: 'resultDesc', minWidth: 250, render: row => row.resultDesc.length <= 25 ? row.resultDesc : <Tooltip title={row.resultDesc}><div>{row.resultDesc?.substring(0, 25)}...</div></Tooltip> },
+    { title: 'ResultDesc', field: 'resultDesc', minWidth: 200, render: row => row.resultDesc.length <= 25 ? row.resultDesc : <Tooltip title={row.resultDesc}><div>{row.resultDesc?.substring(0, 25)}...</div></Tooltip> },
     { title: 'ResultMessage', field: 'resultMessage', minWidth: 200, render: row => row.resultMessage.length <= 25 ? row.resultMessage : <Tooltip title={row.resultMessage}><div>{row.resultMessage?.substring(0, 25)}...</div></Tooltip> },
   ]
   const [data, setData] = React.useState({ data: [], page: 1, limit: 10 })
   const [load, setLoad] = React.useState(false)
   const [show, setShow] = React.useState(false)
+  const [loadM, setLoadM] = React.useState(false)
   const [tran, setTran] = React.useState('')
+  const loop = [1, 2, 3, 4, 5, 6]
   React.useEffect(() => {
     let phone = localStorage.getItem("ONE_PHONE")
     setLoad(true)
-    AxiosReq.get("New_PackageHistory?msisdn=" + phone + "&page=" + data.page + "&limit=" + data.limit + "&total=" + total).then(res => {
+    AxiosReq.get("New_PackageHistory?msisdn=" + phone + "&page=" + data.page + "&limit=" + total + "&total=" + total).then(res => {
       if (res.status === 200) {
         setData({ ...data, data: res.data.data })
         // console.log(res.data)
@@ -95,10 +97,15 @@ export default function Tablepackage({ total }) {
         options={{
           sorting: true,
           exportButton: true,
-          pageSize: data.limit,
+          pageSize: 10,
           pageSizeOptions: [10, 20],
           // columnsButton: true,
-          search: false
+          search: false,
+          rowStyle: (rows) => {
+            return {
+              backgroundColor: rows?.resultCode === "1000" ? null : '#ffddd2'
+            }
+          }
         }}
         actions={[
           {
@@ -111,6 +118,7 @@ export default function Tablepackage({ total }) {
               setShow(true)
               setTran(trans)
               setLoadOp({ ...loadOp, load: true, id: trans })
+              setLoadM(true)
               AxiosReq.get("New_PackageLog?trans_id=" + trans + "&month=" + month).then(res => {
                 if (res.status === 200) {
                   let resp = res.data
@@ -123,11 +131,13 @@ export default function Tablepackage({ total }) {
                     pcrf: resp?.pcrf_log?.length > 0 ? resp.pcrf_log : [],
                     point: resp?.point_log?.length > 0 ? resp.point_log : []
                   })
-                  console.log(res.data)
+                  // console.log(res.data)
                   setLoadOp({ ...loadOp, load: false })
+                  setLoadM(false)
                 }
               }).catch(er => {
                 setLoadOp({ ...loadOp, load: false })
+                setLoadM(false)
               })
             }
           }
@@ -137,84 +147,174 @@ export default function Tablepackage({ total }) {
       <Dialog
         open={show}
         onClose={() => setShow(false)}
-        maxWidth={1000}
+        maxWidth={1400}
       >
-        <Grid container>
-          <Grid item xs={3}></Grid>
-          <Grid item xs={6}>
-            <DialogTitle className='center'>TransID : {tran}</DialogTitle>
+        {loadM ? <>
+          <Grid container>
+            <Grid item container xs={12} style={{ width: 1400, marginBottom: 20, padding: 10 }} spacing={2}>
+              <Grid item xs={4}></Grid>
+              <Grid item xs={4}>
+                <div className='center' style={{ marginTop: 20 }}>
+                  <Skeleton animation="wave" />
+                </div>
+              </Grid>
+              <Grid item xs={4}></Grid>
+              {loop?.map(row => {
+                return (
+                  <Grid item xs={12} container key={row} spacing={2}>
+                    <Grid item xs={2}>
+                      <Skeleton animation="wave" />
+                    </Grid>
+                    <Grid item xs={2}>
+                      <Skeleton animation="wave" />
+                    </Grid>
+                    <Grid item xs={2}>
+                      <Skeleton animation="wave" />
+                    </Grid>
+                    <Grid item xs={2}>
+                      <Skeleton animation="wave" />
+                    </Grid>
+                    <Grid item xs={2}>
+                      <Skeleton animation="wave" />
+                    </Grid>
+                    <Grid item xs={2}>
+                      <Skeleton animation="wave" />
+                    </Grid>
+                  </Grid>
+                )
+              })}
+            </Grid>
           </Grid>
-          <Grid item xs={3}>
-            <div className='right'><Close className='icon' onClick={() => setShow(false)} /></div>
+        </> : <>
+          <Grid container>
+            <Grid item xs={3}></Grid>
+            <Grid item xs={6}>
+              <DialogTitle className='center'>TransID : {tran}</DialogTitle>
+            </Grid>
+            <Grid item xs={3}>
+              <div className='right'><Close className='icon' onClick={() => setShow(false)} /></div>
+            </Grid>
           </Grid>
-        </Grid>
-        <Grid container>
-          <Grid item xs={12} style={{ width: 1000 }}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>TransID</TableCell>
-                  <TableCell>Msisdn</TableCell>
-                  <TableCell>Chanel</TableCell>
-                  <TableCell>TransID</TableCell>
-                  <TableCell>TransID</TableCell>
-                  <TableCell>ResultCode</TableCell>
-                  <TableCell>ResultDesc</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                <TableRow>
-                  <TableCell colSpan={7} className="head">OCS log</TableCell>
-                </TableRow>
-                {option?.ocs?.map((row, idx) => {
-                  return (
-                    <TableRow key={idx}>
-                      <TableCell>{row.trans_id}</TableCell>
-                      <TableCell>{row.msisdn.substr(row.msisdn.length - 10, row.msisdn.length)}</TableCell>
-                      <TableCell>{row.chanel}</TableCell>
-                      <TableCell>{row.main_product}</TableCell>
-                      <TableCell>{row.resultCode}</TableCell>
-                      <TableCell>{row.resultDesc}</TableCell>
-                    </TableRow>
-                  )
-                })}
+          <Grid container>
+            <Grid item xs={12} style={{ width: 1400 }}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>TransID</TableCell>
+                    <TableCell>Msisdn</TableCell>
+                    <TableCell>Chanel</TableCell>
+                    <TableCell>type</TableCell>
+                    <TableCell>MainProduct</TableCell>
+                    <TableCell>Detail</TableCell>
+                    <TableCell>Point</TableCell>
+                    <TableCell>Charge_Amt</TableCell>
+                    <TableCell>OfferringID</TableCell>
+                    <TableCell>ResultCode</TableCell>
+                    <TableCell>ResultDesc</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableRow>
+                    <TableCell colSpan={11} className="head">OCS log</TableCell>
+                  </TableRow>
+                  {option?.ocs?.map((row, idx) => {
+                    return (
+                      <TableRow key={idx}>
+                        <TableCell>{row.trans_id}</TableCell>
+                        <TableCell>{row.msisdn.substr(row.msisdn.length - 10, row.msisdn.length)}</TableCell>
+                        <TableCell colSpan={2}>{row.chanel}</TableCell>
+                        <TableCell colSpan={5}>{row.main_product}</TableCell>
+                        <TableCell>{row.resultCode}</TableCell>
+                        <TableCell>{row.resultDesc}</TableCell>
+                      </TableRow>
+                    )
+                  })}
+                  <TableRow>
+                    <TableCell colSpan={11} className="head">BSS log</TableCell>
+                  </TableRow>
+                  {option?.bss?.map((row, idx) => {
+                    return (
+                      <TableRow key={idx}>
+                        <TableCell>{row.trans_id}</TableCell>
+                        <TableCell>{row.msisdn.substr(row.msisdn.length - 10, row.msisdn.length)}</TableCell>
+                        <TableCell>{row.chanel}</TableCell>
+                        <TableCell colSpan={6}>{row.pkcode}</TableCell>
+                        <TableCell>{row.resultCode}</TableCell>
+                        <TableCell>{row.resultDesc}</TableCell>
+                      </TableRow>
+                    )
+                  })}
+                  <TableRow>
+                    <TableCell colSpan={11} className="head">HLR log</TableCell>
+                  </TableRow>
+                  {option?.hlr?.map((row, idx) => {
+                    return (
+                      <TableRow key={idx}>
+                        <TableCell>{row.trans_id}</TableCell>
+                        <TableCell>{row.msisdn.substr(row.msisdn.length - 10, row.msisdn.length)}</TableCell>
+                        <TableCell>{row.chanel}</TableCell>
+                        <TableCell colSpan={6}>{row.oder_type}</TableCell>
+                        <TableCell>{row.hlr_code}</TableCell>
+                        <TableCell>{row.hlr_desc}</TableCell>
+                      </TableRow>
+                    )
+                  })}
 
-                <TableRow>
-                  <TableCell colSpan={7} className="head">PCRF log</TableCell>
-                </TableRow>
-                {option?.pcrf?.map((row, idx) => {
-                  return (
-                    <TableRow key={idx}>
-                      <TableCell>{row.trans_id}</TableCell>
-                      <TableCell>{row.msisdn.substr(row.msisdn.length - 10, row.msisdn.length)}</TableCell>
-                      <TableCell>{row.chanel}</TableCell>
-                      <TableCell>{row.cm_type}</TableCell>
-                      <TableCell>{row.detail}</TableCell>
-                      <TableCell>{row.resultCode}</TableCell>
-                      <TableCell>{row.resultDesc}</TableCell>
-                    </TableRow>
-                  )
-                })}
+                  <TableRow>
+                    <TableCell colSpan={11} className="head">Offerring log</TableCell>
+                  </TableRow>
+                  {option?.offering?.map((row, idx) => {
+                    return (
+                      <TableRow key={idx}>
+                        <TableCell>{row.trans_id}</TableCell>
+                        <TableCell>{row.msisdn.substr(row.msisdn.length - 10, row.msisdn.length)}</TableCell>
+                        <TableCell colSpan={5}>{row.chanel}</TableCell>
+                        <TableCell>{row.charge_amt}</TableCell>
+                        <TableCell>{row.offering_id}</TableCell>
+                        <TableCell>{row.ocs_code}</TableCell>
+                        <TableCell>{row.ocs_desc}</TableCell>
+                      </TableRow>
+                    )
+                  })}
 
-                <TableRow>
-                  <TableCell colSpan={7} className="head">Point log</TableCell>
-                </TableRow>
-                {option?.point?.map((row, idx) => {
-                  return (
-                    <TableRow key={idx}>
-                      <TableCell>{row.trans_id}</TableCell>
-                      <TableCell>{row.msisdn.substr(row.msisdn.length - 10, row.msisdn.length)}</TableCell>
-                      <TableCell>{row.point}</TableCell>
-                      <TableCell>{row.resultCode}</TableCell>
-                      <TableCell>{row.resultDesc}</TableCell>
-                    </TableRow>
-                  )
-                })}
+                  <TableRow>
+                    <TableCell colSpan={11} className="head">PCRF log</TableCell>
+                  </TableRow>
+                  {option?.pcrf?.map((row, idx) => {
+                    return (
+                      <TableRow key={idx}>
+                        <TableCell>{row.trans_id}</TableCell>
+                        <TableCell>{row.msisdn.substr(row.msisdn.length - 10, row.msisdn.length)}</TableCell>
+                        <TableCell>{row.chanel}</TableCell>
+                        <TableCell colSpan={2}>{row.cm_type}</TableCell>
+                        <TableCell colSpan={4}>{row.detail}</TableCell>
+                        <TableCell>{row.resultCode}</TableCell>
+                        <TableCell>{row.resultDesc}</TableCell>
+                      </TableRow>
+                    )
+                  })}
 
-              </TableBody>
-            </Table>
+                  <TableRow>
+                    <TableCell colSpan={11} className="head">Point log</TableCell>
+                  </TableRow>
+                  {option?.point?.map((row, idx) => {
+                    return (
+                      <TableRow key={idx}>
+                        <TableCell>{row.trans_id}</TableCell>
+                        <TableCell>{row.msisdn.substr(row.msisdn.length - 10, row.msisdn.length)}</TableCell>
+                        <TableCell colSpan={4}>{row.chanel}</TableCell>
+                        <TableCell colSpan={3}>{row.point}</TableCell>
+                        <TableCell>{row.resultCode}</TableCell>
+                        <TableCell>{row.resultDesc}</TableCell>
+                      </TableRow>
+                    )
+                  })}
+
+                </TableBody>
+              </Table>
+            </Grid>
           </Grid>
-        </Grid>
+        </>}
       </Dialog>
     </>
   )

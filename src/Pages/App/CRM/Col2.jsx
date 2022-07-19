@@ -2,6 +2,8 @@ import { Grid } from '@mui/material'
 import React from 'react'
 import Banking from './Col2/Banking/Banking'
 import BillQuery from './Col2/BillQuery/BillQuery'
+import Game from './Col2/Game/Game'
+import Others from './Col2/Others/Others'
 import Packages from './Col2/Package/Packages'
 
 function Col2() {
@@ -11,14 +13,14 @@ function Col2() {
         <Grid container item xs={12} md={12} lg={12} className="box-crm">
           <Grid item xs={12}>
             <h2 className='blue'>Bill Query</h2>
-
+            
             <BillQuery />
 
           </Grid>
         </Grid>
         <Grid container item xs={12} md={12} lg={6} className="box-crm">
           <Grid item xs={12}>
-            <h2 className='blue'>Package</h2>
+            <h2 className='blue'>ດາຕ້າແພັກເກັດ</h2>
 
             <Packages />
 
@@ -33,6 +35,27 @@ function Col2() {
             
           </Grid>
         </Grid>
+
+        <Grid container item xs={12} md={12} lg={6} className="box-crm">
+          <Grid item xs={12}>
+            <h2 className='blue'>ເກມ</h2>
+
+            <Game />
+
+            
+          </Grid>
+        </Grid>
+
+        <Grid container item xs={12} md={12} lg={6} className="box-crm">
+          <Grid item xs={12}>
+            <h2 className='blue'>ອື່ນໆ</h2>
+
+            <Others />
+
+            
+          </Grid>
+        </Grid>
+
       </Grid>
     </>
   )

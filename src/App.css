@@ -1000,7 +1000,12 @@ div {
 
 .blue {
   background-color: #EDE3FA;
-  padding: 2px 10px;
+  padding: 0px 10px;
+  border-radius: 2px 2px;
+}
+.blue-no {
+  background-color: #EDE3FA;
+  padding: 0px 0px;
   border-radius: 2px 2px;
 }
 
@@ -1052,4 +1057,33 @@ tr .css-1q1u3t4-MuiTableRow-root{
 .head{
   background-color: #ced4da!important;
   /* font-size: 16px!important; */
+}
+.bage-success u{
+  color: #fff;
+  background-color: #26A65B;
+  padding: 0px 8px;
+  border-radius: 3px;
+}
+.bage-error u{
+  color: #fff;
+  background-color: #CD1E2B;
+  padding: 0px 8px;
+  border-radius: 3px;
+}
+.link-box-pointer:hover .bage-success u, .link-box-pointer:hover .bage-error u{
+  color: #3A3838;
+  background-color: #fff;
+  padding: 0px 8px;
+  border-radius: 3px;
+}
+.no-apdd div{
+  padding: 0px!important;
+  margin: 0px!important;
+}
+.u-bage{
+  background-color: #2F3292;
+  padding: 0px 4px;
+  font-size: 12px;
+  color: #fff;
+  border-radius: 3px;
 }
