@@ -1,23 +1,21 @@
 import React from 'react'
 import { Grid, Button, Card, CardContent, Tooltip } from '@material-ui/core'
 import { Search } from '@material-ui/icons'
-import LoadingLottie from '../../Components/LoadingLottie'
-import Axios from '../../Components/Axios'
-import MyTable from '../../MiniCRM/Table/Table'
+import { AxiosReq } from '../../../../Components/Axios'
+import MyTable from '../../../../Components/MyTable'
 import moment from 'moment'
-import cookie from 'js-cookie'
-import Crypt from '../../Components/Crypt'
-import Doing from '../../Components/Doing'
-import { LoadingTable } from '../../../Loading/TableLoading'
+// import cookie from 'js-cookie'
+// import Crypt from '../../Components/Crypt'
+// import Doing from '../../Components/Doing'
+import { LoadingTable } from '../../../../Components/TableLoading'
 
 function CheckPIN() {
     const [stop, setStop] = React.useState(null)
     const [pin, setPIN] = React.useState('')
-    // const [place, setPlace] = React.useState('')
     const [data, setData] = React.useState([])
     const Search178 = () => {
         setStop(false)
-        Axios.get("api/CheckPin?pin=" + pin, { headers: { 'Authorization': 'Bearer ' + cookie.get("one_session") } }).then(res => {
+        AxiosReq.get("api/CheckPin?pin=" + pin).then(res => {
             if (res.status === 200) {
                 var num = 1
                 var date = res.data.map(row => {
@@ -30,21 +28,21 @@ function CheckPIN() {
                     setData(date)
                 }, 500)
                 // console.log(update)
-                Doing({
-                    msisdn: Crypt({ type: "decrypt", value: localStorage.getItem("input-phone") }).text,
-                    username: Crypt({ type: "decrypt", value: localStorage.getItem("one_info") }).username,
-                    detail: 'check pin',
-                    resualt: 'Operation successed.',
-                })
+                // Doing({
+                //     msisdn: Crypt({ type: "decrypt", value: localStorage.getItem("input-phone") }).text,
+                //     username: Crypt({ type: "decrypt", value: localStorage.getItem("one_info") }).username,
+                //     detail: 'check pin',
+                //     resualt: 'Operation successed.',
+                // })
             }
         }).catch(err => {
             setStop(true)
-            Doing({
-                msisdn: Crypt({ type: "decrypt", value: localStorage.getItem("input-phone") }).text,
-                username: Crypt({ type: "decrypt", value: localStorage.getItem("one_info") }).username,
-                detail: 'check pin',
-                resualt: 'error',
-            })
+            // Doing({
+            //     msisdn: Crypt({ type: "decrypt", value: localStorage.getItem("input-phone") }).text,
+            //     username: Crypt({ type: "decrypt", value: localStorage.getItem("one_info") }).username,
+            //     detail: 'check pin',
+            //     resualt: 'error',
+            // })
         })
     }
     const columns = [
@@ -73,14 +71,15 @@ function CheckPIN() {
                     <Grid item xs={3}></Grid>
                     <Grid item container xs={4}>
                         <Grid item xs={12} style={{ paddingRight: 17 }} >
-                            <input className="input" placeholder="ປ້ອນໝາຍເລກ PIN..." onChange={(e) => { setPIN(e.target.value) }} />
+                            <input max={15} className="input" placeholder="ປ້ອນໝາຍເລກ PIN..." onChange={(e) => { setPIN(e.target.value) }} />
                         </Grid>
-                        {/* <Grid item xs={1}></Grid> */}
                     </Grid>
                     <Grid item xs={2} style={{ paddingLeft: 35, paddingBottom: 20 }}>
                         <Button fullWidth variant="contained" className="btn-primary" onClick={Search178}><Search /></Button>
                     </Grid>
-                    <Grid item xs={12} style={{ height: '75vh' }}>
+                    <Grid item xs={3}></Grid>
+                    <Grid item xs={1}></Grid>
+                    <Grid item xs={10} style={{ height: '75vh' }}>
                         {stop === null && <Card>
                             <CardContent className="content-1">
                                 <Grid item xs={12} style={{ paddingBottom: 50 }}>

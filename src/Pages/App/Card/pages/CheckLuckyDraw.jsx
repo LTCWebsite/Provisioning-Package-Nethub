@@ -7,14 +7,12 @@ import {
   CircularProgress,
 } from "@material-ui/core";
 import { Search, Refresh } from "@material-ui/icons";
-import LoadingLottie from "../../Components/LoadingLottie";
-import Axios from "../../Components/Axios";
+import { AxiosReq } from "../../../../Components/Axios";
 import moment from "moment";
-import cookie from "js-cookie";
-import Crypt from "../../Components/Crypt";
-import Doing from "../../Components/Doing";
-import { AlertSuccess, AlertWarning } from "./../../Components/Toast";
-import { LoadingCheckSerial } from "../../../Loading/TableLoading";
+// import Crypt from "../../Components/Crypt";
+// import Doing from "../../Components/Doing";
+import { toast_error, toast_success } from "./../../../../Components/Toast";
+import { LoadingCheckSerial } from "../../../../Components/TableLoading";
 
 function CheckLuckyDraw() {
   const [data, setData] = React.useState([]);
@@ -33,12 +31,8 @@ function CheckLuckyDraw() {
     setStop(true);
     setData([]);
     setStatusSerialPrize(false);
-    Axios.post(
-      "CheckLuckyDraw?serialNumber=" + serial,
-      {},
-      { headers: { Authorization: "Bearer " + cookie.get("one_session") } }
-    )
-      .then((res) => {
+    AxiosReq.post(
+      "CheckLuckyDraw?serialNumber=" + serial, {}).then((res) => {
         if (res.data.sts === "20::Operater successed.") {
           setCheckStatusRefilled(true);
         }
@@ -51,20 +45,20 @@ function CheckLuckyDraw() {
                 .add(7, "hours")
                 .format("DD-MM-YYYY HH:mm:ss");
               setLaotime(laoTime);
-            } catch (error) {}
+            } catch (error) { }
             setStop(false);
-            Doing({
-              msisdn: Crypt({
-                type: "decrypt",
-                value: localStorage.getItem("input-phone"),
-              }).text,
-              username: Crypt({
-                type: "decrypt",
-                value: localStorage.getItem("one_info"),
-              }).username,
-              detail: "check lucky darw",
-              resualt: "Operation successed.",
-            });
+            // Doing({
+            //   msisdn: Crypt({
+            //     type: "decrypt",
+            //     value: localStorage.getItem("input-phone"),
+            //   }).text,
+            //   username: Crypt({
+            //     type: "decrypt",
+            //     value: localStorage.getItem("one_info"),
+            //   }).username,
+            //   detail: "check lucky darw",
+            //   resualt: "Operation successed.",
+            // });
           }, 500);
         }
       })
@@ -72,18 +66,18 @@ function CheckLuckyDraw() {
         console.log(err);
         setCheckStatusRefilled(false);
         setStop(false);
-        Doing({
-          msisdn: Crypt({
-            type: "decrypt",
-            value: localStorage.getItem("input-phone"),
-          }).text,
-          username: Crypt({
-            type: "decrypt",
-            value: localStorage.getItem("one_info"),
-          }).username,
-          detail: "check lucky draw",
-          resualt: "error",
-        });
+        // Doing({
+        //   msisdn: Crypt({
+        //     type: "decrypt",
+        //     value: localStorage.getItem("input-phone"),
+        //   }).text,
+        //   username: Crypt({
+        //     type: "decrypt",
+        //     value: localStorage.getItem("one_info"),
+        //   }).username,
+        //   detail: "check lucky draw",
+        //   resualt: "error",
+        // });
       });
   };
 
@@ -118,68 +112,62 @@ function CheckLuckyDraw() {
 
   const RerunLuckyDraw = () => {
     setIsLoading(true);
-    Axios.post(
-      "RerunLuckyDraw?serialNumber=" + serial,
-      {},
-      { headers: { Authorization: "Bearer " + cookie.get("one_session") } }
-    )
-      .then((res) => {
-        if (res.status === 200) {
-          if (res?.data?.sts === "20::Operater successed.") {
-            setTimeout(() => {
-              AlertSuccess("SUCCESS");
-              setRerun(res?.data?.resultDesc);
-              setDataRerun(res.data);
-              Doing({
-                msisdn: Crypt({
-                  type: "decrypt",
-                  value: localStorage.getItem("input-phone"),
-                }).text,
-                username: Crypt({
-                  type: "decrypt",
-                  value: localStorage.getItem("one_info"),
-                }).username,
-                detail: "rerun lucky darw",
-                resualt: "Operation successed.",
-              });
-              setIsLoading(false);
-              setCheckStatusRefilled(false);
-            }, 500);
-          } else {
-            AlertWarning(res?.data?.resultDesc);
+    AxiosReq.post("RerunLuckyDraw?serialNumber=" + serial, {}).then((res) => {
+      if (res.status === 200) {
+        if (res?.data?.sts === "20::Operater successed.") {
+          setTimeout(() => {
+            toast_success({ text: "SUCCESS" });
             setRerun(res?.data?.resultDesc);
-            Doing({
-              msisdn: Crypt({
-                type: "decrypt",
-                value: localStorage.getItem("input-phone"),
-              }).text,
-              username: Crypt({
-                type: "decrypt",
-                value: localStorage.getItem("one_info"),
-              }).username,
-              detail: "rerun lucky darw",
-              resualt: "error",
-            });
+            setDataRerun(res.data);
+            // Doing({
+            //   msisdn: Crypt({
+            //     type: "decrypt",
+            //     value: localStorage.getItem("input-phone"),
+            //   }).text,
+            //   username: Crypt({
+            //     type: "decrypt",
+            //     value: localStorage.getItem("one_info"),
+            //   }).username,
+            //   detail: "rerun lucky darw",
+            //   resualt: "Operation successed.",
+            // });
             setIsLoading(false);
-          }
-          setStatusSerialPrize(true);
+            setCheckStatusRefilled(false);
+          }, 500);
+        } else {
+          toast_error({ text: res?.data?.resultDesc });
+          setRerun(res?.data?.resultDesc);
+          // Doing({
+          //   msisdn: Crypt({
+          //     type: "decrypt",
+          //     value: localStorage.getItem("input-phone"),
+          //   }).text,
+          //   username: Crypt({
+          //     type: "decrypt",
+          //     value: localStorage.getItem("one_info"),
+          //   }).username,
+          //   detail: "rerun lucky darw",
+          //   resualt: "error",
+          // });
+          setIsLoading(false);
         }
-      })
-      .catch((err) => {
+        setStatusSerialPrize(true);
+      }
+    }).catch((err) => {
         // setRerun(err)
         setIsLoading(false);
-        Doing({
-          msisdn: Crypt({
-            type: "decrypt",
-            value: localStorage.getItem("input-phone"),
-          }).text,
-          username: Crypt({
-            type: "decrypt",
-            value: localStorage.getItem("one_info"),
-          }).username,
-          detail: "rerun lucky darw",
-          resualt: "error",
-        });
+        // Doing({
+        //   msisdn: Crypt({
+        //     type: "decrypt",
+        //     value: localStorage.getItem("input-phone"),
+        //   }).text,
+        //   username: Crypt({
+        //     type: "decrypt",
+        //     value: localStorage.getItem("one_info"),
+        //   }).username,
+        //   detail: "rerun lucky darw",
+        //   resualt: "error",
+        // });
       });
   };
   const [err, setErr] = React.useState(null);
@@ -305,7 +293,7 @@ function CheckLuckyDraw() {
                             </h2>
                           </Grid>
                           {dataRerun.sts !== null &&
-                          dataRerun.sts === "20::Operater successed." ? (
+                            dataRerun.sts === "20::Operater successed." ? (
                             <>
                               <Grid item container xs={12}>
                                 <Grid item xs={6}>
@@ -447,7 +435,7 @@ function CheckLuckyDraw() {
                               <div>
                                 {data?.faceValue
                                   ? parseInt(data?.faceValue).toLocaleString() +
-                                    " LAK"
+                                  " LAK"
                                   : "-"}
                               </div>
                             </Grid>
@@ -465,16 +453,16 @@ function CheckLuckyDraw() {
                               <div>
                                 {data?.cardStartDate !== null
                                   ? data?.cardStartDate.substr(6, 2) +
-                                    "-" +
-                                    data?.cardStartDate.substr(4, 2) +
-                                    "-" +
-                                    data?.cardStartDate.substr(0, 4) +
-                                    " " +
-                                    data?.cardStartDate.substr(8, 2) +
-                                    ":" +
-                                    data?.cardStartDate.substr(10, 2) +
-                                    ":" +
-                                    data?.cardStartDate.substr(12, 2)
+                                  "-" +
+                                  data?.cardStartDate.substr(4, 2) +
+                                  "-" +
+                                  data?.cardStartDate.substr(0, 4) +
+                                  " " +
+                                  data?.cardStartDate.substr(8, 2) +
+                                  ":" +
+                                  data?.cardStartDate.substr(10, 2) +
+                                  ":" +
+                                  data?.cardStartDate.substr(12, 2)
                                   : "-"}
                               </div>
                             </Grid>
@@ -485,16 +473,16 @@ function CheckLuckyDraw() {
                               <div>
                                 {data?.cardStopDate !== null
                                   ? data?.cardStopDate.substr(6, 2) +
-                                    "-" +
-                                    data?.cardStopDate.substr(4, 2) +
-                                    "-" +
-                                    data?.cardStopDate.substr(0, 4) +
-                                    " " +
-                                    data?.cardStopDate.substr(8, 2) +
-                                    ":" +
-                                    data?.cardStopDate.substr(10, 2) +
-                                    ":" +
-                                    data?.cardStopDate.substr(12, 2)
+                                  "-" +
+                                  data?.cardStopDate.substr(4, 2) +
+                                  "-" +
+                                  data?.cardStopDate.substr(0, 4) +
+                                  " " +
+                                  data?.cardStopDate.substr(8, 2) +
+                                  ":" +
+                                  data?.cardStopDate.substr(10, 2) +
+                                  ":" +
+                                  data?.cardStopDate.substr(12, 2)
                                   : "-"}
                               </div>
                             </Grid>
@@ -510,8 +498,8 @@ function CheckLuckyDraw() {
                                       data?.hotCardFlag === "0"
                                         ? "active"
                                         : data?.hotCardFlag === "5"
-                                        ? "not_active"
-                                        : "dis_active"
+                                          ? "not_active"
+                                          : "dis_active"
                                     }
                                   >
                                     {hotFlagCardStatus}

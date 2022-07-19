@@ -1,13 +1,12 @@
 import React from 'react'
 import { Grid, Button, Card, CardContent } from '@material-ui/core'
 import Search from '@material-ui/icons/Search'
-// import LoadingLottie from '../../Components/LoadingLottie'
-import Axios from '../../Components/Axios'
+import { AxiosReq } from '../../../../Components/Axios'
 import moment from 'moment'
-import cookie from 'js-cookie'
-import Crypt from '../../Components/Crypt'
-import Doing from '../../Components/Doing'
-import { LoadingCheckSerial } from '../../../Loading/TableLoading'
+// import cookie from 'js-cookie'
+// import Crypt from '../../Components/Crypt'
+// import Doing from '../../Components/Doing'
+import { LoadingCheckSerial } from '../../../../Components/TableLoading'
 
 function CheckSerial() {
     const [data, setData] = React.useState()
@@ -17,10 +16,10 @@ function CheckSerial() {
     const [laotime, setLaotime] = React.useState('')
     const SearchSerial = () => {
         setStop(true)
-        Axios.get("CheckSerialNumber?serialnumber=" + serial, { headers: { 'Authorization': 'Bearer ' + cookie.get("one_session") } }).then(res => {
+        AxiosReq.get("CheckSerialNumber?serialnumber=" + serial).then(res => {
             if (res.status === 200) {
 
-                console.log(res.data)
+                // console.log(res.data)
                 setTimeout(() => {
                     // console
                     try {
@@ -33,30 +32,30 @@ function CheckSerial() {
                     }
                     setData(res.data)
                     setStop(false)
-                    Doing({
-                        msisdn: Crypt({ type: "decrypt", value: localStorage.getItem("input-phone") }).text,
-                        username: Crypt({ type: "decrypt", value: localStorage.getItem("one_info") }).username,
-                        detail: 'check serial number',
-                        resualt: 'Operation successed.',
-                    })
+                    // Doing({
+                    //     msisdn: Crypt({ type: "decrypt", value: localStorage.getItem("input-phone") }).text,
+                    //     username: Crypt({ type: "decrypt", value: localStorage.getItem("one_info") }).username,
+                    //     detail: 'check serial number',
+                    //     resualt: 'Operation successed.',
+                    // })
                 }, 200)
             }
         }).catch(err => {
             // setData()
             setStop(false)
-            Doing({
-                msisdn: Crypt({ type: "decrypt", value: localStorage.getItem("input-phone") }).text,
-                username: Crypt({ type: "decrypt", value: localStorage.getItem("one_info") }).username,
-                detail: 'check serial number',
-                resualt: 'error',
-            })
+            // Doing({
+            //     msisdn: Crypt({ type: "decrypt", value: localStorage.getItem("input-phone") }).text,
+            //     username: Crypt({ type: "decrypt", value: localStorage.getItem("one_info") }).username,
+            //     detail: 'check serial number',
+            //     resualt: 'error',
+            // })
         })
     }
 
 
     const [err, setErr] = React.useState(null)
     const changeValue = (e) => {
-        if (e.length == 15 || e.length == 12 || e.length == 13) {
+        if (e.length ===15 || e.length === 12 || e.length === 13) {
             setErr(false)
             setSerial(e)
         } else {
@@ -167,7 +166,7 @@ function CheckSerial() {
                                                 <div>ສະຖານະຂອງບັດ :</div>
                                             </Grid>
                                             <Grid item xs={6}>
-                                                <div>{data?.hotCardFlag !== null ? <label className={data?.hotCardFlag == "0" ? "active" : data?.hotCardFlag == "5" ? "not_active" : "dis_active"}>{hotFlagCardStatus}</label> : '-'}</div>
+                                                <div>{data?.hotCardFlag !== null ? <label className={data?.hotCardFlag === "0" ? "active" : data?.hotCardFlag === "5" ? "not_active" : "dis_active"}>{hotFlagCardStatus}</label> : '-'}</div>
                                             </Grid>
                                         </Grid>
                                     </Grid></>}
