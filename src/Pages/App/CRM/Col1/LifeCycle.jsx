@@ -3,12 +3,13 @@ import { Grid, Skeleton } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { AxiosReq } from '../../../../Components/Axios'
 
-function LifeCycle({ cb }) {
+function LifeCycle({ cb, load }) {
     const [cycle, setCycle] = useState([])
     const [show, setShow] = useState(false)
     const [date, setDate] = useState({ active: '', barring: '', suspend: '' })
     useEffect(() => {
         setShow(false)
+        load(true)
         let phone = "2059944454"
         AxiosReq.get("NewQuerySubLifeCycle?msisdn=" + phone).then(res => {
             if (res.status === 200) {
@@ -25,14 +26,10 @@ function LifeCycle({ cb }) {
                 setCycle(res.data)
                 cb(res.data)
                 setShow(true)
+                load(false)
             }
         })
     }, [])
-    const unBlackList = (e) => {
-        if (e === 0) {
-            console.log('ok')
-        }
-    }
 
     return (
         <>

@@ -4,7 +4,7 @@ import { AxiosReq } from '../../../../../Components/Axios'
 import Switch from '@material-ui/core/Switch'
 import { toast_success, toast_error } from '../../../../../Components/Toast'
 import { Close, WarningAmber } from '@mui/icons-material'
-import { IconButton } from '@mui/material'
+import { IconButton, Skeleton } from '@mui/material'
 
 function VAS() {
     const [stop, setStop] = React.useState(false)
@@ -160,25 +160,42 @@ function VAS() {
 
     return (
         <>
-            <Grid container>
-                {option7.length > 0 && option7.map((row, idx) =>
-                    <Grid key={idx} container xs={12} className="link-box-dev">
-                        <Grid item xs={5}><div>{row.nameService ?? null}:</div></Grid>
-                        <Grid item xs={4} className="right">
-                            <Switch size='small' checked={row.checked === true ?? false} onChange={() => {
-                                CFAlert2({ message: row.checked ? <p className='center-cf'>ຕ້ອງການ ປິດ {row.nameService} ?</p> : <p className='center-cf'>ຕ້ອງການ ເປີດ {row.nameService} ?</p>, data: row.nameService, st: row.checked === true ?? false })
-                            }} />
-                        </Grid>
-                        <Grid item xs={3}><div style={{ color: '#5a5c69!important', fontWeight: '700!important', textAlign: 'right' }}>{row?.price === '0' ? 'FREE' : parseInt(row?.price)?.toLocaleString() + ' ກີບ'}</div></Grid>
+            {!stop ?
+                <Grid container>
+                    <Grid item xs={12} className="link-box-dev">
+                        <Skeleton animation="wave" />
                     </Grid>
-                )}
-                <Grid item xs={12}>
-                    <div className="center"><Button color="primary" onClick={handleClickOpen}>View more VAS</Button></div>
-                </Grid>
-                <Grid item xs={12}>
-                    <div className="hr-1"></div>
-                </Grid>
-            </Grid>
+                    <Grid item xs={12} className="link-box-dev">
+                        <Skeleton animation="wave" />
+                    </Grid>
+                    <Grid item xs={12} className="link-box-dev">
+                        <Skeleton animation="wave" />
+                    </Grid>
+                    <Grid item xs={4}></Grid>
+                    <Grid item xs={4} className="center">
+                        <Skeleton animation="wave" />
+                    </Grid>
+                </Grid> :
+                <Grid container>
+                    {option7.length > 0 && option7.map((row, idx) =>
+                        <Grid key={idx} container xs={12} className="link-box-dev">
+                            <Grid item xs={5}><div>{row.nameService ?? null}:</div></Grid>
+                            <Grid item xs={4} className="right">
+                                <Switch size='small' checked={row.checked === true ?? false} onChange={() => {
+                                    CFAlert2({ message: row.checked ? <p className='center-cf'>ຕ້ອງການ ປິດ {row.nameService} ?</p> : <p className='center-cf'>ຕ້ອງການ ເປີດ {row.nameService} ?</p>, data: row.nameService, st: row.checked === true ?? false })
+                                }} />
+                            </Grid>
+                            <Grid item xs={3}><div style={{ color: '#5a5c69!important', fontWeight: '700!important', textAlign: 'right' }}>{row?.price === '0' ? 'FREE' : parseInt(row?.price)?.toLocaleString() + ' ກີບ'}</div></Grid>
+                        </Grid>
+                    )}
+                    <Grid item xs={12}>
+                        <div className="center"><Button color="primary" onClick={handleClickOpen}>View more VAS</Button></div>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <div className="hr-1"></div>
+                    </Grid>
+                </Grid>}
+
 
 
             <Dialog

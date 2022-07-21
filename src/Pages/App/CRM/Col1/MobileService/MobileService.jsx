@@ -1,5 +1,5 @@
 import { WarningAmber } from '@mui/icons-material'
-import { Button, Dialog, Grid, Switch } from '@mui/material'
+import { Button, Dialog, Grid, Skeleton, Switch } from '@mui/material'
 import React from 'react'
 import { toast_success, toast_error } from '../../../../../Components/Toast'
 import { AxiosReq } from '../../../../../Components/Axios'
@@ -106,59 +106,63 @@ function MobileService({ check, cb }) {
     return (
         <>
             <Grid item container xs={12} className='link-box-dev'>
-                <Grid item xs={4}><div>3G : </div></Grid>
-                <Grid item xs={8}><div className='text-right'>
-                    <Switch
+                <Grid item xs={9}><div>3G : </div></Grid>
+                <Grid item xs={3}><div className='text-right'>
+                    {check.load ? <Skeleton animation="wave" /> : <Switch
                         size='small'
                         checked={check.n_3g}
                         onChange={() => { CFDialog({ st: '3G', message: check.n_3g ? <p className='center-cf'>ຕ້ອງການ ປິດ 3G ?</p> : <p className='center-cf'>ຕ້ອງການ ເປີດ 3G ?</p>, data: "3G" }) }}
                         color="success"
-                    />
+                    />}
                 </div></Grid>
             </Grid>
             <Grid item container xs={12} className='link-box-dev'>
-                <Grid item xs={4}><div>4G : </div></Grid>
-                <Grid item xs={8}><div className='text-right'>
-                    <Switch
+                <Grid item xs={9}><div>4G : </div></Grid>
+                <Grid item xs={3}><div className='text-right'>
+                    {check.load ? <Skeleton animation="wave" /> : <Switch
                         size='small'
                         checked={check.n_4g}
                         onChange={() => { CFDialog({ st: '4G', message: check.n_4g ? <p className='center-cf'>ຕ້ອງການ ປິດ 4G ?</p> : <p className='center-cf'>ຕ້ອງການ ເປີດ 4G ?</p>, data: "4G" }) }}
                         color="success"
-                    />
+                    />}
+
                 </div></Grid>
             </Grid>
             <Grid item container xs={12} className='link-box-dev'>
-                <Grid item xs={4}><div>RBT : </div></Grid>
-                <Grid item xs={8}><div className='text-right'>
-                    <Switch
+                <Grid item xs={9}><div>RBT : </div></Grid>
+                <Grid item xs={3}><div className='text-right'>
+                    {check.load ? <Skeleton animation="wave" /> : <Switch
                         size='small'
                         checked={check.rbt}
                         // onChange={() => cb({ ...check, rbt: !check.rbt })}
                         color="success"
-                    />
+                    />}
+
                 </div></Grid>
             </Grid>
 
             <Grid item container xs={12} className='link-box-dev'>
-                <Grid item xs={4}><div>Voice IR : </div></Grid>
-                <Grid item xs={8}><div className='text-right'>
-                    <Switch
+                <Grid item xs={9}><div>Voice IR : </div></Grid>
+                <Grid item xs={3}><div className='text-right'>
+                    {check.load ? <Skeleton animation="wave" /> : <Switch
                         size='small'
                         checked={check.ir_call}
                         // onChange={() => setCheck({ ...check, voice: !check.voice })}
                         color="success"
-                    />
+                    />}
+
                 </div></Grid>
             </Grid>
             <Grid item container xs={12} className='link-box-dev'>
-                <Grid item xs={4}><div>Data IR : </div></Grid>
-                <Grid item xs={8}><div className='text-right'>
-                    <Switch
+                <Grid item xs={9}><div>Data IR : </div></Grid>
+                <Grid item xs={3}><div className='text-right'>
+                    {check.load ? <Skeleton animation="wave" /> : <Switch
                         size='small'
                         checked={check.ir_data}
                         // onChange={() => setCheck({ ...check, data: !check.data })}
                         color="success"
-                    />
+                    />}
+
                 </div></Grid>
             </Grid>
 

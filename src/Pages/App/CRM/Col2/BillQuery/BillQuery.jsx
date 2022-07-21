@@ -37,6 +37,7 @@ function BillQuery() {
         let resp = res.data
         let all_count = 0
         let all_data = []
+        // console.log(resp)
         //////////
         let sms = resp?.sms?.hits?.hits
         let sms_count = 0

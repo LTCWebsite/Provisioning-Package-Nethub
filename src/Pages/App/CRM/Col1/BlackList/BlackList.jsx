@@ -1,6 +1,6 @@
 import { Cancel, Visibility } from '@material-ui/icons'
 import { CheckCircle, Close } from '@mui/icons-material'
-import { Button, CircularProgress, Dialog, Grid, IconButton, Slide } from '@mui/material'
+import { Button, CircularProgress, Dialog, Grid, IconButton, Skeleton, Slide } from '@mui/material'
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { AxiosReq } from '../../../../../Components/Axios'
@@ -12,7 +12,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-function BlackList({ data }) {
+function BlackList({ data, load }) {
     const [open, setOpen] = useState(false)
     const [btn, setBtn] = useState(false)
     const [show, setShow] = useState(false)
@@ -63,12 +63,12 @@ function BlackList({ data }) {
                     <Grid item xs={5}><div style={{ paddingTop: 4 }}>&nbsp;BlackList Status : </div></Grid>
 
                 </>}
-                <Grid item xs={5} className="text-right"><div>{bl === 0 ? 'No' : 'Yes'}</div></Grid>
-                <Grid item xs={1}>{bl !== 0 ? <Cancel className='link-icon' /> : <CheckCircle className='link-icon' />}</Grid>
+                <Grid item xs={5} className="text-right"><div>{load ? <Skeleton animation="wave" /> : bl === 0 ? 'No' : 'Yes'}</div></Grid>
+                <Grid item xs={1}>{load ? <Skeleton animation="wave" /> : bl !== 0 ? <Cancel className='link-icon' /> : <CheckCircle className='link-icon' />}</Grid>
             </Grid>
             <Grid item container xs={12} className="link-box-text">
                 <Grid item xs={5}><div>Point : </div></Grid>
-                <Grid item xs={7} className="right"><div>{parseInt(point?.checkPointResult?.resultPoint) >= 0 ? parseInt(point?.checkPointResult?.resultPoint) : '---'}</div></Grid>
+                <Grid item xs={7} className="right"><div>{load ? <Skeleton animation="wave" /> : parseInt(point?.checkPointResult?.resultPoint) >= 0 ? parseInt(point?.checkPointResult?.resultPoint) : '---'}</div></Grid>
             </Grid>
 
             <Dialog

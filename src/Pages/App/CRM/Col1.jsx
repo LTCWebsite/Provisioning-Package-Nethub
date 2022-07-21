@@ -15,9 +15,10 @@ import Application from './Col1/Application/Application'
 
 function Col1() {
     const phone = localStorage.getItem("ONE_PHONE")
-    const [check, setCheck] = useState({ n_3g: false, n_4g: false, rbt: false, ir_call: false, ir_data: false })
+    const [check, setCheck] = useState({ n_3g: false, n_4g: false, rbt: false, ir_call: false, ir_data: false, load: true })
     const [bss, setBSS] = useState('')
     const [backlist, setBacklist] = useState('')
+    const [load, setLoad] = useState(true)
 
     useEffect(() => {
         let phone = localStorage.getItem("ONE_PHONE")
@@ -30,7 +31,8 @@ function Col1() {
                     n_4g: res.data?.queryServiceResult?.open4G === '1' ? true : false,
                     rbt: res.data?.queryServiceResult?.openRBT === '1' ? true : false,
                     ir_call: res.data?.queryServiceResult?.irCall === '1' ? true : false,
-                    ir_data: res.data?.queryServiceResult?.irData === '1' ? true: false
+                    ir_data: res.data?.queryServiceResult?.irData === '1' ? true: false,
+                    load: false
                 })
             }
         }).catch(er => {
@@ -67,7 +69,7 @@ function Col1() {
 
                     <Network />
 
-                    <BlackList data={backlist} />
+                    <BlackList data={backlist} load={load} />
 
                     <h2 className='blue'>Value Add Service</h2>
                     <VAS />
@@ -76,7 +78,7 @@ function Col1() {
 
                 <Grid item xs={12} md={12} lg={6} className="box-crm">
                     <h2 className='blue'>Life Cycle</h2>
-                    <LifeCycle cb={(e) => setBacklist(e)} />
+                    <LifeCycle cb={(e) => setBacklist(e)} load={(e) => setLoad(e)} />
                     <h2 className='blue'>Mobile Service Data</h2>
                     <MobileService check={check} cb={(e) => setCheck(e)} />
 
