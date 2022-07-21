@@ -56,7 +56,7 @@ function CheckPIN() {
         { title: 'ວັນທີເຕີມ', field: 'requestDate', render: row => moment(row.requestDate).format("DD-MM-YYYY HH:mm:ss"), minWidth: 200 },
         {
             title: 'ຄຳອະທິບາຍ', field: 'sms', minWidth: 300, render: row => <Tooltip title={row.sms}><div>{row.sms.substring(0, 20)} ...</div></Tooltip>
-        },
+        }
     ]
 
     function ShowAll() {

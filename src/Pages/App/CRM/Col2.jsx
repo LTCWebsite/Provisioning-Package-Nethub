@@ -13,7 +13,6 @@ function Col2() {
         <Grid container item xs={12} md={12} lg={12} className="box-crm">
           <Grid item xs={12}>
             <h2 className='blue'>Bill Query</h2>
-            
             <BillQuery />
 
           </Grid>
@@ -23,36 +22,20 @@ function Col2() {
             <h2 className='blue'>ດາຕ້າແພັກເກັດ</h2>
 
             <Packages />
-
-          </Grid>
-        </Grid>
-        <Grid container item xs={12} md={12} lg={6} className="box-crm">
-          <Grid item xs={12}>
             <h2 className='blue'>Banking</h2>
 
             <Banking />
 
-            
           </Grid>
         </Grid>
-
         <Grid container item xs={12} md={12} lg={6} className="box-crm">
           <Grid item xs={12}>
+
             <h2 className='blue'>ເກມ</h2>
-
             <Game />
-
-            
-          </Grid>
-        </Grid>
-
-        <Grid container item xs={12} md={12} lg={6} className="box-crm">
-          <Grid item xs={12}>
             <h2 className='blue'>ອື່ນໆ</h2>
-
             <Others />
 
-            
           </Grid>
         </Grid>
 
