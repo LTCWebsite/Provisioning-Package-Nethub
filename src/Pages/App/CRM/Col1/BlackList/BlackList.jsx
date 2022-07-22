@@ -61,7 +61,6 @@ function BlackList({ data, load }) {
                 </> : <>
                     <Grid item xs={1}><Visibility style={{ paddingTop: 4 }} /></Grid>
                     <Grid item xs={5}><div style={{ paddingTop: 4 }}>&nbsp;BlackList Status : </div></Grid>
-
                 </>}
                 <Grid item xs={5} className="text-right"><div>{load ? <Skeleton animation="wave" /> : bl === 0 ? 'No' : 'Yes'}</div></Grid>
                 <Grid item xs={1}>{load ? <Skeleton animation="wave" /> : bl !== 0 ? <Cancel className='link-icon' /> : <CheckCircle className='link-icon' />}</Grid>
