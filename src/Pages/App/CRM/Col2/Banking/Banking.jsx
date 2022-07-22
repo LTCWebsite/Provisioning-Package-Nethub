@@ -1,7 +1,7 @@
 import { AccountBalance, AccountBalanceWallet, AddBox, AddToPhotos, MonetizationOn, PhonelinkSetup, Savings, Textsms } from '@mui/icons-material'
 import { Grid, Skeleton } from '@mui/material'
 import React, { useState } from 'react'
-import Mservice from './Model/Mservice'
+// import Mservice from './Model/Mservice'
 
 function Banking() {
     const [open, setOpen] = useState({ mservice: false, mmoney: false, topup: false })
@@ -30,11 +30,11 @@ function Banking() {
                 </Grid>
             </Grid>
 
-            <Mservice open={open.mservice} cb={(e) => setOpen({ ...open, mservice: e })} count={(e) => {
+            {/* <Mservice open={open.mservice} cb={(e) => setOpen({ ...open, mservice: e })} count={(e) => {
                 // setCount({ ...count, mservice: e.c })
                 // setLoading({ ...loading, mservice: e.loading })
                 console.log(e)
-            }} />
+            }} /> */}
         </>
     )
 }
