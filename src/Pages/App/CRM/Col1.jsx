@@ -12,6 +12,7 @@ import Network from './Col1/Network'
 import { AxiosReq } from '../../../Components/Axios'
 import VAS from './Col1/VAS/VAS'
 import Application from './Col1/Application/Application'
+import Ocs from './Col1/Ocs/Ocs'
 
 function Col1() {
     const phone = localStorage.getItem("ONE_PHONE")
@@ -19,6 +20,8 @@ function Col1() {
     const [bss, setBSS] = useState('')
     const [backlist, setBacklist] = useState('')
     const [load, setLoad] = useState(true)
+    const [ocs, setOcs] = useState('')
+    const [ocsSt, setOcsSt] = useState('')
 
     useEffect(() => {
         let phone = localStorage.getItem("ONE_PHONE")
@@ -31,7 +34,7 @@ function Col1() {
                     n_4g: res.data?.queryServiceResult?.open4G === '1' ? true : false,
                     rbt: res.data?.queryServiceResult?.openRBT === '1' ? true : false,
                     ir_call: res.data?.queryServiceResult?.irCall === '1' ? true : false,
-                    ir_data: res.data?.queryServiceResult?.irData === '1' ? true: false,
+                    ir_data: res.data?.queryServiceResult?.irData === '1' ? true : false,
                     load: false
                 })
             }
@@ -56,12 +59,7 @@ function Col1() {
 
                     <BssRegister cb={(e) => setBSS(e)} />
 
-
-                    <Grid item container xs={12} className='link-box-success'>
-                        <Grid item xs={6}><div>OCS status : </div></Grid>
-                        <Grid item xs={5} className="text-right"><div>Active</div></Grid>
-                        <Grid item xs={1}><CheckCircle className='link-icon' /></Grid>
-                    </Grid>
+                    <Ocs load={load} st={backlist?.currentStatus} />
 
                     <Register3Grab />
 
