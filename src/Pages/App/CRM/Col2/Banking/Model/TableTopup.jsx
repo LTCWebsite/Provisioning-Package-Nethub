@@ -1,6 +1,7 @@
 import React from 'react'
 import { LoadingTable } from '../../../../../../Components/TableLoading'
 import MyTable from '../../../../../../Components/MyTable'
+import { Tooltip } from '@mui/material'
 
 function TableTopup({ topupData }) {
     const [stop, setStop] = React.useState(false)
@@ -18,7 +19,7 @@ function TableTopup({ topupData }) {
         { title: 'Code', field: 'code' },
         { title: 'ມູນຄ່າ', field: 'amount', type: 'numeric', render: row => row.amount > 0 ? parseInt(row.amount).toLocaleString() : row.amount },
         { title: 'Bonus', field: 'bonus', type: 'numeric', render: row => row.bonus > 0 ? row.bonus.toLocaleString() : row.bonus },
-        { title: 'ສະຖານະ', field: 'description', minWidth: 200, render: row => <u className={row.all_status && 'dis_active'}>{row.description}</u> },
+        { title: 'ສະຖານະ', field: 'description', minWidth: 200, render: row => row?.description?.length <= 25 ? row?.description : <Tooltip title={row?.description}><div>{row?.description?.substring(0, 25)}...</div></Tooltip>  },
     ]
     function ShowData() {
         return (
