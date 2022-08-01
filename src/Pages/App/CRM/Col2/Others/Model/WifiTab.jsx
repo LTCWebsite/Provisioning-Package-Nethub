@@ -3,11 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import { Tab } from '@material-ui/core';
-import LoadingLottie from '../../../../../../Components/LoadingLottie';
-import MServiceTopup from './MServiceTopup'
-import MServiceTransfer from './MServiceTransfer'
-import { AxiosReq } from '../../../../../../Components/Axios';
-import moment from 'moment';
+import { LoadingTable } from '../../../../../../Components/TableLoading';
+import LTCWifiHistory from './LTCWifiHistory'
+import PinLTCWifiHistory from './PinLTCWifiHistory';
 
 
 const useStyles = makeStyles({
@@ -33,41 +31,20 @@ function TabPanel(props) {
 }
 
 
-export default function MServiceTab({ count }) {
+export default function WifiTab() {
     const classes = useStyles()
     const [value, setValue] = React.useState(0)
     const [stop, setStop] = React.useState(false)
-    const [data, setData] = React.useState([])
 
     const handleChange = (event, newValue) => {
         setValue(newValue)
     }
     React.useEffect(() => {
-        setStop(false)
-        var phone = localStorage.getItem("ONE_PHONE")
-        AxiosReq.get("MServicesTopup?msisdn=" + phone + "&status=REQUEST").then((res) => {
-            if (res.status === 200) {
-                var num = 0;
-                var update = res.data.map((row) => {
-                    row.id_idx = num + 1;
-                    row.recodeDate = moment(row.recodeDate).format(
-                        "DD-MM-YYYY HH:mm:ss"
-                    );
-                    row.all_status = row.resultCode === '200' ? false : true
-                    num = num + 1;
-                    return row;
-                });
-                setData(update);
-                setStop(true);
-                // console.log(update)
-            }
-        }).catch((err) => {
-            setStop(true);
-        })
+        setStop(true)
         // Doing({
         //     msisdn: Crypt({ type: "decrypt", value: localStorage.getItem("input-phone") }).text,
         //     username: Crypt({ type: "decrypt", value: localStorage.getItem("one_info") }).username,
-        //     detail: 'check M-Service',
+        //     detail: 'check LTC wifi',
         //     resualt: 'Operation successed.',
         // })
     }, [])
@@ -83,16 +60,16 @@ export default function MServiceTab({ count }) {
                         textColor="primary"
                         centered
                     >
-                        <Tab label="ເຕີມເງິນ" />
-                        <Tab label="ໂອນເງິນ" />
+                        <Tab label="LTC Wifi History" />
+                        <Tab label="Pin LTC Wifi History" />
                     </Tabs>
                 </Paper>
                 {/* ///////////////////////////////       Tab Sub */}
                 <TabPanel value={value} index={0}>
-                    <MServiceTopup query={data} />
+                    <LTCWifiHistory />
                 </TabPanel>
                 <TabPanel value={value} index={1}>
-                    <MServiceTransfer />
+                    <PinLTCWifiHistory />
                 </TabPanel>
                 {/* ///////////////////////////////////       end tab Sub */}
             </>
@@ -101,7 +78,7 @@ export default function MServiceTab({ count }) {
 
     return (
         <>
-            {!stop ? <LoadingLottie loadStop={stop} loadHeight={800} /> : <ShowData />}
+            {!stop ? <LoadingTable /> : <ShowData />}
         </>
     )
 }

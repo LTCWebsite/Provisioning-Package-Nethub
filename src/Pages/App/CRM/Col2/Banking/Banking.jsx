@@ -1,40 +1,60 @@
-import { AccountBalance, AccountBalanceWallet, AddBox, AddToPhotos, MonetizationOn, PhonelinkSetup, Savings, Textsms } from '@mui/icons-material'
+import { AddToPhotos, AttachMoney, LocalAtm, MoneyOff, Sms } from '@mui/icons-material'
 import { Grid, Skeleton } from '@mui/material'
 import React, { useState } from 'react'
-// import Mservice from './Model/Mservice'
+import Fadao from './Model/Fadao'
+import MTopup from './Model/MTopup'
+import Payment from './Model/Payment'
+import Topup from './Model/Topup'
 
 function Banking() {
-    const [open, setOpen] = useState({ mservice: false, mmoney: false, topup: false })
-    const [count, setCount] = useState({ mservice: 0 })
-    const [loading, setLoading] = useState({ mservice: true })
+    const [open, setOpen] = useState({ mservice: false, mmoney: false, topup: false, fadao: false, sms: false, mtopup: false, payment: false })
+    const [count, setCount] = useState({ fadao: 0, sms: 0, topup: 0, mtopup: 0 })
+    const [loading, setLoading] = useState({ fadao: true, sms: true, topup: true, mtopup: true })
+
+    const [lMtopup, setLMtopup] = useState(true)
+    const [lTopup, setLTopup] = useState(true)
+    const [lPayment, setLPayment] = useState(true)
+    const [cMtopup, setCMtopup] = useState(0)
+    const [cTopup, setCTopup] = useState(0)
+    const [cPayment, setCPayment] = useState(0)
 
     return (
         <>
             <Grid container>
-                <Grid item xs={12} container className='link-box-pointer' onClick={() => setOpen({ ...open, mservice: true })}>
-                    <Grid item xs={2}><PhonelinkSetup /></Grid>
-                    <Grid item xs={6}>M-Service :</Grid>
+                <Grid item xs={12} container className='link-box-pointer' onClick={() => setOpen({ ...open, fadao: true })}>
+                    <Grid item xs={2}><AttachMoney /></Grid>
+                    <Grid item xs={6}>ຢືມ ແລະ ຕັດເງິນ ຟ້າດາວ :</Grid>
                     <Grid item xs={4}>
-                        {loading.mservice ? <Skeleton animation="wave" /> : <div className={count.mservice > 0 ? 'text-right bage-success' : 'text-right bage-error'}><u>{count.mservice}</u></div>}
+                        {loading.fadao ? <Skeleton animation="wave" /> : <div className={count.fadao > 0 ? 'text-right bage-success' : 'text-right bage-error'}><u>{count.fadao}</u></div>}
                     </Grid>
                 </Grid>
-                <Grid item xs={12} container className='link-box-pointer'>
-                    <Grid item xs={2}><MonetizationOn /></Grid>
-                    <Grid item xs={6}>M-Money :</Grid>
-                    <Grid item xs={4}><div className='text-right'>5</div></Grid>
-                </Grid>
-                <Grid item xs={12} container className='link-box-pointer'>
+                <Grid item xs={12} container className='link-box-pointer' onClick={() => setOpen({ ...open, mtopup: true })}>
                     <Grid item xs={2}><AddToPhotos /></Grid>
+                    <Grid item xs={6}>Topup And M-Topup :</Grid>
+                    <Grid item xs={4}>
+                        {lMtopup ? <Skeleton animation="wave" /> : <div className={cMtopup > 0 ? 'text-right bage-success' : 'text-right bage-error'}><u>{cMtopup}</u></div>}
+                    </Grid>
+                </Grid>
+                <Grid item xs={12} container className='link-box-pointer' onClick={() => setOpen({ ...open, topup: true })}>
+                    <Grid item xs={2}><LocalAtm /></Grid>
                     <Grid item xs={6}>Topup Banking :</Grid>
-                    <Grid item xs={4}><div className='text-right'>5</div></Grid>
+                    <Grid item xs={4}>
+                        {lTopup ? <Skeleton animation="wave" /> : <div className={cTopup > 0 ? 'text-right bage-success' : 'text-right bage-error'}><u>{cTopup}</u></div>}
+                    </Grid>
+                </Grid>
+                <Grid item xs={12} container className='link-box-pointer' onClick={() => setOpen({ ...open, payment: true })}>
+                    <Grid item xs={2}><MoneyOff /></Grid>
+                    <Grid item xs={6}>Payment :</Grid>
+                    <Grid item xs={4}>
+                        {lPayment ? <Skeleton animation="wave" /> : <div className={cPayment > 0 ? 'text-right bage-success' : 'text-right bage-error'}><u>{cPayment}</u></div>}
+                    </Grid>
                 </Grid>
             </Grid>
 
-            {/* <Mservice open={open.mservice} cb={(e) => setOpen({ ...open, mservice: e })} count={(e) => {
-                // setCount({ ...count, mservice: e.c })
-                // setLoading({ ...loading, mservice: e.loading })
-                console.log(e)
-            }} /> */}
+            <Fadao open={open.fadao} cb={(e) => setOpen({ ...open, fadao: e })} count={(e) => setCount({ ...count, fadao: e })} stop={(e) => setLoading({ ...loading, fadao: e })} />
+            <MTopup open={open.mtopup} cb={(e) => setOpen({ ...open, mtopup: e })} count={(e) => setCMtopup(e)} stop={(e) => setLMtopup(e)} />
+            <Topup open={open.topup} cb={(e) => setOpen({ ...open, topup: e })} count={(e) => setCTopup(e)} stop={(e) => setLTopup(e)} />
+            <Payment open={open.payment} cb={(e) => setOpen({ ...open, payment: e })} count={(e) => setCPayment(e)} stop={(e) => setLPayment(e)} />
         </>
     )
 }

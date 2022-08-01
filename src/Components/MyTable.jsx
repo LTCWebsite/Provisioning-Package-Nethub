@@ -73,7 +73,7 @@ function MyTable({ tTitle: title, tColumns: columns, tData: data }) {
         columnsButton: true,
         rowStyle: row =>
           row.all_status ? {
-            // backgroundColor: 'rgba(241, 169, 160, 1)'
+            backgroundColor: '#ffddd2'
           } : {}
       }}
     />

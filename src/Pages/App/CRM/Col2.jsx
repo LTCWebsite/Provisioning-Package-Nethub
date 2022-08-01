@@ -22,7 +22,7 @@ function Col2() {
             <h2 className='blue'>ດາຕ້າແພັກເກັດ</h2>
 
             <Packages />
-            <h2 className='blue'>App And Banking</h2>
+            <h2 className='blue'>Banking</h2>
 
             <Banking />
 

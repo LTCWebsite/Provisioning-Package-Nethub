@@ -1,13 +1,30 @@
 import { Close } from '@mui/icons-material';
 import { Alert, Dialog, Grid, Slide } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
+import { AxiosReq } from '../../../../../../Components/Axios';
 import MServiceTab from './MserviceTabs';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-function Mservice({ open, cb, count }) {
+function Mservice({ open, cb, done, count }) {
+    const [stop, setStop] = useState(true)
+
+    React.useEffect(() => {
+        setStop(false)
+        var phone = localStorage.getItem("ONE_PHONE")
+        AxiosReq.get("NewMsPackage?msisdn=" + phone + "&page=0&limit=0").then((res) => {
+            if (res.status === 200) {
+                setStop(true);
+                done(false)
+                count(res?.data?.total)
+            }
+        }).catch((err) => {
+            setStop(true);
+        })
+
+    }, [])
     return (
         <>
             <Dialog
@@ -27,14 +44,8 @@ function Mservice({ open, cb, count }) {
                         <Grid item xs={1}>
                             <div className='right'><Close className='icon' onClick={() => cb(!open)} /></div>
                         </Grid>
-                        <Grid item md={2} lg={3} xl={4}></Grid>
-                        <Grid item xs={12} md={8} lg={6} xl={4}>
-                            <Alert variant="outlined" severity="info" style={{ marginTop: 10 }}>
-                                ກໍລະນີທີ່ຕ້ອງການສະແດງຂໍ້ມູນຫຼາຍກ່ວາ 10 ລາຍການ ໃຫ້ຄຼິກໄປທີ່ More Detail ຢູ່ດ້ານລຸ່ມ
-                            </Alert>
-                        </Grid>
-                        <Grid item xs={12} style={{ marginBottom: 10 }}>
-                            <MServiceTab count={(e) => count(e)} />
+                        <Grid item xs={12} style={{ marginBottom: 0 }}>
+                            <MServiceTab />
                         </Grid>
                     </Grid>
                 </Grid>

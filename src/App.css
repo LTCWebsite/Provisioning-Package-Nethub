@@ -135,6 +135,10 @@ b {
   color: #e74a3b !important;
 }
 
+.link-box-pointer:hover .success, .link-box-pointer:hover .error{
+  color: #fff;
+}
+
 .success {
   color: #1cc88a;
   font-size: 23px !important;
