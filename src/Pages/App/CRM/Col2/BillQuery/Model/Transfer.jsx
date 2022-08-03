@@ -1,13 +1,14 @@
 import { Close } from '@mui/icons-material'
 import { Dialog, DialogTitle, Grid, Tooltip } from '@mui/material'
+import moment from 'moment'
 import React from 'react'
 import MyTable from '../../../../../../Components/MyTable'
 
 function Transfer({ open, cb, data }) {
     const columns = [
         { title: 'MSISDN', field: 'PRI_IDENTITY' },
-        { title: 'ReceipNumber', field: 'ReceipNumber', render: row => row.ReceipNumber.substr(0, 7) +"xxx"+ row.ReceipNumber.substr(10) },
-        { title: 'ເວລາ', field: 'TRANSFER_DATE', minWidth: 150, render: row => row.TRANSFER_DATE.substr(6, 2) + "-" + row.TRANSFER_DATE.substr(4, 2) + "-" + row.TRANSFER_DATE.substr(0, 4) + " " + row.TRANSFER_DATE.substr(8, 2) + ":" + row.TRANSFER_DATE.substr(10, 2) + ":" + row.TRANSFER_DATE.substr(12, 2) },
+        { title: 'ReceipNumber', field: 'ReceipNumber', render: row => row.ReceipNumber.substr(0, 7) + "xxx" + row.ReceipNumber.substr(10) },
+        { title: 'ເວລາ', field: 'TRANSFER_DATE', minWidth: 150, render: row => row.TRANSFER_DATE.length > 15 ? moment(row?.TRANSFER_DATE).format("DD-MM-YYYY HH:mm:ss") : row.TRANSFER_DATE.substr(6, 2) + "-" + row.TRANSFER_DATE.substr(4, 2) + "-" + row.TRANSFER_DATE.substr(0, 4) + " " + row.TRANSFER_DATE.substr(8, 2) + ":" + row.TRANSFER_DATE.substr(10, 2) + ":" + row.TRANSFER_DATE.substr(12, 2) },
         { title: 'TransType', field: 'EXT_TRANS_TYPE' },
         { title: 'Charge', field: 'CHG_BALANCE', type: 'numeric', render: row => row.CHG_BALANCE.toLocaleString() },
     ]

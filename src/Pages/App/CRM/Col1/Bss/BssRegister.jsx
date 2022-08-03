@@ -48,7 +48,7 @@ function BssRegister({ cb }) {
                         <Grid item xs={1}><Visibility style={{ paddingTop: 4 }} /></Grid>
                         <Grid item xs={5}><div style={{ paddingTop: 4 }}>&nbsp;BSS Status : </div></Grid>
                         <Grid item xs={5} className="text-right">
-                            <div>{data.statusBSSDesc}</div>
+                            <div>&nbsp;{data.statusBSSDesc}</div>
                         </Grid>
                         <Grid item xs={1}>
                             {data.statusBSSDesc === "Activated" ?

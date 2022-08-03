@@ -135,7 +135,8 @@ b {
   color: #e74a3b !important;
 }
 
-.link-box-pointer:hover .success, .link-box-pointer:hover .error{
+.link-box-pointer:hover .success,
+.link-box-pointer:hover .error {
   color: #fff;
 }
 
@@ -685,7 +686,12 @@ td.MuiTableCell-body {
 }
 
 .list:hover {
-  background-color: #CD1E2B;
+  background-color: #CD1E2B !important;
+  color: #fff;
+  cursor: pointer;
+}
+
+.list:hover .list-a {
   color: #fff;
   cursor: pointer;
 }
@@ -828,7 +834,8 @@ textarea {
   background-color: transparent !important;
   margin: 0px !important;
   padding: 0px !important;
-  font-size: 18px !important;
+  padding-top: 0px !important;
+  font-size: 16px !important;
   font-weight: 500 !important;
   color: #5A5C69;
 }
@@ -1007,6 +1014,7 @@ div {
   padding: 0px 10px;
   border-radius: 2px 2px;
 }
+
 .blue-no {
   background-color: #EDE3FA;
   padding: 0px 0px;
@@ -1051,40 +1059,49 @@ div {
   cursor: pointer;
   color: #CD1E2B;
 }
-tr .css-1q1u3t4-MuiTableRow-root{
-  height: 0px!important;
+
+tr .css-1q1u3t4-MuiTableRow-root {
+  height: 0px !important;
 }
+
 .css-1q1u3t4-MuiTableRow-root {
   padding: 0px !important;
   margin: 0px !important;
 }
-.head{
-  background-color: #ced4da!important;
+
+.head {
+  background-color: #ced4da !important;
   /* font-size: 16px!important; */
 }
-.bage-success u{
+
+.bage-success u {
   color: #fff;
   background-color: #26A65B;
   padding: 0px 8px;
   border-radius: 3px;
 }
-.bage-error u{
+
+.bage-error u {
   color: #fff;
   background-color: #CD1E2B;
   padding: 0px 8px;
   border-radius: 3px;
 }
-.link-box-pointer:hover .bage-success u, .link-box-pointer:hover .bage-error u{
+
+.link-box-pointer:hover .bage-success u,
+.link-box-pointer:hover .bage-error u {
   color: #3A3838;
   background-color: #fff;
   padding: 0px 8px;
   border-radius: 3px;
 }
-.no-apdd div{
-  padding: 0px!important;
-  margin: 0px!important;
+
+.no-apdd div {
+  padding: 0px !important;
+  margin: 0px !important;
 }
-.u-bage{
+
+.u-bage {
   background-color: #2F3292;
   padding: 0px 4px;
   font-size: 12px;
