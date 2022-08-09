@@ -10,8 +10,10 @@ import { toast_error } from '../../../Components/Toast'
 function CRM() {
   const [ready, setReady] = useState({ load: false })
   const history = useHistory()
+  const [load, setLoad] = useState(true)
 
   useEffect(() => {
+    setLoad(true)
     try {
       let phone = localStorage.getItem("ONE_PHONE")
       if (phone.length <= 0) {
@@ -24,24 +26,27 @@ function CRM() {
             // console.log(res.data)
             localStorage.setItem("ONE_NETWORK", Crypt({ Type: "crypt", Value: JSON.stringify(res.data) }))
             setReady({ ...ready, load: false })
+            setLoad(false)
           }
         })
       }
     } catch (error) {
       toast_error({ text: "ກະລຸນາປ້ອນເບີ !!" })
       history.push("/app")
+      setLoad(false)
     }
   }, [])
   return (
     <>
-      <Grid container>
-        <Grid item xs={12} md={6}>
-          <Col1 />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Col2 />
-        </Grid>
-      </Grid>
+      {!load &&
+        <Grid container>
+          <Grid item xs={12} md={6}>
+            <Col1 />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Col2 />
+          </Grid>
+        </Grid>}
     </>
   )
 }

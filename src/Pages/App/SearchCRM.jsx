@@ -43,7 +43,7 @@ function SearchCRM() {
             history.push("/app")
             setTimeout(() => {
                 history.push("/app/crm")
-            }, 100)
+            }, 200)
         }
     }
     const checkKey = (e) => {
@@ -61,7 +61,10 @@ function SearchCRM() {
                     className='v-input input-1'
                     placeholder='205xxxxxxx'
                     value={Phone}
-                    onChange={(e) => changePhone(e.target.value)}
+                    onChange={(e) => {
+                        changePhone(e.target.value)
+                        localStorage.setItem("ONE_PHONE", e.target.value)
+                    }}
                     onKeyPress={(e) => checkKey(e)}
                 />
             </Grid>
