@@ -1,4 +1,4 @@
-import { Info, SentimentSatisfiedAlt, SettingsBackupRestore, SignalWifi3Bar, SimCardAlert, Subject, Textsms } from '@mui/icons-material'
+import { ClearAll, Info, SentimentSatisfiedAlt, SettingsBackupRestore, SignalWifi3Bar, SimCardAlert, Subject, Textsms } from '@mui/icons-material'
 import { Grid, Skeleton } from '@mui/material'
 import React, { useState } from 'react'
 import HappyCall from './Model/HappyCall'
@@ -8,9 +8,10 @@ import MasterSim from './Model/MasterSim'
 import ResetSim from './Model/ResetSim'
 import SmsTicket from './Model/SmsTicket'
 import Wifi from './Model/Wifi'
+import OrderChange from './Model/OrderChage'
 
 function Others() {
-    const [open, setOpen] = useState({ reset: false, sms_ticket: false, happyCall: false, mastersim: false, info178: false, wifi: false, hlr: false })
+    const [open, setOpen] = useState({ reset: false, sms_ticket: false, happyCall: false, mastersim: false, info178: false, wifi: false, hlr: false, orderChange: false })
     const [hlr, setHlr] = useState(false)
     const [countSms, setCountSms] = useState(0)
     const [countHC, setCountHC] = useState(0)
@@ -18,10 +19,19 @@ function Others() {
     const [loadHC, setLoadHC] = useState(true)
     const [loadSms, setLoadSms] = useState(true)
     const [loadWifi, setLoadWifi] = useState(true)
+    const [loadOrderChange, setLoadOrderChange] = useState(true)
+    const [orderChangeCount, setOrderChangeCount] = useState(0)
 
     return (
         <>
             <Grid container>
+                <Grid item xs={12} container className='link-box-pointer' onClick={() => setOpen({ ...open, orderChange: true })}>
+                    <Grid item xs={2}><ClearAll /></Grid>
+                    <Grid item xs={5}>ປະຫວັດການປ່ຽນແປງ</Grid>
+                    <Grid item xs={5}>
+                        {loadOrderChange ? <Skeleton animation="wave" /> : <div className={orderChangeCount > 0 ? 'text-right bage-success' : 'text-right bage-error'}><u>{orderChangeCount}</u></div>}
+                    </Grid>
+                </Grid>
                 <Grid item xs={12} container className='link-box-pointer' onClick={() => setOpen({ ...open, mastersim: true })}>
                     <Grid item xs={2}><SimCardAlert /></Grid>
                     <Grid item xs={10}>Master Sim</Grid>
@@ -71,6 +81,7 @@ function Others() {
 
             <HlrData open={hlr} cb={(e) => setHlr(e)} />
             <Wifi open={open.wifi} cb={(e) => setOpen({ ...open, wifi: e })} count={(e) => setCountWifi(e)} stop={(e) => setLoadWifi(e)} />
+            <OrderChange open={open.orderChange} cb={(e) => setOpen({ ...open, orderChange: e })} count={(e) => setOrderChangeCount(e)} done={loadOrderChange} ifdone={(e) => setLoadOrderChange(e)} />
         </>
     )
 }

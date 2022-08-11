@@ -16,7 +16,7 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
-import { AxiosReq } from './Axios'
+import { AxiosReq } from '../../../../../../Components/Axios';
 
 
 const tableIcons = {
@@ -39,27 +39,33 @@ const tableIcons = {
     ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
 };
 
-function TableAuto({ columns: Columns, url: URL, sl: SL, title }) {
-    React.useEffect(() => {
-        tableref.current.onQueryChange()
-    }, [SL])
+function OrderChangTable({ total }) {
     const tableref = React.useRef()
+    const columns = [
+        { title: 'MSISDN', field: 'msisdn' },
+        { title: 'DataCharging', field: 'data_charging' },
+        { title: 'UserID', field: 'user_id' },
+        { title: 'Chanel', field: 'chanel' },
+        { title: 'SrvType', field: 'srvtype' },
+        { title: 'OrderType', field: 'order_type' },
+    ]
     return (
         <>
             <MaterialTable
-                title={title}
+                title={"ປະຫວັດການປ່ຽນແປງ"}
                 icons={tableIcons}
-                columns={Columns}
+                columns={columns}
                 tableRef={tableref}
                 data={query =>
                     new Promise((resolve, reject) => {
-                        var sendData = "1" + "&limit=" + query.pageSize
-                        AxiosReq.get(URL + sendData).then(res => {
+                        var sendData = query.page + 1 + "&limit=" + query.pageSize + "&total=" + total
+                        AxiosReq.get("New_OrderChange?msisdn=" + localStorage.getItem("ONE_PHONE") + "&page=" + sendData).then(res => {
                             if (res.status === 200) {
+                                console.log(res.data)
                                 resolve({
-                                    data: res.data.result,
+                                    data: res.data.data,
                                     page: res.data.page - 1,
-                                    totalCount: res.data.total,
+                                    totalCount: total,
                                 })
                             } else {
                                 resolve()
@@ -81,4 +87,4 @@ function TableAuto({ columns: Columns, url: URL, sl: SL, title }) {
         </>
     )
 }
-export default TableAuto
+export default OrderChangTable

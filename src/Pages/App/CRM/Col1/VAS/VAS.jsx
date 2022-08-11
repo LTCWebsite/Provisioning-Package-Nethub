@@ -64,7 +64,7 @@ function VAS() {
                         })
                         setOption(newData)
                         // console.log(newData);
-                        var update = newData.slice(0, 3)
+                        var update = newData.slice(0, 5)
                         setOption7(update)
                         setTimeout(() => {
                             setStop(true)
@@ -98,7 +98,7 @@ function VAS() {
                             row.nameService === data ? row.checked === false ? { ...row, checked: true } : { ...row, checked: false } : { ...row }
                         )
                         setOption(newData)
-                        var update = newData.slice(0, 3)
+                        var update = newData.slice(0, 5)
                         setOption7(update)
                         toast_success({ text: res.data.registerResult.resultdesc })
                     } else {
@@ -129,7 +129,7 @@ function VAS() {
                             row.nameService === data ? row.checked === false ? { ...row, checked: true } : { ...row, checked: false } : { ...row }
                         )
                         setOption(newData)
-                        var update = newData.slice(0, 3)
+                        var update = newData.slice(0, 5)
                         setOption7(update)
                         toast_success({ text: res.data.cancelResult.resultdesc })
                     } else {
