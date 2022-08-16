@@ -15,7 +15,7 @@ function Defualt() {
     return (
         <>
             {!loading ? <LoadingLottie loadStop={loading} loadHeight={400} loadWidth={300} loadTop={"20vh"} /> : <>
-                <TopBar width={width} />
+                {/* <TopBar width={width} /> */}
                 <div className='body' style={{ width: '100%', paddingTop: 3 }}>
                     <div style={{ display: 'flex' }}>
                         <SideBar height={height} />
