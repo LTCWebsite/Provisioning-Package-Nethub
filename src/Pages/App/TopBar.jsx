@@ -6,12 +6,16 @@ function TopBar() {
     const [topData, setTopData] = useState({ data: [] })
 
     const loadTopMenu = () => {
-        let data = MyCrypt("de", localStorage.getItem("ONE_USER_ROLE"))
-        let update = data?.map(row => {
-            row.Pass = row?.Password !== "" ? MyCrypt("de", row.Password) : ''
-            return row
-        })
-        setTopData({ ...topData, data: update })
+        try {
+            let data = MyCrypt("de", localStorage.getItem("ONE_USER_ROLE"))
+            let update = data?.map(row => {
+                row.Pass = row?.Password !== "" ? MyCrypt("de", row.Password) : ''
+                return row
+            })
+            setTopData({ ...topData, data: update })
+        } catch (error) {
+            setTopData([])
+        }
         // console.log(update)
     }
 
