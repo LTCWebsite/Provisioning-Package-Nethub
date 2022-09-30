@@ -2,16 +2,18 @@ import { Close } from '@mui/icons-material'
 import { Dialog, DialogTitle, Grid } from '@mui/material'
 import React from 'react'
 import MyTable from '../../../../../../Components/MyTable'
+import Progress  from '../../../../../../Components/Progress'
 
 function QueryPackage({ open, data, cb }) {
   const columns = [
-    { title: 'No', field: 'idx', maxWidth: 50 },
-    { title: 'Name', field: 'pacakge_name', minWidth: 200 },
+    { title: 'ລຳດັບ', field: 'idx', maxWidth: 50 },
+    { title: 'ຊື່', field: 'pacakge_name', minWidth: 200 },
+    // { title: 'Priority', field: 'priority' },
+    { title: 'ສະຖານະ', field: 'reserve', render: row => parseInt(row.reserve) > 0 ? <u className='active'>Current</u> : <u className='dis_active'>Waiting</u> },
+    { title: 'ຍັງເຫຼືອ / ທັງໝົດ', field: 'total_data', type: 'numeric', render: row => row?.remaining_data?.toLocaleString() + ' / '  + row?.total_data?.toLocaleString() },
+    // { title: 'Remaining Data', field: 'remaining_data', type: 'numeric', render: row => row?.remaining_data?.toLocaleString() },
+    { title: 'Progress', field: 'expire_time', render : row => <Progress percentage={(row.remaining_data * 100)/ row.total_data } /> },
     { title: 'Expire', field: 'expire_time', minWidth: 150 },
-    { title: 'Priority', field: 'priority' },
-    { title: 'Reserve', field: 'reserve' },
-    { title: 'Data Total', field: 'total_data', type: 'numeric', render: row => row?.total_data?.toLocaleString() },
-    { title: 'Remaining Data', field: 'remaining_data', type: 'numeric', render: row => row?.remaining_data?.toLocaleString() },
     
   ]
   return (

@@ -32,11 +32,15 @@ function Packages() {
         setPk({ ...pk, load: true, count: 0 })
         AxiosReq.get("NewQueryPackage?msisdn=" + phone).then(res => {
             if (res.status === 200) {
-                let newData = res.data?.map((row, idx) => {
+                let update = res.data.filter(row => row.remaining_data > 0).map((row, idx) => {
                     row.idx = idx + 1
                     return row
                 })
-                setPk({ ...pk, load: false, count: parseInt(res.data.length), data: newData })
+                // let newData = res.data?.map((row, idx) => {
+                //     row.idx = idx + 1
+                //     return row
+                // })
+                setPk({ ...pk, load: false, count: parseInt(res.data.length), data: update })
             } else {
                 setPk({ ...pk, load: false, count: 0 })
             }
@@ -46,13 +50,6 @@ function Packages() {
     }, [])
     return (
         <Grid container>
-            <Grid item xs={12} container className='link-box-pointer' onClick={() => setPh({ ...ph, show: true })}>
-                <Grid item xs={2}><AccountTree /></Grid>
-                <Grid item xs={6}>Package History :</Grid>
-                <Grid item xs={4}>
-                    {ph.load ? <Skeleton animation="wave" /> : <div className={ph.count > 0 ? 'text-right bage-success' : 'text-right bage-error'}><u>{ph.count}</u></div>}
-                </Grid>
-            </Grid>
             <Grid item xs={12} container className='link-box-pointer' onClick={() => setPk({ ...pk, show: true })}>
                 <Grid item xs={2}><NetworkCell /></Grid>
                 <Grid item xs={6}>ດາຕ້າແພັກເກັດ :</Grid>
@@ -60,6 +57,14 @@ function Packages() {
                     {pk.load ? <Skeleton animation="wave" /> : <div className={pk.count > 0 ? 'text-right bage-success' : 'text-right bage-error'}><u>{pk.count}</u></div>}
                 </Grid>
             </Grid>
+            <Grid item xs={12} container className='link-box-pointer' onClick={() => setPh({ ...ph, show: true })}>
+                <Grid item xs={2}><AccountTree /></Grid>
+                <Grid item xs={6}>Package History :</Grid>
+                <Grid item xs={4}>
+                    {ph.load ? <Skeleton animation="wave" /> : <div className={ph.count > 0 ? 'text-right bage-success' : 'text-right bage-error'}><u>{ph.count}</u></div>}
+                </Grid>
+            </Grid>
+            
             <Grid item xs={12} container className='link-box-pointer' onClick={() => setBuy({ ...buy, show: true })}>
                 <Grid item xs={2}><Store /></Grid>
                 <Grid item xs={6}>ຊື້ແພັກເກັດ</Grid>
