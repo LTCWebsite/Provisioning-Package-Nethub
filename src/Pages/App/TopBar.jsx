@@ -263,7 +263,7 @@ function TopBar() {
     return (
         <>
             <div className='frame'>
-                {topData.data.map((row, idx) => {
+                {topData?.data?.map((row, idx) => {
                     return (
                         <div className={idx === 0 ? 'list' : 'list'} key={idx}><FadeIn>
                             <LinkList id={row.ID} name={row.Name} />
