@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import FadeIn from 'react-fade-in/lib/FadeIn'
-import { MyCrypt } from '../../Components/MyCrypt'
+import { MyCrypt, MyCryptTry } from '../../Components/MyCrypt'
 
 function TopBar() {
     const [topData, setTopData] = useState({ data: [] })
 
     const loadTopMenu = () => {
         try {
-            let data = MyCrypt("de", localStorage.getItem("ONE_USER_ROLE"))
+            let data = MyCryptTry("de", localStorage.getItem("ONE_USER_ROLE"))
+            // console.log(data)
             let update = data?.map(row => {
-                row.Pass = row?.Password !== "" ? MyCrypt("de", row.Password) : ''
+                row.Pass = row?.Password !== "" ? MyCryptTry("de", row.Password) : ''
                 return row
             })
+            
             setTopData({ ...topData, data: update })
         } catch (error) {
             setTopData([])
@@ -266,7 +268,7 @@ function TopBar() {
                 {topData?.data?.map((row, idx) => {
                     return (
                         <div className={idx === 0 ? 'list' : 'list'} key={idx}><FadeIn>
-                            <LinkList id={row.ID} name={row.Name} />
+                            <LinkList id={row?.ID} name={row?.Name} />
                         </FadeIn></div>
                     )
                 })}

@@ -1,7 +1,7 @@
 import { CheckBox, Save } from '@mui/icons-material'
 import { Button, CircularProgress, Grid, TextField } from '@mui/material'
 import React from 'react'
-import { MyCrypt } from '../../../Components/MyCrypt'
+import { MyCryptTry } from '../../../Components/MyCrypt'
 import FadeIn from 'react-fade-in/lib/FadeIn'
 import { UserID } from '../../../Components/AutoFC'
 import { AxiosAPI } from '../../../Components/Axios'
@@ -13,9 +13,9 @@ function UserEdit() {
 
     const loadTop = () => {
         setLoading({ ...loading, data: false })
-        let data = MyCrypt("de", localStorage.getItem("ONE_USER_ROLE"))
+        let data = MyCryptTry("de", localStorage.getItem("ONE_USER_ROLE"))
         let new_data = data?.map(row => {
-            row.password = row.Password === null || row.Password === '' ? '' : MyCrypt("de", row.Password)
+            row.password = row.Password === null || row.Password === '' ? '' : MyCryptTry("de", row.Password)
             row.Username = row.Username === 'null' || row.Username === null ? '' : row.Username
             return row
         })
@@ -39,7 +39,7 @@ function UserEdit() {
         } else {
             let new_data = top.data.map(row => {
                 if (row.ID === id) {
-                    row.Password = MyCrypt("en", JSON.stringify(value))
+                    row.Password = MyCryptTry("en", JSON.stringify(value))
                     row.password = value
                 }
                 return row
@@ -50,7 +50,7 @@ function UserEdit() {
 
     const SaveUserRole = () => {
         setLoading({ ...loading, btn: true })
-        localStorage.setItem("ONE_USER_ROLE", MyCrypt("en", JSON.stringify(top.data)))
+        localStorage.setItem("ONE_USER_ROLE", MyCryptTry("en", JSON.stringify(top.data)))
         try {
             let s_data = top.data.map(row => {
                 delete row.password
@@ -81,7 +81,7 @@ function UserEdit() {
     return (
         <FadeIn>
             <Grid container>
-                {loading.data && top.data?.map((row, idx) => {
+                {loading.data && top?.data?.map((row, idx) => {
                     return (
                         <Grid item lg={6} xs={12} key={idx}>
                             <div className="padd">
