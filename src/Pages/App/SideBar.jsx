@@ -1,10 +1,11 @@
-import { Cottage, CreditCard, CreditScore, DisplaySettings, Group, HomeWork, PersonOutline, ScreenshotMonitor } from '@mui/icons-material'
+import { Cottage, CreditCard, CreditScore, DisplaySettings, Group, HomeWork, Logout, PersonOutline, ScreenshotMonitor } from '@mui/icons-material'
 import React from 'react'
 import logo from '../../Image/logo-2.png'
 import { Scrollbars } from 'react-custom-scrollbars'
 import { useHistory, useLocation } from 'react-router-dom'
 import FadeIn from 'react-fade-in'
 import { toast_error } from '../../Components/Toast'
+import Auth from '../../Components/Auth'
 
 function SideBar({ height }) {
     const history = useHistory()
@@ -74,6 +75,14 @@ function SideBar({ height }) {
                     <FadeIn visible={effect.user}>
                         {effect.user && location.pathname === "/app/user" ? <Group className='bar-icon' /> : <PersonOutline color='primary' className='bar-icon' />}
                         <div>USER</div>
+                    </FadeIn>
+                </div>
+                <div className={location.pathname === "/app/logout" ? "bar bar-active" : "bar"} onClick={() => Auth.logout(() => {
+                    history.push("/login")
+                })}>
+                    <FadeIn visible={effect.user}>
+                        {effect.user && location.pathname === "/app/user" ? <Logout className='bar-icon' /> : <Logout color='primary' className='bar-icon' />}
+                        <div>LOGOUT</div>
                     </FadeIn>
                 </div>
             </Scrollbars>
