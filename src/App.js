@@ -6,10 +6,11 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import 'react-confirm-alert/src/react-confirm-alert.css'
 import { createTheme, MuiThemeProvider } from "@material-ui/core/styles"
-import Login from './Pages/Login/Login';
+// import Login from './Pages/Login/Login';
 import Defualt from './Pages/App/Defualt';
 
 import 'react-perfect-scrollbar/dist/css/styles.css';
+import NewLogin from './Pages/Login/NewLogin'
 
 const theme = createTheme({
   overrides: {
@@ -30,8 +31,8 @@ function App() {
       <MuiThemeProvider theme={theme}>
         <Router>
           <Switch>
-            <Route path="/" exact component={Login} />
-            <Route path="/login" exact component={Login} />
+            <Route path="/" exact component={NewLogin} />
+            <Route path="/login" exact component={NewLogin} />
             <ProtectRoute path="/app" component={Defualt} />
           </Switch>
         </Router>

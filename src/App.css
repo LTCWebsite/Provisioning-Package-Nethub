@@ -1108,3 +1108,8 @@ tr .css-1q1u3t4-MuiTableRow-root {
   color: #fff;
   border-radius: 3px;
 }
+.err{
+  text-align: left!important;
+  color: red!important;
+  margin-top: 5px!important;
+}
