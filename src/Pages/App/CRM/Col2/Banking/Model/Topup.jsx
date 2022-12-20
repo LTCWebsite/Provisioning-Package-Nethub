@@ -13,14 +13,12 @@ function Topup({ open, cb, stop, count }) {
     const [data, setData] = useState([])
     React.useEffect(() => {
         var phone = localStorage.getItem("ONE_PHONE")
-        var date_start = moment(new Date()).subtract(12, 'months').format("YYYY-MM-DD")
-        var date_end = moment(new Date()).format("YYYY-MM-DD")
-        var sendData = {
-            msisdn: phone,
-            startDate: date_start,
-            endDate: date_end,
-        }
-        AxiosReq.post("CheckTopupBankingNew?msisdn=" + phone + "&start_date=" + sendData.startDate + "&en_date=" + sendData.endDate, {}).then(res => {
+        // var date_start = moment(new Date()).subtract(12, 'months').format("YYYY-MM-DD")
+        // var date_end = moment(new Date()).format("YYYY-MM-DD")
+        // var sendData = {
+        //     msisdn: phone
+        // }
+        AxiosReq.get("CheckTopupBankingNew?msisdnn=" + phone).then(res => {
             if (res.status === 200) {
                 var num = 0
                 var update = res.data.map(row => {
@@ -33,23 +31,12 @@ function Topup({ open, cb, stop, count }) {
                 setData(update)
                 stop(false)
                 count(num)
-                // console.log(update)
-                // Doing({
-                //     msisdn: Crypt({ type: "decrypt", value: localStorage.getItem("input-phone") }).text,
-                //     username: Crypt({ type: "decrypt", value: localStorage.getItem("one_info") }).username,
-                //     detail: 'check topup and m-topup',
-                //     resualt: 'Operation successed.',
-                // })
+                console.log(res.data)
             }
         }).catch(err => {
             stop(false)
-            // Doing({
-            //     msisdn: Crypt({ type: "decrypt", value: localStorage.getItem("input-phone") }).text,
-            //     username: Crypt({ type: "decrypt", value: localStorage.getItem("one_info") }).username,
-            //     detail: 'check topup and m-topup',
-            //     resualt: 'error',
-            // })
         })
+
     }, [])
     return (
         <>
@@ -74,6 +61,8 @@ function Topup({ open, cb, stop, count }) {
                     </Grid>
                 </Grid>
             </Dialog>
+
+  
         </>
     )
 }

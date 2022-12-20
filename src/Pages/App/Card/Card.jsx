@@ -7,6 +7,7 @@ import Tab from '@material-ui/core/Tab';
 import CheckSerial from './pages/CheckSerial'
 import CheckLuckyDraw from './pages/CheckLuckyDraw'
 import CheckPIN from './pages/CheckPIN'
+import CheckLuckyDrawNew from './pages/checkluckyDrawNew';
 
 function a11yProps(index) {
     return {
@@ -63,6 +64,7 @@ export default function Card() {
                     <Tab label="Check Serial" {...a11yProps(0)} style={{ textTransform: 'none' }} />
                     <Tab label="Check Lucky Draw" {...a11yProps(1)} style={{ textTransform: 'none' }} />
                     <Tab label="Check Pin" {...a11yProps(2)} style={{ textTransform: 'none' }} />
+                    <Tab label="TEST" {...a11yProps(3)} style={{ textTransform: 'none' }} />
                 </Tabs>
             </AppBar>
 
@@ -74,6 +76,9 @@ export default function Card() {
             </TabPanel>
             <TabPanel value={value} index={2}>
                 <CheckPIN />
+            </TabPanel>
+            <TabPanel value={value} index={3}>
+                <CheckLuckyDrawNew />
             </TabPanel>
 
 

@@ -11,12 +11,13 @@ import { AxiosReq } from "../../../../Components/Axios";
 import moment from "moment";
 // import Crypt from "../../Components/Crypt";
 // import Doing from "../../Components/Doing";
+import cookie from 'js-cookie'
 import { toast_error, toast_success } from "./../../../../Components/Toast";
 import { LoadingCheckSerial } from "../../../../Components/TableLoading";
 
 function CheckLuckyDraw() {
   const [data, setData] = React.useState([]);
-  const [serial, setSerial] = React.useState(null);
+  const [pin, setPin] = React.useState(null);
   const [stop, setStop] = React.useState(null);
   const [rerun, setRerun] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -27,12 +28,11 @@ function CheckLuckyDraw() {
   const [dataRerun, setDataRerun] = React.useState([]);
 
 
-  const SearchSerial = () => {
+  const SearchPin = () => {
     setStop(true);
     setData([]);
     setStatusSerialPrize(false);
-    AxiosReq.post(
-      "CheckLuckyDraw?serialNumber=" + serial, {}).then((res) => {
+    AxiosReq.post(`CheckLuckyDraw?pin=${pin}&username=test`, { headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then((res) => {
         if (res.data.sts === "20::Operater successed.") {
           setCheckStatusRefilled(true);
         }
@@ -40,25 +40,13 @@ function CheckLuckyDraw() {
           setTimeout(() => {
             setData(res.data);
             try {
-              let time = res.data.recordDate;
-              let laoTime = moment(time)
-                .add(7, "hours")
-                .format("DD-MM-YYYY HH:mm:ss");
-              setLaotime(laoTime);
+              let time = res.data.tradeTime
+              let subTime = time.substr(0, 4) + '-' + time.substr(4, 2) + '-' + time.substr(6, 2) + 'T' + time.substr(8, 2) + ':' + time.substr(10, 2) + ':' + time.substr(12, 2)
+              let laoTime = moment(subTime).add(7, 'hours').format("DD-MM-YYYY HH:mm:ss")
+              setLaotime(laoTime)
             } catch (error) { }
             setStop(false);
-            // Doing({
-            //   msisdn: Crypt({
-            //     type: "decrypt",
-            //     value: localStorage.getItem("input-phone"),
-            //   }).text,
-            //   username: Crypt({
-            //     type: "decrypt",
-            //     value: localStorage.getItem("one_info"),
-            //   }).username,
-            //   detail: "check lucky darw",
-            //   resualt: "Operation successed.",
-            // });
+
           }, 500);
         }
       })
@@ -66,18 +54,7 @@ function CheckLuckyDraw() {
         console.log(err);
         setCheckStatusRefilled(false);
         setStop(false);
-        // Doing({
-        //   msisdn: Crypt({
-        //     type: "decrypt",
-        //     value: localStorage.getItem("input-phone"),
-        //   }).text,
-        //   username: Crypt({
-        //     type: "decrypt",
-        //     value: localStorage.getItem("one_info"),
-        //   }).username,
-        //   detail: "check lucky draw",
-        //   resualt: "error",
-        // });
+        
       });
   };
 
@@ -112,43 +89,21 @@ function CheckLuckyDraw() {
 
   const RerunLuckyDraw = () => {
     setIsLoading(true);
-    AxiosReq.post("RerunLuckyDraw?serialNumber=" + serial, {}).then((res) => {
+    AxiosReq.post("RerunLuckyDraw?serialNumber=" + pin, {}).then((res) => {
       if (res.status === 200) {
         if (res?.data?.sts === "20::Operater successed.") {
           setTimeout(() => {
             toast_success({ text: "SUCCESS" });
             setRerun(res?.data?.resultDesc);
             setDataRerun(res.data);
-            // Doing({
-            //   msisdn: Crypt({
-            //     type: "decrypt",
-            //     value: localStorage.getItem("input-phone"),
-            //   }).text,
-            //   username: Crypt({
-            //     type: "decrypt",
-            //     value: localStorage.getItem("one_info"),
-            //   }).username,
-            //   detail: "rerun lucky darw",
-            //   resualt: "Operation successed.",
-            // });
+           
             setIsLoading(false);
             setCheckStatusRefilled(false);
           }, 500);
         } else {
           toast_error({ text: res?.data?.resultDesc });
           setRerun(res?.data?.resultDesc);
-          // Doing({
-          //   msisdn: Crypt({
-          //     type: "decrypt",
-          //     value: localStorage.getItem("input-phone"),
-          //   }).text,
-          //   username: Crypt({
-          //     type: "decrypt",
-          //     value: localStorage.getItem("one_info"),
-          //   }).username,
-          //   detail: "rerun lucky darw",
-          //   resualt: "error",
-          // });
+        
           setIsLoading(false);
         }
         setStatusSerialPrize(true);
@@ -156,18 +111,7 @@ function CheckLuckyDraw() {
     }).catch((err) => {
         // setRerun(err)
         setIsLoading(false);
-        // Doing({
-        //   msisdn: Crypt({
-        //     type: "decrypt",
-        //     value: localStorage.getItem("input-phone"),
-        //   }).text,
-        //   username: Crypt({
-        //     type: "decrypt",
-        //     value: localStorage.getItem("one_info"),
-        //   }).username,
-        //   detail: "rerun lucky darw",
-        //   resualt: "error",
-        // });
+        
       });
   };
   const [err, setErr] = React.useState(null);
@@ -176,10 +120,10 @@ function CheckLuckyDraw() {
     if (e.length < 15) {
       setCheckStatusRefilled(true);
       e.length === 0 ? setErr(null) : setErr(false);
-      setSerial(e);
+      setPin(e);
     } else {
       setErr(true);
-      setSerial(e);
+      setPin(e);
     }
   };
   return (
@@ -192,8 +136,8 @@ function CheckLuckyDraw() {
               <input
                 maxLength="15"
                 className="input"
-                value={serial}
-                placeholder="Serial Number ..."
+                value={pin}
+                placeholder="PIN Number ..."
                 onChange={(e) => {
                   changeValue(e.target.value);
                 }}
@@ -208,13 +152,13 @@ function CheckLuckyDraw() {
                 variant="contained"
                 disabled={!err}
                 className="btn-primary"
-                onClick={SearchSerial}
+                onClick={SearchPin}
               >
                 <Search />
               </Button>
             </Grid>
             <Grid item xs={2} style={{ paddingLeft: 10, paddingBottom: 20 }}>
-              {data?.hotCardFlag === "1" && serial !== null && checkStatusRefilled !== false ? (
+              {data?.hotCardFlag === "1" && pin !== null && checkStatusRefilled !== false ? (
                 <Button
                   style={{ maxHeight: 36 }}
                   type="submit"
@@ -525,3 +469,6 @@ function CheckLuckyDraw() {
 }
 
 export default CheckLuckyDraw;
+
+
+
