@@ -4,6 +4,7 @@ import moment from 'moment'
 import React, { useState } from 'react'
 import { AxiosReq } from '../../../../../../Components/Axios'
 import BorrowAndDeductTab from './BorrowAndDeductTab'
+import cookie from 'js-cookie'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />
@@ -13,7 +14,7 @@ function Fadao({ open, cb, stop, count }) {
     const [data, setData] = useState([])
     React.useEffect(() => {
         var phone = localStorage.getItem("ONE_PHONE")
-        AxiosReq.get("BorrowfadaoAndKalsym?msisdn_=" + phone).then(res => {
+        AxiosReq.get("BorrowfadaoAndKalsym?msisdn_=" + phone,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200) {
                 var num = 0
                 var update = res.data.map(row => {

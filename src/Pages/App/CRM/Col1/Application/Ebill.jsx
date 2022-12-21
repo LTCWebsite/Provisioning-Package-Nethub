@@ -5,7 +5,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import { AxiosReq } from '../../../../../Components/Axios'
 // import Crypt from '../../Components/Crypt'
-// import cookie from 'js-cookie'
+import cookie from 'js-cookie'
 import { Cancel, CheckCircle, HelpOutline } from '@material-ui/icons';
 import { toast_success, toast_error } from '../../../../../Components/Toast';
 // import Doing from '../../Components/Doing'
@@ -20,7 +20,7 @@ export default function Ebill() {
     const [reason, setReason] = React.useState({ text: null, alert: false })
     React.useEffect(() => {
         var phone = localStorage.getItem("ONE_PHONE")
-        AxiosReq.get("CheckEbillInfo?msisdn=" + phone).then(res => {
+        AxiosReq.get("CheckEbillInfo?msisdn=" + phone,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200) {
                 setData(res.data)
                 setValue(res.data.sendType)
@@ -65,7 +65,7 @@ export default function Ebill() {
                 text = "ຍົກເລີກ ebill ( ກັບໄປພິມເຈ້ຍໃຫ້ລູກຄ້າ)"
             }
             var phone = localStorage.getItem("ONE_PHONE")
-            AxiosReq.post("CheckEbillInfo?msisdn=" + phone + "&sendType=" + sendType, {}).then(res => {
+            AxiosReq.post("CheckEbillInfo?msisdn=" + phone + "&sendType=" + sendType, { headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
                 if (res.status === 200) {
                     if (sendType === '1') {
                         setTool("ສົ່ງ email")

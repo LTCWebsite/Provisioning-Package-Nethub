@@ -10,6 +10,7 @@ import moment from 'moment'
 import { LoadingTable } from '../../../../../../Components/TableLoading'
 import { Dialog, Slide } from '@mui/material'
 import { Close } from '@mui/icons-material'
+import cookie from 'js-cookie'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />
@@ -22,7 +23,7 @@ function Info178({ open, cb }) {
     const [data, setData] = React.useState([])
     const [sl, setSl] = React.useState({ data: [], select: 0 })
     React.useEffect(() => {
-        AxiosReq.get("api/Province").then(res => {
+        AxiosReq.get("api/Province",{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200) {
                 setSl({ ...sl, data: res.data })
                 // console.log(res.data)
@@ -41,7 +42,7 @@ function Info178({ open, cb }) {
         } else {
             send = "Infomation178?Name=" + name + "&Address=" + place
         }
-        AxiosReq.get(send).then(res => {
+        AxiosReq.get(send,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200) {
                 var num = 1
                 var update = res.data.map(row => {

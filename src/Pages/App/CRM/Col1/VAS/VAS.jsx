@@ -5,6 +5,7 @@ import Switch from '@material-ui/core/Switch'
 import { toast_success, toast_error } from '../../../../../Components/Toast'
 import { Close, WarningAmber } from '@mui/icons-material'
 import { IconButton, Skeleton } from '@mui/material'
+import cookie from 'js-cookie'
 
 function VAS() {
     const [stop, setStop] = React.useState(false)
@@ -45,10 +46,10 @@ function VAS() {
         setStop(false)
         setAlert(false)
         var phone = localStorage.getItem("ONE_PHONE")
-        AxiosReq.get("VAS?msisdn=" + phone).then(res => {
+        AxiosReq.get("VAS?msisdn=" + phone,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200) {
                 var useData = res.data
-                AxiosReq.options("VAS").then(re => {
+                AxiosReq.options("VAS",{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(re => {
                     if (re.status === 200) {
                         var newData = re.data.map(row => {
                             var num = 0;
@@ -92,7 +93,7 @@ function VAS() {
             handleCloseCon()
             if (st === false) {
                 /////////////////////       POST
-                AxiosReq.get("ManageVAS?msisdn=" + phone + "&servicename=" + data).then(res => {
+                AxiosReq.get("ManageVAS?msisdn=" + phone + "&servicename=" + data,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
                     if (res.status === 200 && res.data.registerResult.resultcode === "200") {
                         var newData = option.map(row =>
                             row.nameService === data ? row.checked === false ? { ...row, checked: true } : { ...row, checked: false } : { ...row }
@@ -123,7 +124,7 @@ function VAS() {
                 })
             } else if (st === true) {
                 //////////////////// Patch
-                AxiosReq.post("ManageVAS?msisdn=" + phone + "&servicename=" + data, {}).then(res => {
+                AxiosReq.post("ManageVAS?msisdn=" + phone + "&servicename=" + data,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
                     if (res.status === 200 && res.data.cancelResult.resultcode === "200") {
                         var newData = option.map(row =>
                             row.nameService === data ? row.checked === false ? { ...row, checked: true } : { ...row, checked: false } : { ...row }

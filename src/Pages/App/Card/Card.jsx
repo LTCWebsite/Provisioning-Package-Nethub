@@ -8,6 +8,7 @@ import CheckSerial from './pages/CheckSerial'
 import CheckLuckyDraw from './pages/CheckLuckyDraw'
 import CheckPIN from './pages/CheckPIN'
 import CheckLuckyDrawNew from './pages/checkluckyDrawNew';
+import cookie from 'js-cookie'
 
 function a11yProps(index) {
     return {

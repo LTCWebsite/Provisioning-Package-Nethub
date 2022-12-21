@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { AxiosReq } from '../../../../../../Components/Axios'
 import { MyCrypt } from '../../../../../../Components/MyCrypt'
 import MyTable from '../../../../../../Components/MyTable'
+import cookie from 'js-cookie'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -32,7 +33,7 @@ function BuyPackage({ open, cb, done, ifdone, count }) {
         count(0)
         let network = MyCrypt("de", localStorage.getItem("ONE_NETWORK"))
         setBssNetworkType(network?.NETWORK_CODE)
-        AxiosReq.get("Package?networkType=" + network?.NETWORK_CODE).then(res => {
+        AxiosReq.get("Package?networkType=" + network?.NETWORK_CODE,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200) {
                 var num = 0
                 var newUpdate = res.data.listPackage.map(row => {
@@ -66,7 +67,7 @@ function BuyPackage({ open, cb, done, ifdone, count }) {
             "packageCode": pkCode + "",
             "networkType": bssNetworkType
         }
-        AxiosReq.post("Package", datas).then(res => {
+        AxiosReq.post("Package", datas,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200 && res.data.resultCode === "200") {
                 setBkData(res.data)
                 setIsShowSuccess(!isShowSuccess)

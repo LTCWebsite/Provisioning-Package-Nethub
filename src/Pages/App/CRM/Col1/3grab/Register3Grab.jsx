@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 import { AxiosReq } from '../../../../../Components/Axios'
 import Can from '@material-ui/icons/Cancel'
+import cookie from 'js-cookie'
 // import GetPhoneNumber from '../../../../../Components/GetPhoneNumber'
 
 // const Transition = React.forwardRef(function Transition(props, ref) {
@@ -17,7 +18,7 @@ function Register3Grab() {
     useEffect(() => {
         setShow(false)
         let phone = localStorage.getItem("ONE_PHONE")
-        AxiosReq.get("Register3Grab?msisdn=" + phone).then(res => {
+        AxiosReq.get("Register3Grab?msisdn=" + phone,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200) {
                 setData(res.data)
                 setShow(true)

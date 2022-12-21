@@ -4,6 +4,7 @@ import moment from 'moment'
 import React, { useState } from 'react'
 import { AxiosReq } from '../../../../../../Components/Axios'
 import TableMtopup from './TableMtopup'
+import cookie from 'js-cookie'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />
@@ -21,7 +22,7 @@ function MTopup({ open, cb, stop, count }) {
             startDate: date_start,
             endDate: date_end,
         }
-        AxiosReq.post("controller?Telephone=" + phone + "&msisdn=" + phone, sendData).then(res => {
+        AxiosReq.post("controller?Telephone=" + phone + "&msisdn=" + phone, sendData,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200) {
                 var num = 0
                 var update = res.data.map(row => {

@@ -6,6 +6,7 @@ import BuyPackage from './Model/BuyPackage'
 import PackageHistory from './Model/PackageHistory'
 import QueryPackage from './Model/QueryPackage'
 import SpecialPackage from './Model/SpecialPackage'
+import cookie from 'js-cookie'
 
 function Packages() {
     const [ph, setPh] = useState({ data: [], load: false, count: 0, show: false })
@@ -19,7 +20,7 @@ function Packages() {
         let phone = localStorage.getItem("ONE_PHONE")
 
         setPh({ ...ph, count: 0, load: true })
-        AxiosReq.get("/New_PackageHistoryCount/count?msisdn=" + phone).then(res => {
+        AxiosReq.get("/New_PackageHistoryCount/count?msisdn=" + phone,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200 && res.data.resultCode === 200) {
                 setPh({ ...ph, count: parseInt(res.data.total), load: false })
             } else {
@@ -30,7 +31,7 @@ function Packages() {
         })
 
         setPk({ ...pk, load: true, count: 0 })
-        AxiosReq.get("NewQueryPackage?msisdn=" + phone).then(res => {
+        AxiosReq.get("NewQueryPackage?msisdn=" + phone,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200) {
                 let update = res.data.filter(row => row.remaining_data > 0).map((row, idx) => {
                     row.idx = idx + 1

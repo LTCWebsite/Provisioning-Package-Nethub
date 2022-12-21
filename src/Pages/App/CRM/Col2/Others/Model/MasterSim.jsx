@@ -4,6 +4,7 @@ import MyTable from '../../../../../../Components/MyTable'
 import { AxiosReq } from '../../../../../../Components/Axios'
 import { Grid } from '@material-ui/core'
 // import Crypt from '../Components/Crypt'
+import cookie from 'js-cookie'
 import { LoadingTable } from '../../../../../../Components/TableLoading'
 import { Dialog, Slide } from '@mui/material'
 import { Close } from '@mui/icons-material'
@@ -15,7 +16,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 function MasterSim({ open, cb }) {
     const [data, setData] = React.useState({ text: [], load: false })
     React.useEffect(() => {
-        AxiosReq.post("CheckMasterSim", {}).then(res => {
+        // console.log(cookie.get("ONE_TOKEN"))
+        AxiosReq.get("CheckMasterSim",{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200) {
                 var update = res.data.map((row, idx) => {
                     if (row.balance <= 50000000 && row.balance > 5000 && row.tier_ === "Platinum" && row.status === true) {

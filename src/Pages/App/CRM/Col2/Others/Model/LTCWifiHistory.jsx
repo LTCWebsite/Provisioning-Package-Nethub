@@ -3,13 +3,14 @@ import MyTable from '../../../../../../Components/MyTable'
 import { AxiosReq } from '../../../../../../Components/Axios'
 import moment from 'moment'
 import { LoadingTable } from '../../../../../../Components/TableLoading'
+import cookie from 'js-cookie'
 
 function LTCWifiHistory() {
     const [stop, setStop] = React.useState(false)
     const [data, setData] = React.useState([])
     React.useEffect(() => {
         var phone = localStorage.getItem("ONE_PHONE")
-        AxiosReq.get("HistoryBuyPackageLTCWiFi?msisdn=" + phone).then(res => {
+        AxiosReq.get("HistoryBuyPackageLTCWiFi?msisdn=" + phone,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200) {
                 var num = 0
                 var update = res.data.map(row => {

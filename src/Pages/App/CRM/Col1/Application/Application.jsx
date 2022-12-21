@@ -6,6 +6,7 @@ import Ebill from './Ebill'
 import Mservice from './Model/Mservice'
 import { Skeleton } from '@mui/material'
 import Mmoney from './Model/Mmoney'
+import cookie from 'js-cookie'
 
 function Application() {
     const [stop, setStop] = React.useState(false)
@@ -22,10 +23,10 @@ function Application() {
         setStop(false)
         setAlert(false)
         var phone = localStorage.getItem("ONE_PHONE")
-        AxiosReq.get("MServices?msisdn=" + phone).then(res => {
+        AxiosReq.get("MServices?msisdn=" + phone,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200) {
                 setMService(res.data.isRegistered)
-                AxiosReq.get("MTopupPlus?msisdn=" + phone).then(res => {
+                AxiosReq.get("MTopupPlus?msisdn=" + phone,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
                     if (res.status === 200) {
                         setMTopup(res.data.isRegistered)
                         setTimeout(() => {
