@@ -1,5 +1,5 @@
 import { Dialog, Grid, FormControl, InputLabel, Select, MenuItem, Button, CircularProgress } from '@material-ui/core'
-import Cookies from 'js-cookie';
+import cookie from 'js-cookie'
 import React from 'react'
 // import Crypt from '../../../../Pages/Components/Crypt';
 import { AlertSuccess, AlertError, AlertInfo } from '../../../../../../Components/Toast'
@@ -12,7 +12,7 @@ function CancelGame({ use, cb }) {
     const [game, setGame] = React.useState({ data: [], alert: false })
     const [btn, setBtn] = React.useState({ send: false, alert: false })
     React.useEffect(() => {
-        AxiosReq.get("HeaderNameGame").then(res => {
+        AxiosReq.get("HeaderNameGame",{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200) {
                 setGame({ ...game, data: res.data })
                 // console.log(res.data)
@@ -36,7 +36,7 @@ function CancelGame({ use, cb }) {
             AxiosReq.post("UnSubScribeGame", {
                 msisdn: sendData.msisdn,
                 ussdCode: sendData.ussdCode,
-            }, { headers: { 'Authorization': 'Bearer ' + Cookies.get("one_session") } }).then(res => {
+            }, { headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
                 if (res.status === 200) {
                     if(res.data.resultCode === "100"){
                         AlertInfo(res.data.resultDesc)

@@ -6,6 +6,7 @@ import { useEffect } from 'react'
 import { AxiosReq } from '../../../../../Components/Axios'
 import Can from '@material-ui/icons/Cancel'
 import { Visibility } from '@material-ui/icons'
+import cookie from 'js-cookie'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -19,7 +20,7 @@ function BssRegister({ cb }) {
     useEffect(() => {
         setShow(false)
         let phone = localStorage.getItem("ONE_PHONE")
-        AxiosReq.get("QueryCustomerBSS?msisdn=" + phone).then(res => {
+        AxiosReq.get("QueryCustomerBSS?msisdn=" + phone,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200) {
                 setData(res.data.querySubInfoResult)
                 setShow(true)

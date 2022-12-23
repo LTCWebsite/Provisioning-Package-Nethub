@@ -12,15 +12,20 @@ function TableTopup({ topupData }) {
     }, [])
     const columns = [
         { title: 'No', field: 'id_idx', maxWidth: 50 },
-        { title: 'ເບີຕົ້ນທາງ', field: 'sourceMsisdn' },
-        { title: 'ເບີປາຍທາງ', field: 'destDeduct' },
-        { title: 'ເວລາຊື້', field: 'date_buy', minWidth: 200 },
-        { title: 'ປະເພດ', field: 'type' },
-        { title: 'Code', field: 'code' },
-        { title: 'ມູນຄ່າ', field: 'amount', type: 'numeric', render: row => row.amount > 0 ? parseInt(row.amount).toLocaleString() : row.amount },
-        { title: 'Bonus', field: 'bonus', type: 'numeric', render: row => row.bonus > 0 ? row.bonus.toLocaleString() : row.bonus },
-        { title: 'ສະຖານະ', field: 'description', minWidth: 200, render: row => row?.description?.length <= 25 ? row?.description : <Tooltip title={row?.description}><div>{row?.description?.substring(0, 25)}...</div></Tooltip>  },
+        { title: 'seq_number', field: 'seqnumber_' },
+        { title: 'chanel', field: 'chanel_' },
+        { title: 'srvtype', field: 'srvtype_' },
+        { title: 'type', field: 'type_' },
+        { title: 'userId', field: 'userId_' },
+        { title: 'msisdn', field: 'msisdn_' },
+        { title: 'amount', field: 'amount_' },
+        { title: 'requestdate', field: 'requestdate_'},
+        { title: 'errcode', field: 'errcode_' },
+        { title: 'errdesc', field: 'errdesc_'},
+        { title: 'receipt', field: 'receipt_' }
     ]
+
+
     function ShowData() {
         return (
             <>

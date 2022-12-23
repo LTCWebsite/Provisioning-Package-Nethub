@@ -3,6 +3,7 @@ import { Grid, Button, Card, CardContent } from '@material-ui/core'
 import Search from '@material-ui/icons/Search'
 import { AxiosReq } from '../../../../Components/Axios'
 import moment from 'moment'
+import cookie from 'js-cookie'
 // import cookie from 'js-cookie'
 // import Crypt from '../../Components/Crypt'
 // import Doing from '../../Components/Doing'
@@ -16,7 +17,7 @@ function CheckSerial() {
     const [laotime, setLaotime] = React.useState('')
     const SearchSerial = () => {
         setStop(true)
-        AxiosReq.get("CheckSerialNumber?serialnumber=" + serial).then(res => {
+        AxiosReq.get("CheckSerialNumber?serialnumber=" + serial,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200) {
 
                 // console.log(res.data)

@@ -3,6 +3,7 @@ import { Dialog, Grid, Slide } from '@mui/material'
 import React from 'react'
 import { AxiosReq } from '../../../../../../Components/Axios'
 import WifiTab from './WifiTab'
+import cookie from 'js-cookie'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />
@@ -11,7 +12,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 function Wifi({ open, cb, count, stop }) {
     React.useEffect(() => {
         var phone = localStorage.getItem("ONE_PHONE")
-        AxiosReq.get("HistoryBuyPackageLTCWiFi?msisdn=" + phone).then(res => {
+        AxiosReq.get("HistoryBuyPackageLTCWiFi?msisdn=" + phone,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200) {
                 stop(false)
                 count(res?.data?.length)

@@ -4,6 +4,7 @@ import moment from 'moment';
 import React, { useEffect } from 'react'
 import { AxiosReq } from '../../../../../../Components/Axios';
 import MyTable from '../../../../../../Components/MyTable';
+import cookie from 'js-cookie'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -35,7 +36,7 @@ function SpecialPackage({ open, cb, done, ifdone, count }) {
     useEffect(() => {
         ifdone(done)
         let phone = localStorage.getItem("ONE_PHONE")
-        AxiosReq.get("api/SpecialPackage?msisdn=" + phone).then((res) => {
+        AxiosReq.get("api/SpecialPackage?msisdn=" + phone,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then((res) => {
             if (res.status === 200) {
                 var num = 0;
                 var update = res.data.map((row) => {

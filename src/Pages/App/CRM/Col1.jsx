@@ -13,6 +13,7 @@ import { AxiosReq } from '../../../Components/Axios'
 import VAS from './Col1/VAS/VAS'
 import Application from './Col1/Application/Application'
 import Ocs from './Col1/Ocs/Ocs'
+import cookie from 'js-cookie'
 
 function Col1() {
     const phone = localStorage.getItem("ONE_PHONE")
@@ -25,7 +26,7 @@ function Col1() {
 
     useEffect(() => {
         let phone = localStorage.getItem("ONE_PHONE")
-        AxiosReq.get("QueryHLRInfo?msisdn=" + phone).then(res => {
+        AxiosReq.get("QueryHLRInfo?msisdn=" + phone,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200) {
                 // console.log(res.data)
                 setCheck({

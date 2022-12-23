@@ -4,6 +4,7 @@ import moment from 'moment';
 import React, { useEffect } from 'react'
 import { AxiosReq } from '../../../../../../Components/Axios';
 import MyTable from '../../../../../../Components/MyTable';
+import cookie from 'js-cookie'
 
 function HappyCall({ open, cb, done, ifdone, count }) {
     const [happy, setHappy] = React.useState({ st: "", data: [] });
@@ -39,7 +40,7 @@ function HappyCall({ open, cb, done, ifdone, count }) {
     useEffect(() => {
         let phone = localStorage.getItem("ONE_PHONE")
         ifdone(done)
-        AxiosReq.get("HappyCallHappyCall?msisdn=" + phone).then((res) => {
+        AxiosReq.get("HappyCallHappyCall?msisdn=" + phone,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then((res) => {
             if (res.status === 200) {
                 var num = 0
                 var update = res.data.map((row) => {

@@ -3,6 +3,7 @@ import { CheckCircle, Close } from '@mui/icons-material'
 import { Button, CircularProgress, Dialog, Grid, IconButton, Skeleton, Slide } from '@mui/material'
 import React, { useEffect } from 'react'
 import { useState } from 'react'
+import cookie from 'js-cookie'
 import { AxiosReq } from '../../../../../Components/Axios'
 import LoadLottie from '../../../../../Components/LoadLottie'
 import File from '../../../../../Lottie/caution.json'
@@ -28,7 +29,7 @@ function BlackList({ data, load }) {
     const SaveUnBlackList = () => {
         setBtn(true)
         let phone = localStorage.getItem("ONE_PHONE")
-        AxiosReq.post("UnBlackList?msisdn=" + phone).then(res => {
+        AxiosReq.post("UnBlackList?msisdn=" + phone,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200 && res.data.resultCode === "0") {
                 toast_success({ text: res.data.resultDesc })
                 bl = 0
@@ -45,7 +46,7 @@ function BlackList({ data, load }) {
     useEffect(() => {
         setShow(false)
         let phone = localStorage.getItem("ONE_PHONE")
-        AxiosReq.get("CheckPoint?msisdn=" + phone).then(res => {
+        AxiosReq.get("CheckPoint?msisdn=" + phone,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200) {
                 // console.log(res.data)
                 setShow(true)

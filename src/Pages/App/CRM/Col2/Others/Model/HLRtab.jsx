@@ -5,6 +5,7 @@ import Tabs from '@material-ui/core/Tabs';
 import { Tab, Grid, Table, TableBody, TableRow, TableCell } from '@material-ui/core';
 import { AxiosReq } from '../../../../../../Components/Axios'
 // import Doing from '../../Components/Doing'
+import cookie from 'js-cookie'
 import { LoadingTable } from '../../../../../../Components/TableLoading'
 
 const useStyles = makeStyles({
@@ -39,7 +40,7 @@ export default function HLRtab() {
   const [stop, setStop] = React.useState(false)
   React.useEffect(() => {
     var phone = localStorage.getItem("ONE_PHONE")
-    AxiosReq.post("QueryHLRInfo?msisdn=" + phone, {}).then(res => {
+    AxiosReq.post("QueryHLRInfo?msisdn=" + phone, {},{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
       if (res.status === 200) {
         var mySub = JSON.parse(res.data.listSub.replaceAll('@Name', 'AName')).Result.ResultData.Group
         var myCBAR = JSON.parse(res.data.listCBAR.replaceAll('@Name', 'AName')).Result.ResultData.Group
