@@ -27,7 +27,7 @@ function BillQuery() {
     let send = {
       msisdn: phone
     }
-    axios.post("http://172.28.14.48:3000/cut_money", send, {
+    axios.post("http://10.30.6.148:3000/cut_money", send, {
       auth: {
         username: "one",
         password: "#Ltc1qaz2wsx@one"

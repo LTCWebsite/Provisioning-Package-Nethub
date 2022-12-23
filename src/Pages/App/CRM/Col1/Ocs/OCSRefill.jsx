@@ -12,7 +12,7 @@ function OCSRefill() {
         let send = {
             "msisdn": localStorage.getItem("ONE_PHONE")
         }
-        axios.post("http://172.28.14.48:3000/ocs_refill", send, {
+        axios.post("http://10.30.6.148:3000/ocs_refill", send, {
             auth: {
                 username: "one",
                 password: "#Ltc1qaz2wsx@one"
