@@ -4,7 +4,7 @@ import { Search } from '@material-ui/icons'
 import { AxiosReq } from '../../../../Components/Axios'
 import MyTable from '../../../../Components/MyTable'
 import moment from 'moment'
-// import cookie from 'js-cookie'
+import cookie from 'js-cookie'
 // import Crypt from '../../Components/Crypt'
 // import Doing from '../../Components/Doing'
 import { LoadingTable } from '../../../../Components/TableLoading'
@@ -15,7 +15,7 @@ function CheckPIN() {
     const [data, setData] = React.useState([])
     const Search178 = () => {
         setStop(false)
-        AxiosReq.get("api/CheckPin?pin=" + pin).then(res => {
+        AxiosReq.get("api/CheckPin?pin=" + pin, { headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200) {
                 var num = 1
                 var date = res.data.map(row => {
@@ -53,9 +53,10 @@ function CheckPIN() {
         { title: 'ຈຳນວນເງິນ', field: 'amount', type: 'numeric', render: row => row.amount > 0 ? parseInt(row.amount).toLocaleString() : row.amount },
         { title: 'ເງິນຍັງເຫຼືອ', field: 'currentBalance', type: 'numeric', render: row => row.currentBalance > 0 ? parseInt(row.currentBalance).toLocaleString() : row.currentBalance },
         { title: 'ຊ່ອງທາງ', field: 'chanel' },
+        { title: 'errorCode', field: 'errorCode' },
         { title: 'ວັນທີເຕີມ', field: 'requestDate', render: row => moment(row.requestDate).format("DD-MM-YYYY HH:mm:ss"), minWidth: 200 },
         {
-            title: 'ຄຳອະທິບາຍ', field: 'sms', minWidth: 300, render: row => <Tooltip title={row.sms}><div>{row.sms.substring(0, 20)} ...</div></Tooltip>
+            title: 'ຄຳອະທິບາຍ', field: 'sms', minWidth: 300, render: row => <Tooltip title={row.sms}><div className={parseInt(row.errorCode)===1000? "bg2":"bg1"} >{row.sms.substring(0, 20)} ...</div></Tooltip>
         }
     ]
 

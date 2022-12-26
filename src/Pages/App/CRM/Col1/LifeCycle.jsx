@@ -2,6 +2,8 @@ import { Check } from '@mui/icons-material'
 import { Grid, Skeleton } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { AxiosReq } from '../../../../Components/Axios'
+import { MyCrypt } from "../../../../Components/MyCrypt"
+import cookie from 'js-cookie'
 
 function LifeCycle({ cb, load }) {
     const [cycle, setCycle] = useState([])
@@ -14,26 +16,52 @@ function LifeCycle({ cb, load }) {
         setShow(false)
         load(true)
         let phone = localStorage.getItem("ONE_PHONE")
-        AxiosReq.get("NewQuerySubLifeCycle?msisdn=" + phone).then(res => {
-            if (res.status === 200) {
-                // console.log(res.data)
-                let active = res.data.list[0].statusExpireTime
-                let barring = res.data.list[1].statusExpireTime
-                let suspend = res.data.list[2].statusExpireTime
-                setDate({
-                    ...date,
-                    active: active.substring(0, 4) + '-' + active.substring(4, 6) + '-' + active.substring(6, 8) + ' ' + active.substring(8, 10) + ':' + active.substring(10, 12) + ':' + active.substring(12, 14),
-                    barring: barring.substring(0, 4) + '-' + barring.substring(4, 6) + '-' + barring.substring(6, 8) + ' ' + barring.substring(8, 10) + ':' + barring.substring(10, 12) + ':' + barring.substring(12, 14),
-                    suspend: suspend.substring(0, 4) + '-' + suspend.substring(4, 6) + '-' + suspend.substring(6, 8) + ' ' + suspend.substring(8, 10) + ':' + suspend.substring(10, 12) + ':' + suspend.substring(12, 14)
-                })
-                setCycle(res.data)
-                cb(res.data)
+        let type = MyCrypt("de", localStorage.getItem("ONE_NETWORK"))
+        if( type?.NETWORK_CODE === 'M' || type?.NETWORK_CODE === 'H' || type?.NETWORK_CODE === 'W'){
+            AxiosReq.get("NewQuerySubLifeCycle?msisdn=" + phone).then(res => {
+                if (res.status === 200) {
+                    // console.log(res.data)
+                    let active = res.data.list[0].statusExpireTime
+                    let barring = res.data.list[1].statusExpireTime
+                    let suspend = res.data.list[2].statusExpireTime
+                    setDate({
+                        ...date,
+                        active: active.substring(0, 4) + '-' + active.substring(4, 6) + '-' + active.substring(6, 8) + ' ' + active.substring(8, 10) + ':' + active.substring(10, 12) + ':' + active.substring(12, 14),
+                        barring: barring.substring(0, 4) + '-' + barring.substring(4, 6) + '-' + barring.substring(6, 8) + ' ' + barring.substring(8, 10) + ':' + barring.substring(10, 12) + ':' + barring.substring(12, 14),
+                        suspend: suspend.substring(0, 4) + '-' + suspend.substring(4, 6) + '-' + suspend.substring(6, 8) + ' ' + suspend.substring(8, 10) + ':' + suspend.substring(10, 12) + ':' + suspend.substring(12, 14)
+                    })
+                    setCycle(res.data)
+                    cb(res.data)
+                    setShow(true)
+                    load(false)
+                }
+            }).catch(er => {
                 setShow(true)
-                load(false)
-            }
-        }).catch(er => {
-            setShow(true)
-        })
+            })
+        }else{
+
+            AxiosReq.get("NewCheckBlackListBss?msisdn=" + phone,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
+                if (res.status === 200) {
+                    // console.log(res.data)
+                    // let active = res.data.list[0].statusExpireTime
+                    // let barring = res.data.list[1].statusExpireTime
+                    // let suspend = res.data.list[2].statusExpireTime
+                    // setDate({
+                    //     ...date,
+                    //     active: active.substring(0, 4) + '-' + active.substring(4, 6) + '-' + active.substring(6, 8) + ' ' + active.substring(8, 10) + ':' + active.substring(10, 12) + ':' + active.substring(12, 14),
+                    //     barring: barring.substring(0, 4) + '-' + barring.substring(4, 6) + '-' + barring.substring(6, 8) + ' ' + barring.substring(8, 10) + ':' + barring.substring(10, 12) + ':' + barring.substring(12, 14),
+                    //     suspend: suspend.substring(0, 4) + '-' + suspend.substring(4, 6) + '-' + suspend.substring(6, 8) + ' ' + suspend.substring(8, 10) + ':' + suspend.substring(10, 12) + ':' + suspend.substring(12, 14)
+                    // })
+                    // setCycle(res.data)
+                    cb(res.data)
+                    setShow(true)
+                    load(false)
+                }
+            }).catch(er => {
+                setShow(true)
+            })
+        }
+        
 
         AxiosReq.get("NewCustomerInfoCbs?msisdn=" + phone).then(res => {
             if (res.status === 200) {
