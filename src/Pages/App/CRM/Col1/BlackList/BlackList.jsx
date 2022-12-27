@@ -29,7 +29,7 @@ function BlackList({ data, load }) {
     const SaveUnBlackList = () => {
         setBtn(true)
         let phone = localStorage.getItem("ONE_PHONE")
-        AxiosReq.post("UnBlackList?msisdn=" + phone,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
+        AxiosReq.post("UnBlackList?msisdn=" + phone, {},{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200 && res.data.resultCode === "0") {
                 toast_success({ text: res.data.resultDesc })
                 bl = 0
