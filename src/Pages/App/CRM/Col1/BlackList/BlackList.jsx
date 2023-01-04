@@ -39,6 +39,7 @@ function BlackList({ data, load }) {
             setOpen(false)
             setBtn(false)
         }).catch(er => {
+            // console.log(er)
             setOpen(false)
             setBtn(false)
         })

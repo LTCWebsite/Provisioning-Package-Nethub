@@ -16,7 +16,7 @@ function Balance() {
         })
     }, [])
     return (
-        <Grid item xs={12} container className='next'>
+        <Grid item xs={12} container className=''>
             {!show ?
                 <Grid item xs={12} container>
                     <Grid item xs={12}>

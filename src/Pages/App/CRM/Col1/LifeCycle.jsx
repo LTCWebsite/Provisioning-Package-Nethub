@@ -5,7 +5,7 @@ import { AxiosReq } from '../../../../Components/Axios'
 import { MyCrypt } from "../../../../Components/MyCrypt"
 import cookie from 'js-cookie'
 
-function LifeCycle({ cb, load }) {
+function LifeCycle({ cb, cbCus, load }) {
     const [cycle, setCycle] = useState([])
     const [show, setShow] = useState(false)
     const [date, setDate] = useState({ active: '', barring: '', suspend: '' })
@@ -67,6 +67,7 @@ function LifeCycle({ cb, load }) {
             if (res.status === 200) {
                 let active = res?.data?.activationTime
                 let barring = res?.data?.activeTimeLimit
+                cbCus(res.data)
                 setOffering({
                     firstActive: active.substring(0, 4) + '-' + active.substring(4, 6) + '-' + active.substring(6, 8) + ' ' + active.substring(8, 10) + ':' + active.substring(10, 12) + ':' + active.substring(12, 14),
                     activeLimit: barring.substring(0, 4) + '-' + barring.substring(4, 6) + '-' + barring.substring(6, 8) + ' ' + barring.substring(8, 10) + ':' + barring.substring(10, 12) + ':' + barring.substring(12, 14)

@@ -53,9 +53,9 @@ export default function OCSTab() {
             textColor="primary"
             centeredƒ
           >
-            <Tab label="All Free" />
-            <Tab label="Refill" />
-            <Tab label="Offering" />
+            <Tab label="Query Free Unit" />
+            {/* <Tab label="Refill" />
+            <Tab label="Offering" /> */}
           </Tabs>
         </Paper>
         {/* ///////////////////////////////       Tab Sub */}
