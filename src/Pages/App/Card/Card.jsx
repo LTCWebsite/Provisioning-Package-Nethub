@@ -65,7 +65,7 @@ export default function Card() {
                     <Tab label="Check Serial" {...a11yProps(0)} style={{ textTransform: 'none' }} />
                     <Tab label="Check Lucky Draw" {...a11yProps(1)} style={{ textTransform: 'none' }} />
                     <Tab label="Check Pin" {...a11yProps(2)} style={{ textTransform: 'none' }} />
-                    <Tab label="TEST" {...a11yProps(3)} style={{ textTransform: 'none' }} />
+                    {/* <Tab label="TEST" {...a11yProps(3)} style={{ textTransform: 'none' }} /> */}
                 </Tabs>
             </AppBar>
 
@@ -73,14 +73,14 @@ export default function Card() {
                 <CheckSerial />
             </TabPanel>
             <TabPanel value={value} index={1}>
-                <CheckLuckyDraw />
+                <CheckLuckyDrawNew />
             </TabPanel>
             <TabPanel value={value} index={2}>
                 <CheckPIN />
             </TabPanel>
-            <TabPanel value={value} index={3}>
+            {/* <TabPanel value={value} index={3}>
                 <CheckLuckyDrawNew />
-            </TabPanel>
+            </TabPanel> */}
 
 
         </div>

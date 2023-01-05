@@ -4,6 +4,7 @@ import { Grid } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import Register3Grab from './Col1/3grab/Register3Grab'
 import Balance from './Col1/Balance'
+import Debit from './Col1/Debit'
 import BlackList from './Col1/BlackList/BlackList'
 import BssRegister from './Col1/Bss/BssRegister'
 import LifeCycle from './Col1/LifeCycle'
@@ -14,13 +15,16 @@ import VAS from './Col1/VAS/VAS'
 import Application from './Col1/Application/Application'
 import Ocs from './Col1/Ocs/Ocs'
 import cookie from 'js-cookie'
+import { MyCrypt } from "../../../Components/MyCrypt"
 
 function Col1() {
     const phone = localStorage.getItem("ONE_PHONE")
+    let type = MyCrypt("de", localStorage.getItem("ONE_NETWORK"))
     const [check, setCheck] = useState({ n_3g: false, n_4g: false, rbt: false, ir_call: false, ir_data: false, load: true })
     const [bss, setBSS] = useState('')
     const [backlist, setBacklist] = useState('')
     const [load, setLoad] = useState(true)
+    const [cus, setCus] = useState()
     const [ocs, setOcs] = useState('')
     const [ocsSt, setOcsSt] = useState('')
 
@@ -49,6 +53,11 @@ function Col1() {
             <Grid container>
                 <Grid item xs={12} md={12} lg={6} className="box-crm">
                     <Grid item xs={12}><h2 className='blue'>Info</h2></Grid>
+                    
+                    <Register3Grab />
+
+                    <BssRegister cb={(e) => setBSS(e)} />
+
                     <Grid item container xs={12} className='link-box'>
                         <Grid item xs={4}><PhoneIphone /></Grid>
                         <Grid item xs={8}><div className='text-right'>{phone}</div></Grid>
@@ -57,16 +66,12 @@ function Col1() {
                         <Grid item xs={4}><PersonOutline /></Grid>
                         <Grid item xs={8}><div className='text-right'>{bss?.name !== "" ? bss.name : "---"}</div></Grid>
                     </Grid>
-
-                    <BssRegister cb={(e) => setBSS(e)} />
-
-                    <Ocs load={load} st={backlist?.currentStatus} />
-
-                    <Register3Grab />
-
-                    <Balance />
-
                     <Network />
+                    {type?.NETWORK_CODE === 'G' || type?.NETWORK_CODE === 'A' || type?.NETWORK_CODE === 'P' || type?.NETWORK_CODE === 'F'  || type?.NETWORK_CODE === 'WP'  || type?.NETWORK_CODE === 'L'  || type?.NETWORK_CODE === 'DR' ? <Debit /> : null}
+
+                    <Ocs load={load} st={backlist?.currentStatus} cus={cus} />
+                    {type?.NETWORK_CODE === 'M' || type?.NETWORK_CODE === 'H' || type?.NETWORK_CODE === 'W' ? <Balance /> : null}
+                    
 
                     <BlackList data={backlist} load={load} />
 
@@ -77,7 +82,7 @@ function Col1() {
 
                 <Grid item xs={12} md={12} lg={6} className="box-crm">
                     <h2 className='blue'>Life Cycle</h2>
-                    <LifeCycle cb={(e) => setBacklist(e)} load={(e) => setLoad(e)} />
+                    <LifeCycle cb={(e) => setBacklist(e)} load={(e) => setLoad(e)} cbCus={(e) => setCus(e)} />
                     <h2 className='blue'>Mobile Service Data</h2>
                     <MobileService check={check} cb={(e) => setCheck(e)} />
 

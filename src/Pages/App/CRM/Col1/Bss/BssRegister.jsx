@@ -45,7 +45,7 @@ function BssRegister({ cb }) {
                     <Skeleton animation="wave" className="wave" />
                 </Grid> :
                 <>
-                    <Grid item container xs={12} className={data.statusBSSDesc === "Activated" ? 'link-box-success-click-hover' : 'link-box-error-click'} onClick={BSS}>
+                    <Grid item container xs={12} className={data.statusBSSDesc === "Activated" ? 'link-box-success-click-hover next' : 'link-box-error-click next'} onClick={BSS}>
                         <Grid item xs={1}><Visibility style={{ paddingTop: 4 }} /></Grid>
                         <Grid item xs={5}><div style={{ paddingTop: 4 }}>&nbsp;BSS Status : </div></Grid>
                         <Grid item xs={5} className="text-right">
