@@ -5,12 +5,16 @@ import React from 'react'
 import MyTable from '../../../../../../Components/MyTable'
 
 function Add({ open, cb, data }) {
+    //console.log(data);
     const columns = [
-        { title: 'MSISDN', field: 'PRI_IDENTITY' },
+        { title: 'ເບີໂທ', field: 'PRI_IDENTITY' },
         { title: 'ເວລາ', field: 'TimeStamp', minWidth: 150, render: row => row.TimeStamp.length > 15 ? moment(row.TimeStamp).format("DD-MM-YYYY HH:mm:ss") : row.TimeStamp.substr(6, 2) + "-" + row.TimeStamp.substr(4, 2) + "-" + row.TimeStamp.substr(0, 4) + " " + row.TimeStamp.substr(8, 2) + ":" + row.TimeStamp.substr(10, 2) + ":" + row.TimeStamp.substr(12, 2) },
-        { title: 'CardSequence', field: 'CARD_SEQUENCE' },
-        { title: 'LoginSystemCode', field: 'LoginSystemCode' },
-        { title: 'Charge', field: 'CHG_BALANCE', type: 'numeric', render: row => row.CHG_BALANCE.toLocaleString() },
+        // { title: 'CardSequence', field: 'CARD_SEQUENCE' },
+        // { title: 'LoginSystemCode', field: 'LoginSystemCode' },
+        { title: 'ຈຳນວນເງີນທີເຕີມ', field: 'CHG_BALANCE', type: 'numeric', render: row => row.CHG_BALANCE.toLocaleString() },
+        { title: 'ຈຳນວນເງີນກ່ອນເຕີມ', field: 'CUR_BALANCE', type: 'numeric',render: row=>(row.CUR_BALANCE - row.CHG_BALANCE).toLocaleString() },
+        { title: 'ຈຳນວນເງີນຫຼັງເຕີມ', field: 'CUR_BALANCE' , type: 'numeric', render: row => row.CUR_BALANCE.toLocaleString() },
+        // { title: 'Charge', field: 'CHG_BALANCE', type: 'numeric', render: row => row.CHG_BALANCE.toLocaleString() },
     ]
 
     return (

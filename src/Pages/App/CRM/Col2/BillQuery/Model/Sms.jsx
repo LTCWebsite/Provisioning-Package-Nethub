@@ -5,11 +5,14 @@ import React from 'react'
 import MyTable from '../../../../../../Components/MyTable'
 
 function Sms({ open, cb, data }) {
+    //console.log(data)
     const columns = [
         { title: 'MSISDN', field: 'CallingPartyNumber' },
         { title: 'SendTo', field: 'CalledPartyNumber', render: row => row.CalledPartyNumber.substr(0, 7) +"xxx"+ row.CalledPartyNumber.substr(10) },
         { title: 'ເວລາ', field: 'CustStart_Date', minWidth: 150, render: row => row.CustStart_Date.length > 15 ? moment(row.CustStart_Date).format("DD-MM-YYYY HH:mm:ss") : row.CustStart_Date.substr(6, 2) + "-" + row.CustStart_Date.substr(4, 2) + "-" + row.CustStart_Date.substr(0, 4) + " " + row.CustStart_Date.substr(8, 2) + ":" + row.CustStart_Date.substr(10, 2) + ":" + row.CustStart_Date.substr(12, 2) },
-        { title: 'Charge', field: 'Charge', type: 'numeric', render: row => row.Charge.toLocaleString() },
+        { title: 'ການຕັດເງີນ', field: 'Charge', type: 'numeric', render: row => row.Charge.toLocaleString() },
+        { title: 'ກ່ອນຕັດເງີນ', field: 'CurrentAmount', type: 'numeric', render: row => row.CurrentAmount.toLocaleString() },
+        { title: 'ຫຼັງຕັດເງີນ', field: 'CurrentAmount', type: 'numeric', render: row =>(row.CurrentAmount - row.Charge).toLocaleString() },
     ]
 
     return (
