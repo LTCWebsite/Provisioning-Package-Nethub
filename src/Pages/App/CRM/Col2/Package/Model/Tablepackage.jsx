@@ -113,7 +113,7 @@ export default function Tablepackage({ total }) {
             tooltip: 'View More',
             onClick: (event, rows) => {
               let trans = rows.trans_id
-              console.log(trans)
+              // console.log(trans)
               let month = rows.month
               setShow(true)
               setTran(trans)

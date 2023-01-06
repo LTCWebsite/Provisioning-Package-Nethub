@@ -13,7 +13,7 @@ function Transfer({ open, cb, data }) {
         { title: 'TransType', field: 'EXT_TRANS_TYPE' },
         { title: 'ຈຳນວນໂອນ', field: 'CHG_BALANCE', type: 'numeric', render: row => row.CHG_BALANCE.toLocaleString() },
         { title: 'ຈຳນວນກ່ອນໂອນ', field: 'CUR_BALANCE', type: 'numeric', render: row => row.CUR_BALANCE.toLocaleString() },
-        { title: 'ຈຳນວນຫຼັງໂອນ', field: 'CUR_BALANCE', type: 'numeric', render: row =>((row.CUR_BALANCE + row.CHG_BALANCE) - row.HANDLING_CHARGE).toLocaleString() },
+        { title: 'ຈຳນວນຫຼັງໂອນ', field: 'CUR_BALANCE', type: 'numeric', render: row =>((row.CUR_BALANCE - row.CHG_BALANCE) - row.HANDLING_CHARGE).toLocaleString() },
         { title: 'ຄ່າທຳນຽມ', field: 'HANDLING_CHARGE', type: 'numeric', render: row => row.HANDLING_CHARGE.toLocaleString() },
     ]
 
