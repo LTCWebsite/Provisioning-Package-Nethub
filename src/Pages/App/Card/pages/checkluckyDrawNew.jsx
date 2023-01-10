@@ -90,7 +90,7 @@ function CheckLuckyDrawNew() {
     setIsLoading(true);
     AxiosReq.post(`RerunLuckyDraw?pin=${Pin}&username=test`, {}, { headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then((res) => {
       if (res.status === 200) {
-        if (res?.data?.sts === "20::Operater successed.") {
+        if (res?.data?.resultCode === "20") {
           setTimeout(() => {
             toast_success({ text: "SUCCESS" });
             setRerun(res?.data?.resultDesc);
