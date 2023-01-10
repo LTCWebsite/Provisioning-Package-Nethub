@@ -57,7 +57,7 @@ function SearchCRM() {
             <Grid item xs={5} lg={2}>
                 <input
                     type={"search"}
-                    maxLength="10"
+                    maxLength="11"
                     className='v-input input-1'
                     placeholder='205xxxxxxx'
                     value={Phone}
