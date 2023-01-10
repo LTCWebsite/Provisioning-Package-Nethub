@@ -91,7 +91,7 @@ function CheckLuckyDraw() {
     setIsLoading(true);
     AxiosReq.post("RerunLuckyDraw?serialNumber=" + pin, {}).then((res) => {
       if (res.status === 200) {
-        if (res?.data?.sts === "20::Operater successed.") {
+        if (res?.data?.resultCode === "20") {
           setTimeout(() => {
             toast_success({ text: "SUCCESS" });
             setRerun(res?.data?.resultDesc);
