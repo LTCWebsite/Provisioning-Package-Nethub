@@ -57,7 +57,7 @@ function TableMservice({ url: URL, sl: SL, title, columns }) {
                         var sendData = "&page=" + (parseInt(query.page) + 1) + "&limit=" + query.pageSize
                         AxiosReq.get(URL + sendData).then(res => {
                             if (res.status === 200) {
-                                console.log(res.data)
+                                // console.log(res.data)
                                 resolve({
                                     data: res.data.result,
                                     page: res.data.page - 1,

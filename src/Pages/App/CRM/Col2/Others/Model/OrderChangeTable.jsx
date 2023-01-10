@@ -61,7 +61,7 @@ function OrderChangTable({ total }) {
                         var sendData = query.page + 1 + "&limit=" + query.pageSize + "&total=" + total
                         AxiosReq.get("New_OrderChange?msisdn=" + localStorage.getItem("ONE_PHONE") + "&page=" + sendData).then(res => {
                             if (res.status === 200) {
-                                console.log(res.data)
+                                // console.log(res.data)
                                 resolve({
                                     data: res.data.data,
                                     page: res.data.page - 1,

@@ -5,7 +5,7 @@ import React from 'react'
 import MyTable from '../../../../../../Components/MyTable'
 
 function All({ open, cb, data }) {
-    console.log(data)
+    // console.log(data)
     const columns = [
         { title: 'MSISDN', field: 'msisdn', render: row => row.msisdn === undefined ? row.CallingPartyNumber === undefined ? row?.PRI_IDENTITY : row.CallingPartyNumber : row.msisdn },
         { title: 'MSISDN', field: 'CalledPartyNumber', render: row => row?.CalledPartyNumber === undefined ? null : row?.CalledPartyNumber?.substr(0, 7) + "xxx" + row?.CalledPartyNumber?.substr(10) },

@@ -3,6 +3,7 @@ import { Button, Dialog, Grid, IconButton, Slide } from '@mui/material';
 import React, { useEffect } from 'react'
 import { AxiosReq } from '../../../../../../Components/Axios'
 import { AlertError, AlertSuccess } from '../../../../../../Components/Toast'
+import cookie from 'js-cookie'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -28,14 +29,14 @@ function ResetSim({ show, cb }) {
             AxiosReq.post(
                 "ResetSim?msisdn=" + ph,
                 {},
-                // { headers: { Authorization: "Bearer " + Cookies.get("one_session") } }
+                { headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }
             ).then((res) => {
                 if (res.status === 200) {
                     var respone =
                         res.data["SOAP-ENV:Envelope"]["SOAP-ENV:Body"][
                         "SND_CANCELCResponse"
                         ]["Result"];
-                    // console.log(respone)
+                    console.log(respone)
                     if (respone.ResultCode === "0") {
                         AlertSuccess(respone.ResultDesc);
                     } else {
@@ -57,6 +58,8 @@ function ResetSim({ show, cb }) {
                     //     resualt: respone.ResultDesc,
                     // })
                 }
+            }).catch((err)=>{
+                AlertError(err);
             });
         }
     };

@@ -5,7 +5,7 @@ import React from 'react'
 import MyTable from '../../../../../../Components/MyTable'
 
 function Call({ open, cb, data }) {
-    console.log('call', data)
+    // console.log('call', data)
     const columns = [
         { title: 'MSISDN', field: 'CallingPartyNumber' },
         { title: 'MSISDN', field: 'CalledPartyNumber', render: row => row.CalledPartyNumber.substr(0, 7) + "xxx" + row.CalledPartyNumber.substr(10) },

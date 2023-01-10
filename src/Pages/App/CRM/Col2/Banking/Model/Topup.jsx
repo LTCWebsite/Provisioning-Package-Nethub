@@ -32,7 +32,7 @@ function Topup({ open, cb, stop, count }) {
                 setData(update)
                 stop(false)
                 count(num)
-                console.log(res.data)
+                // console.log(res.data)
             }
         }).catch(err => {
             stop(false)

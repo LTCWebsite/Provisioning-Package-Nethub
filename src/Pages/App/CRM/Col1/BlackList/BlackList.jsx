@@ -14,6 +14,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 function BlackList({ data, load }) {
+    console.log(data.currentStatus)
     const [open, setOpen] = useState(false)
     const [btn, setBtn] = useState(false)
     const [show, setShow] = useState(false)
