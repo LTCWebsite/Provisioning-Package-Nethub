@@ -4,6 +4,7 @@ import React, { useEffect } from 'react'
 import { AxiosReq } from '../../../../../../Components/Axios'
 import { AlertError, AlertSuccess } from '../../../../../../Components/Toast'
 import cookie from 'js-cookie'
+import { toast_success, toast_error } from '../../../../../../Components/Toast'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -37,26 +38,16 @@ function ResetSim({ show, cb }) {
                         "SND_CANCELCResponse"
                         ]["Result"];
                     console.log(respone)
+                    console.log(respone.ResultCode)
                     if (respone.ResultCode === "0") {
-                        AlertSuccess(respone.ResultDesc);
+                        // AlertSuccess(respone.ResultDesc);
+                        toast_success({ text: respone.ResultDesc })
                     } else {
-                        AlertError(respone.ResultDesc);
+                        // AlertError(respone.ResultDesc);
+                        toast_error({ text: respone.ResultDesc })
                     }
                     setOpen({ ...open, reset: false });
                     setReason({ ...reason, text: "" });
-                    // Doing({
-                    //     msisdn: Crypt({
-                    //         type: "decrypt",
-                    //         value: localStorage.getItem("input-phone"),
-                    //     }).text,
-                    //     username: Crypt({
-                    //         type: "decrypt",
-                    //         value: localStorage.getItem("one_info"),
-                    //     }).username,
-                    //     detail: "reset sim ",
-                    //     info: reason.text,
-                    //     resualt: respone.ResultDesc,
-                    // })
                 }
             }).catch((err)=>{
                 AlertError(err);

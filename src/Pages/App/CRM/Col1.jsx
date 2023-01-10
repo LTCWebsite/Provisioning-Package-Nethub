@@ -68,7 +68,7 @@ function Col1() {
                     </Grid>
                     <Network />
                     {type?.NETWORK_CODE === 'G' || type?.NETWORK_CODE === 'A' || type?.NETWORK_CODE === 'P' || type?.NETWORK_CODE === 'F'  || type?.NETWORK_CODE === 'WP'  || type?.NETWORK_CODE === 'L'  || type?.NETWORK_CODE === 'DR' ? <Debit /> : null}
-
+                    
                     <Ocs load={load} st={backlist?.currentStatus} cus={cus} />
                     {type?.NETWORK_CODE === 'M' || type?.NETWORK_CODE === 'H' || type?.NETWORK_CODE === 'W' ? <Balance /> : null}
                     
