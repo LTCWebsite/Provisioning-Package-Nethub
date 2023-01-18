@@ -18,6 +18,7 @@ function BuyPackage({ open, cb, done, ifdone, count }) {
     const [bkData, setBkData] = React.useState({})
     const [isShowSuccess, setIsShowSuccess] = React.useState(false)
     const [bssNetworkType, setBssNetworkType] = React.useState()
+    const [productType, setProductType] = React.useState()
 
     const columns = [
         { title: 'No', field: 'id_idx', maxWidth: 50, sorting: false },
@@ -42,6 +43,7 @@ function BuyPackage({ open, cb, done, ifdone, count }) {
                     row.action =
                         <Button variant="contained" color="error" className='btn-primary' fullWidth style={{ height: 39, marginTop: 5 }} onClick={() => {
                             setPkCode(row.pK_CODE)
+                            setProductType(row.signonE_PK)
                             setIsShowConfirm(!isShowConfirm)
                         }}>
                             <a>ຊື້ແພັກເກັດ</a>
@@ -65,8 +67,9 @@ function BuyPackage({ open, cb, done, ifdone, count }) {
         const datas = {
             "msisdn": phone,
             "packageCode": pkCode + "",
-            "networkType": bssNetworkType
+            "networkType": productType?.includes('IR') ? productType : bssNetworkType
         }
+        console.log(datas)
         AxiosReq.post("Package", datas,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200 && res.data.resultCode === "200") {
                 setBkData(res.data)
