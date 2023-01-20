@@ -9,7 +9,7 @@ function VAS({ open, cb, data }) {
     const columns = [
         { title: 'ເບີໂທ', field: 'msisdn' },
         { title: 'ເວລາ', field: 'ENTRY_DATE', minWidth: 150, render: row => row.ENTRY_DATE.length > 15 ? moment(row.ENTRY_DATE).format("DD-MM-YYYY HH:mm:ss") : row.ENTRY_DATE.substr(6, 2) + "-" + row.ENTRY_DATE.substr(4, 2) + "-" + row.ENTRY_DATE.substr(0, 4) + " " + row.ENTRY_DATE.substr(8, 2) + ":" + row.ENTRY_DATE.substr(10, 2) + ":" + row.ENTRY_DATE.substr(12, 2) },
-        { title: 'Username', field: 'Username' },
+        { title: 'USER', field: 'Username' },
         { title: 'ຕັດເງີນ', field: 'CHG_BALANCE', type: 'numeric', render: row => row.CHG_BALANCE.toLocaleString() },
         { title: 'ກ່ອນຕັດເງີນ', field: 'CUR_BALANCE', render: row => row.CUR_BALANCE.toLocaleString() },
         { title: 'ຫຼັງການຕັດເງີນ', field: 'CUR_BALANCE', render: row => (row.CUR_BALANCE - row.CHG_BALANCE).toLocaleString() },

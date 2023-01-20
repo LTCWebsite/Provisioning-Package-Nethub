@@ -16,6 +16,7 @@ import Application from './Col1/Application/Application'
 import Ocs from './Col1/Ocs/Ocs'
 import cookie from 'js-cookie'
 import { MyCrypt } from "../../../Components/MyCrypt"
+import ResetPassCBS from './Col1/Ocs/ResetPassCBS'
 
 function Col1() {
     const phone = localStorage.getItem("ONE_PHONE")
@@ -74,9 +75,16 @@ function Col1() {
                     
 
                     <BlackList data={backlist} load={load} />
+                    {/* <Grid item container xs={12} className='link-box'>
+                        <Grid item xs={4}><p>ResetPasswordCBS</p></Grid>
+
+                    </Grid> */}
+                    <ResetPassCBS />
+
 
                     <h2 className='blue'>Value Add Service</h2>
                     <VAS />
+                   
 
                 </Grid>
 
