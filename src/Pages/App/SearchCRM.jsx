@@ -17,7 +17,7 @@ function SearchCRM() {
         }
     }, [])
     const changePhone = (e) => {
-        if (e.length > 10) {
+        if (e.length > 11) {
             let number = e.replaceAll(/\s/g, '')
             let newPhone = ''
             if (number.includes("+85620")) {
@@ -26,7 +26,7 @@ function SearchCRM() {
                 newPhone = number
             }
 
-            if (newPhone.length === 10) {
+            if (newPhone.length === 11) {
                 setPhone(newPhone)
                 // setNbad({ ...nbad, fc: false })
             }
