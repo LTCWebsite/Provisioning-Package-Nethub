@@ -18,6 +18,7 @@ function OCSRefill() {
                 password: "#Ltc1qaz2wsx@one"
             }
         }).then(res => {
+            console.log(res.data)
             if (res.status === 200) {
                 let resp = res.data?.QueryRechargeLogResultMsg?.QueryRechargeLogResult?.Record_ItemGroup
                 setData(resp === undefined ? [] : resp)

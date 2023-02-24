@@ -7,6 +7,7 @@ import { LoadingTable } from '../../../../../Components/TableLoading';
 import OCSRefill from './OCSRefill'
 import AllFree from './AllFree'
 import Offering from './Offering';
+import ProductOffering from './ProductOffering';
 
 const useStyles = makeStyles({
   root: {
@@ -56,18 +57,24 @@ export default function OCSTab() {
             <Tab label="Query Free Unit" />
             {/* <Tab label="Refill" />
             <Tab label="Offering" /> */}
+
+          <Tab label="Product Offering" />
+          {/* <Tab label="Offering" /> */}
+
           </Tabs>
+          
         </Paper>
         {/* ///////////////////////////////       Tab Sub */}
         <TabPanel value={value} index={0}>
           <AllFree />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <OCSRefill />
+          {/* <OCSRefill /> */}
+          <ProductOffering />
         </TabPanel>
-        <TabPanel value={value} index={2}>
+        {/* <TabPanel value={value} index={2}>
           <Offering />
-        </TabPanel>
+        </TabPanel> */}
       </>
     )
   }

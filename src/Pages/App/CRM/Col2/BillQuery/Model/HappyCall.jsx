@@ -10,6 +10,14 @@ function HappyCall({ open, cb, data }) {
         { title: 'ເບີໂທ', field: 'msisdn' },
         { title: 'ເວລາ', field: 'ENTRY_DATE', minWidth: 150, render: row => row.ENTRY_DATE.length > 15 ? moment(row.ENTRY_DATE).format("DD-MM-YYYY HH:mm:ss") : row.ENTRY_DATE.substr(6, 2) + "-" + row.ENTRY_DATE.substr(4, 2) + "-" + row.ENTRY_DATE.substr(0, 4) + " " + row.ENTRY_DATE.substr(8, 2) + ":" + row.ENTRY_DATE.substr(10, 2) + ":" + row.ENTRY_DATE.substr(12, 2) },
         { title: 'USER', field: 'Username' },
+        // { title: 'ຊ່ອງທາງ', field: 'Chanel' , minWidth: 150, render: row => row.CHG_BALANCE == "200" ? "Debug":"Happycall" },
+        {
+            title: 'ຊ່ອງທາງ', field: 'Chanel', render: row => <u style={{
+                backgroundColor: row.CHG_BALANCE == "200" ? "#E74A3B":"#8d99ae",
+                color: '#fff',
+                padding: '2px 10px'
+            }}>{row.CHG_BALANCE == "200" ? "Debug":"Happycall"}</u>
+        },
         { title: 'ຈຳນວນເງີນຕັດ', field: 'CHG_BALANCE', type: 'numeric', render: row => row.CHG_BALANCE.toLocaleString() },
         { title: 'ຈຳນວນເງີນກ່ອນຕັດ', field: 'CUR_BALANCE', render: row => row.CUR_BALANCE.toLocaleString() },
         { title: 'ຈຳນວນເງີນຫຼັງການຕັດ', field: 'CUR_BALANCE', type: 'numeric', render: row => (row.CUR_BALANCE - row.CHG_BALANCE).toLocaleString() },
@@ -25,7 +33,7 @@ function HappyCall({ open, cb, data }) {
                 <Grid container>
                     <Grid item xs={3}></Grid>
                     <Grid item xs={6}>
-                        <DialogTitle className='center'>HappyCall Log</DialogTitle>
+                        <DialogTitle className='center'>Debug or HappyCall</DialogTitle>
                     </Grid>
                     <Grid item xs={3}>
                         <div className='right'><Close className='icon' onClick={() => cb(!open)} /></div>
@@ -33,7 +41,7 @@ function HappyCall({ open, cb, data }) {
                 </Grid>
                 <Grid container>
                     <Grid item xs={12} style={{ width: 1400 }}>
-                        <MyTable tTitle={"HappyCall Log"} tData={data} tColumns={columns} />
+                        <MyTable tTitle={"Debug or HappyCall"} tData={data} tColumns={columns} />
                     </Grid>
                 </Grid>
             </Dialog>

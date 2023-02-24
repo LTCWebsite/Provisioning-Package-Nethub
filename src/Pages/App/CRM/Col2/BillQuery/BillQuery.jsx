@@ -318,8 +318,8 @@ function BillQuery() {
               {/* <Badge badgeContent={data.happyCall.length.toString()} color="primary"><SentimentSatisfiedAlt /></Badge> */}
               <SentimentSatisfiedAlt />
             </Grid>
-            <Grid item xs={5}>HappyCall :</Grid>
-            <Grid item xs={5} className="text-right">
+            <Grid item xs={8}>Debug or HappyCall</Grid>
+            <Grid item xs={2} className="text-right">
               {load ? <Skeleton animation="wave" /> : count.happyCall.toLocaleString()}
             </Grid>
           </Grid>
