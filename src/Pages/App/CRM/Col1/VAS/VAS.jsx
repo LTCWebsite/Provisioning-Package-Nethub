@@ -124,7 +124,8 @@ function VAS() {
                 })
             } else if (st === true) {
                 //////////////////// Patch
-                AxiosReq.post("ManageVAS?msisdn=" + phone + "&servicename=" + data,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
+                // console.log(cookie.get("ONE_TOKEN"))
+                AxiosReq.post("ManageVAS?msisdn=" + phone + "&servicename=" + data, {},{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
                     if (res.status === 200 && res.data.cancelResult.resultcode === "200") {
                         var newData = option.map(row =>
                             row.nameService === data ? row.checked === false ? { ...row, checked: true } : { ...row, checked: false } : { ...row }
