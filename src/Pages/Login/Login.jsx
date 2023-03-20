@@ -60,7 +60,8 @@ export default function Login() {
                 "empIDNo": username.text,
                 "device_token": ""
             }
-            axios.post("http://172.28.14.48:3001/get-otp", sendData, {
+            // axios.post("http://172.28.14.48:3001/get-otp", sendData, {
+            axios.post("http://10.30.6.148:3001/get-otp", sendData, {
                 auth: {
                     username: "isd",
                     password: "#Ltc1qaz2wsx@isd"
@@ -96,7 +97,8 @@ export default function Login() {
                 "empIDNo": username.text,
                 "password": otp.text,
             }
-            axios.post("http://172.28.14.48:3001/confirm-otp", sendData, {
+            // axios.post("http://172.28.14.48:3001/confirm-otp", sendData, {
+            axios.post("http://10.30.6.148:3001/confirm-otp", sendData, {
                 auth: {
                     username: "isd",
                     password: "#Ltc1qaz2wsx@isd"
