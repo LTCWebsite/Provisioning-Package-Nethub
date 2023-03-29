@@ -42,8 +42,8 @@ export default function MServiceTab() {
     }
 
     const column = [
-        { title: 'ເບີຕົ້ນທາງ', field: 'msisdnDest' },
-        { title: 'ເບີປາຍທາງ', field: 'msisdnRequest' },
+        { title: 'ເບີຕົ້ນທາງ', field: 'msisdnRequest' },
+        { title: 'ເບີປາຍທາງ', field: 'msisdnDest' },
         { title: 'DateApplied', field: 'appliedDate', render: row => moment(row?.appliedDate).format("DD-MM-YYYY HH:mm:ss") },
         { title: 'DeviceModel', field: 'deviceModel' },
         { title: 'RequestType', field: 'requestType' },
