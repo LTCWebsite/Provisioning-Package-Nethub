@@ -8,6 +8,7 @@ import { AxiosReq } from '../../../../../Components/Axios'
 import LoadLottie from '../../../../../Components/LoadLottie'
 import File from '../../../../../Lottie/caution.json'
 import { toast_success, toast_error } from '../../../../../Components/Toast'
+import { MyCrypt } from "../../../../../Components/MyCrypt"
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -48,14 +49,24 @@ function BlackList({ data, load }) {
     useEffect(() => {
         setShow(false)
         let phone = localStorage.getItem("ONE_PHONE")
-        AxiosReq.get("CheckPoint?msisdn=" + phone,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
+        let type = MyCrypt("de", localStorage.getItem("ONE_NETWORK"))
+        // console.log(type)
+        AxiosReq.get(`NewQueryPointCbs?msisdn=${phone}&network_code=${type?.NETWORK_CODE}`,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200) {
                 // console.log(res.data)
                 setShow(true)
                 setPoint(res.data)
             }
         })
+        // AxiosReq.get("CheckPoint?msisdn=" + phone,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
+        //     if (res.status === 200) {
+        //         // console.log(res.data)
+        //         setShow(true)
+        //         setPoint(res.data)
+        //     }
+        // })
     }, [])
+    // console.log('point', point)
     return (
         <>
             <Grid item container xs={12} className={bl === 0 ? 'link-box-success-click' : 'link-box-error-click-hover'} onClick={UnBlackList}>
@@ -69,8 +80,8 @@ function BlackList({ data, load }) {
                 <Grid item xs={1}>{load ? <Skeleton animation="wave" /> : bl !== 0 ? <Cancel className='link-icon' /> : <CheckCircle className='link-icon' />}</Grid>
             </Grid>
             <Grid item container xs={12} className="link-box-text">
-                <Grid item xs={5}><div>Point : </div></Grid>
-                <Grid item xs={7} className="right"><div>{load ? <Skeleton animation="wave" /> : parseInt(point?.checkPointResult?.resultPoint) >= 0 ? parseInt(point?.checkPointResult?.resultPoint) : '---'}</div></Grid>
+                <Grid item xs={5}><div>Point ({point?.walletType}) : </div></Grid>
+                <Grid item xs={7} className="right"><div>{load ? <Skeleton animation="wave" /> : point?.point }</div></Grid>
             </Grid>
 
             <Dialog
