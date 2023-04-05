@@ -78,6 +78,7 @@ export default function NewLogin() {
                             Cookies.set("ONE_TOKEN", token, { expires: 8 / 24 })
                             localStorage.setItem("ONE_DETAIL", Crypt({ Type: "crypt", Value: JSON.stringify(user_detail) }))
                             localStorage.setItem("ONE_USER_ROLE", Crypt({ Type: "crypt", Value: JSON.stringify(user_role) }))
+                            localStorage.setItem("USERNAME", res?.data?.username)
                             setTimeout(() => {
                                 history.push("/app")
                             }, 1000)

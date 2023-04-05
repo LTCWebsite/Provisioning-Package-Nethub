@@ -38,7 +38,11 @@ function SearchCRM() {
     const searchPhoneNumber = () => {
         if (Phone === '' || Phone === null) {
             toast_error({ text: "ກະລຸນາປ້ອນເບີ !!" })
-        } else {
+        }else if(localStorage.getItem('USERNAME').includes('tplus') && Phone.startsWith('205')){
+            toast_error({ text: "User ຂອງທ່ານບໍ່ສາມາດດຶງຂໍ້ມູນເບີ 5 ໄດ້!!" })
+        }else if(localStorage.getItem('USERNAME').includes('laotel') && Phone.startsWith('207')){
+            toast_error({ text: "User ຂອງທ່ານບໍ່ສາມາດດຶງຂໍ້ມູນເບີ 7 ໄດ້!!" })
+        }else {
             localStorage.setItem("ONE_PHONE", Phone)
             history.push("/app")
             setTimeout(() => {
@@ -51,6 +55,12 @@ function SearchCRM() {
             searchPhoneNumber()
         }
     }
+    console.log(localStorage.getItem('USERNAME'))
+    // if(localStorage.getItem('USERNAME').includes('tplus')){
+    //     console.log('laotel')
+    // }else{
+    //     console.log('other')
+    // }
     return (
         <Grid container className='search'>
             <Grid item xs={4} lg={8}></Grid>
@@ -59,7 +69,7 @@ function SearchCRM() {
                     type={"search"}
                     maxLength="11"
                     className='v-input input-1'
-                    placeholder='205xxxxxxx'
+                    placeholder= {localStorage.getItem('USERNAME').includes('tplus') ? '207xxxxxxx' : '205xxxxxxx'}
                     value={Phone}
                     onChange={(e) => {
                         changePhone(e.target.value)
