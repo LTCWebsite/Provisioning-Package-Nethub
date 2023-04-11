@@ -17,8 +17,8 @@ function LifeCycle({ cb, cbCus, load }) {
         load(true)
         let phone = localStorage.getItem("ONE_PHONE")
         let type = MyCrypt("de", localStorage.getItem("ONE_NETWORK"))
-        //console.log(type?.NETWORK_CODE)
-        if( type?.NETWORK_CODE === 'M' || type?.NETWORK_CODE === 'H' || type?.NETWORK_CODE === 'W'){
+        console.log('NETWORK_CODE', type?.NETWORK_CODE)
+        if( type?.NETWORK_CODE === 'M' || type?.NETWORK_CODE === 'H' || type?.NETWORK_CODE === 'W' || type?.NETWORK_CODE == undefined){
             AxiosReq.get("NewQuerySubLifeCycle?msisdn=" + phone).then(res => {
                 if (res.status === 200) {
                     // console.log(res.data)

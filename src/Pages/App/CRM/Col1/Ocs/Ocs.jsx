@@ -19,7 +19,7 @@ function Ocs({ cus, load, st }) {
     useEffect(() => {
         setShow(load)
     }, [])
-
+    console.log('por',st)
     return (
         <>
             {!show ?
