@@ -1,11 +1,13 @@
-import { CheckCircle, Close, } from '@mui/icons-material'
-import { Dialog, Grid, Skeleton, Slide } from '@mui/material'
+import { CheckCircle, Close, Loop, } from '@mui/icons-material'
+import { Button, Dialog, Grid, Skeleton, Slide } from '@mui/material'
 import React from 'react'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import Can from '@material-ui/icons/Cancel'
 import { Visibility } from '@material-ui/icons'
 import OCSTab from './OCSTab'
+import axios from 'axios'
+import { toast_success, toast_error } from '../../../../../Components/Toast'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -14,12 +16,33 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 function Ocs({ cus, load, st }) {
     const [show, setShow] = useState(false)
     const [open, setOpen] = useState(false)
+    const [idel, setidel] = useState(false)
 
     // console.log(cus)
     useEffect(() => {
         setShow(load)
     }, [])
-    console.log('por',st)
+    // console.log('por',st)
+    const SaveIDEL = () => {
+        let sendData = {
+            "username": localStorage.getItem('USERNAME'),
+            "msisdn": localStorage.getItem("ONE_PHONE")
+        }
+        setidel(false)
+        axios.post("http://172.28.14.48:2025/activeIdleNumber", sendData, {
+            headers: {
+                "api_key": "jfbuebfjhebkfnsknksankfnsknjsfhwbjdnjwjdnjwkkiwnninfknknsfsjwnf==="
+            }
+        }).then(res => {
+            if (res.status === 200 && parseInt(res.data?.ResultCode) === 200) {
+                toast_success({ text: res.data?.ResultDesc })
+            } else {
+                toast_error({ text: res.data?.ResultDesc })
+            }
+        }).catch(er => {
+            toast_error({ text: "API error" })
+        })
+    }
     return (
         <>
             {!show ?
@@ -51,6 +74,12 @@ function Ocs({ cus, load, st }) {
                                 <Can className={'link-icon-success'} style={{ paddingTop: 4 }} />}
                         </Grid>
                     </Grid>
+                    {st?.toUpperCase() === 'IDEL' &&
+                        <Grid item container xs={12} className={'link-box-danger-click-hover'} onClick={() => setidel(true)}>
+                            <Grid item xs={1}><Loop style={{ paddingTop: 4 }} /></Grid>
+                            <Grid item xs={11}><div style={{ paddingTop: 4 }}>&nbsp;IDEL to Active status</div></Grid>
+                        </Grid>}
+
                     <Grid item xs={12} container className=''>
                         <Grid item container xs={12} className='link-box'>
                             <Grid item xs={6}><div>Offering ID : </div></Grid>
@@ -80,6 +109,44 @@ function Ocs({ cus, load, st }) {
                         </Grid>
                         <Grid item xs={12} style={{ width: 1000 }}>
                             <OCSTab />
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Dialog>
+
+            <Dialog
+                maxWidth="xl"
+                open={idel}
+                onClose={() => setidel(false)}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+                TransitionComponent={Transition}
+            >
+                <Grid container>
+                    <Grid item container xs={12}>
+                        <Grid item xs={1}></Grid>
+                        <Grid item xs={10}><div className="center"><h1>Change IDEL to Active status ?</h1></div></Grid>
+                        <Grid item xs={1}>
+                            <div className='right'><Close className='icon' onClick={() => setidel(false)} /></div>
+                        </Grid>
+                        <Grid item xs={12} style={{ width: 400 }}>
+                            <div className='center'>
+                                <Loop style={{ fontSize: 200 }} />
+                            </div>
+                        </Grid>
+                    </Grid>
+                    <Grid item xs={12} container style={{ padding: 20 }}>
+                        <Grid item xs={6}>
+                            <Button variant='contained' color='inherit' onClick={() => setidel(false)}>
+                                ຍົກເລີກ
+                            </Button>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <div className='right'>
+                                <Button variant='contained' color='success' onClick={SaveIDEL}>
+                                    ຢືນຢັນ
+                                </Button>
+                            </div>
                         </Grid>
                     </Grid>
                 </Grid>

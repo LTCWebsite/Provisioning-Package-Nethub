@@ -901,6 +901,20 @@ textarea {
   background-color: #26A65B;
   box-shadow: 0.1px .1px 0px .5px #888888;
 }
+.link-box-danger-click-hover {
+  padding: 5px 10px 0px 10px;
+  cursor: pointer;
+  color: #fff;
+  background-color: #CD1E2B;
+  box-shadow: 0.1px .1px 0px .5px #888888;
+}
+.link-box-danger-click-hover:hover {
+  padding: 5px 10px 0px 10px;
+  cursor: pointer;
+  color: #fff;
+  background-color: #7e0d0d;
+  box-shadow: 0.1px .1px 0px .5px #888888;
+}
 
 .link-box-success-click-hover:hover {
   padding: 5px 10px 0px 10px;
