@@ -8,6 +8,7 @@ import { Visibility } from '@material-ui/icons'
 import OCSTab from './OCSTab'
 import axios from 'axios'
 import { toast_success, toast_error } from '../../../../../Components/Toast'
+import { MyCryptTry } from '../../../../../Components/MyCrypt'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -17,10 +18,20 @@ function Ocs({ cus, load, st }) {
     const [show, setShow] = useState(false)
     const [open, setOpen] = useState(false)
     const [idel, setidel] = useState(false)
+    const [pass, setPass] = useState(false)
+    const [useIdel, setuseIdel] = useState(false)
 
     // console.log(cus)
     useEffect(() => {
         setShow(load)
+        let info = MyCryptTry("de", localStorage.getItem("ONE_DETAIL"))
+        if (info?.user?.length > 0) {
+            info?.user?.map(row => {
+                if (row?.value === "Administrator Online" || row?.value === "Super Admin" || row?.value === "Super User Online") {
+                    setuseIdel(true)
+                }
+            })
+        }
     }, [])
     // console.log('por',st)
     const SaveIDEL = () => {
@@ -35,6 +46,7 @@ function Ocs({ cus, load, st }) {
             }
         }).then(res => {
             if (res.status === 200 && parseInt(res.data?.ResultCode) === 200) {
+                setPass(true)
                 toast_success({ text: res.data?.ResultDesc })
             } else {
                 toast_error({ text: res.data?.ResultDesc })
@@ -74,11 +86,13 @@ function Ocs({ cus, load, st }) {
                                 <Can className={'link-icon-success'} style={{ paddingTop: 4 }} />}
                         </Grid>
                     </Grid>
-                    {st?.toUpperCase() === 'IDEL' &&
-                        <Grid item container xs={12} className={'link-box-danger-click-hover'} onClick={() => setidel(true)}>
-                            <Grid item xs={1}><Loop style={{ paddingTop: 4 }} /></Grid>
-                            <Grid item xs={11}><div style={{ paddingTop: 4 }}>&nbsp;IDEL to Active status</div></Grid>
-                        </Grid>}
+                    {useIdel && <>
+                        {st?.toUpperCase() === 'IDLE' && !pass &&
+                            <Grid item container xs={12} className={'link-box-danger-click-hover'} onClick={() => setidel(true)}>
+                                <Grid item xs={1}><Loop style={{ paddingTop: 4 }} /></Grid>
+                                <Grid item xs={11}><div style={{ paddingTop: 4 }}>&nbsp;IDEL to Active status</div></Grid>
+                            </Grid>}
+                    </>}
 
                     <Grid item xs={12} container className=''>
                         <Grid item container xs={12} className='link-box'>
@@ -143,7 +157,7 @@ function Ocs({ cus, load, st }) {
                         </Grid>
                         <Grid item xs={6}>
                             <div className='right'>
-                                <Button variant='contained' color='success' onClick={SaveIDEL}>
+                                <Button variant='contained' color='error' className='btn-success' onClick={SaveIDEL}>
                                     ຢືນຢັນ
                                 </Button>
                             </div>

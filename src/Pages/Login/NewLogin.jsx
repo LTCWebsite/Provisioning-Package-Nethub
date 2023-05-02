@@ -67,7 +67,7 @@ export default function NewLogin() {
             AxiosReq.post("Authenticate", data).then(res => {
                 if (res.status === 200) {
                     setdbtn(false)
-                    let user_detail = res.data?.user[0]
+                    let user_detail = res.data
                     let token = res.data?.token
                     let sendData = {
                         staff_id: data.username,
