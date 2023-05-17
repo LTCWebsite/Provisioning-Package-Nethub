@@ -42,8 +42,8 @@ export default function MmoneyTabs() {
     }
 
     const column = [
-        { title: 'ເບີຕົ້ນທາງ', field: 'msisdn' },
-        { title: 'ເບີປາຍທາງ', field: 'telephone' },
+        { title: 'ເບີຕົ້ນທາງ', field: 'telephone' },
+        { title: 'ເບີປາຍທາງ', field: 'msisdn' },
         { title: 'CreateDate', field: 'createDate', render: row => moment(row?.createDate).format("DD-MM-YYYY HH:mm:ss") },
         { title: 'Operator', field: 'operator' },
         { title: 'Type', field: 'phoneType' },
