@@ -40,7 +40,9 @@ function Ocs({ cus, load, st }) {
             "msisdn": localStorage.getItem("ONE_PHONE")
         }
         setidel(false)
-        axios.post("http://172.28.14.48:2025/activeIdleNumber", sendData, {
+        let link_1 = `http://172.28.26.146:2025/activeIdleNumber`
+        // let link_1 = `http://172.28.14.48:2025/activeIdleNumber`
+        axios.post(link_1, sendData, {
             headers: {
                 "api_key": "jfbuebfjhebkfnsknksankfnsknjsfhwbjdnjwjdnjwkkiwnninfknknsfsjwnf==="
             }
