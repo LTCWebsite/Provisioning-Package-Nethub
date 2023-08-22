@@ -19,18 +19,19 @@ function MasterSim({ open, cb }) {
         // console.log(cookie.get("ONE_TOKEN"))
         AxiosReq.get("CheckMasterSim",{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200) {
+                console.log(res.data)
                 var update = res.data.map((row, idx) => {
-                    if (row.balance <= 50000000 && row.balance > 5000 && row.tier_ === "Platinum" && row.status === true) {
+                    if (row.balance <= 1000000000 && row.balance > 5000 && row.tier_ === "Platinum" && row.status === true) {
                         row.dex = 1
-                    } else if (row.balance > 50000000 && row.tier_ === "Platinum" && row.status === true) {
+                    } else if (row.balance > 1000000000 && row.tier_ === "Platinum" && row.status === true) {
                         row.dex = 2
-                    } else if (row.balance <= 5000000 && row.balance > 5000 && row.tier_ === "Gold" && row.status === true) {
+                    } else if (row.balance <= 10000000 && row.balance > 5000 && row.tier_ === "Gold" && row.status === true) {
                         row.dex = 1
-                    } else if (row.balance > 5000000 && row.tier_ === "Gold" && row.status === true) {
+                    } else if (row.balance > 10000000 && row.tier_ === "Gold" && row.status === true) {
                         row.dex = 2
-                    } else if (row.balance <= 500000 && row.balance > 5000 && row.tier_ === "Silver" && row.status === true) {
+                    } else if (row.balance <= 5000000 && row.balance > 5000 && row.tier_ === "Silver" && row.status === true) {
                         row.dex = 1
-                    } else if (row.balance > 500000 && row.tier_ === "Silver" && row.status === true) {
+                    } else if (row.balance > 5000000 && row.tier_ === "Silver" && row.status === true) {
                         row.dex = 2
                     } else if (row.balance <= 5000 && row.status === true) {
                         row.dex = 3
@@ -78,17 +79,17 @@ function MasterSim({ open, cb }) {
         }
     }
     const checkStatus = (Balance, tier_, Status) => {
-        if (Balance <= 50000000 && Balance > 5000 && tier_ === "Platinum" && Status === true) {
+        if (Balance <= 1000000000 && Balance > 5000 && tier_ === "Platinum" && Status === true) {
             return <u className="warn_active">ເງີນໃກ້ຈະໝົດແລ້ວ</u>
-        } else if (Balance > 50000000 && tier_ === "Platinum" && Status === true) {
+        } else if (Balance > 1000000000 && tier_ === "Platinum" && Status === true) {
             return <u className="active">ປົກກະຕິ</u>
-        } else if (Balance <= 5000000 && Balance > 5000 && tier_ === "Gold" && Status === true) {
+        } else if (Balance <= 10000000 && Balance > 5000 && tier_ === "Gold" && Status === true) {
             return <u className="warn_active">ເງີນໃກ້ຈະໝົດແລ້ວ</u>
-        } else if (Balance > 5000000 && tier_ === "Gold" && Status === true) {
+        } else if (Balance > 10000000 && tier_ === "Gold" && Status === true) {
             return <u className="active">ປົກກະຕິ</u>
-        } else if (Balance <= 500000 && Balance > 5000 && tier_ === "Silver" && Status === true) {
+        } else if (Balance <= 5000000 && Balance > 5000 && tier_ === "Silver" && Status === true) {
             return <u className="warn_active">ເງີນໃກ້ຈະໝົດແລ້ວ</u>
-        } else if (Balance > 500000 && tier_ === "Silver" && Status === true) {
+        } else if (Balance > 5000000 && tier_ === "Silver" && Status === true) {
             return <u className="active">ປົກກະຕິ</u>
         } else if (Balance <= 5000 && Status === true) {
             return <u className="dis_active">ເງີນໝົດແລ້ວ</u>
