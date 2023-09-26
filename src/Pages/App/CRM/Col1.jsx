@@ -22,6 +22,7 @@ function Col1() {
     const phone = localStorage.getItem("ONE_PHONE")
     let type = MyCrypt("de", localStorage.getItem("ONE_NETWORK"))
     const [check, setCheck] = useState({ n_3g: false, n_4g: false, rbt: false, ir_call: false, ir_data: false, load: true })
+    const [is5G, setIs5G] = useState(false)
     const [bss, setBSS] = useState('')
     const [backlist, setBacklist] = useState('')
     const [load, setLoad] = useState(true)
@@ -43,6 +44,18 @@ function Col1() {
                     ir_data: res.data?.queryServiceResult?.irData === '1' ? true : false,
                     load: false
                 })
+            }
+        }).catch(er => {
+            console.log(er)
+        })
+    }, [])
+
+    useEffect(() => {
+        let phone = localStorage.getItem("ONE_PHONE")
+        AxiosReq.get("api/Network5g?Msisdn=" + phone,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
+            if (res.status === 200) {
+                // console.log(res.data)
+                setIs5G(res?.data?.is5G)
             }
         }).catch(er => {
             console.log(er)
@@ -92,7 +105,7 @@ function Col1() {
                     <h2 className='blue'>Life Cycle</h2>
                     <LifeCycle cb={(e) => setBacklist(e)} load={(e) => setLoad(e)} cbCus={(e) => setCus(e)} />
                     <h2 className='blue'>Mobile Service Data</h2>
-                    <MobileService check={check} cb={(e) => setCheck(e)} />
+                    <MobileService check={check} is5G={is5G} cb={(e) => setCheck(e)} />
 
                     <h2 className='blue'>Application</h2>
                     <Application />

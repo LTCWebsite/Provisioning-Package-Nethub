@@ -1,10 +1,12 @@
 import { WarningAmber } from '@mui/icons-material'
 import { Button, Dialog, Grid, Skeleton, Switch } from '@mui/material'
+import { Cancel, CheckCircle } from '@material-ui/icons'
 import React from 'react'
 import { toast_success, toast_error } from '../../../../../Components/Toast'
 import { AxiosReq } from '../../../../../Components/Axios'
 
-function MobileService({ check, cb }) {
+function MobileService({ check, is5G, cb }) {
+    console.log(is5G)
     const [reason, setReason] = React.useState({ text: null, alert: false, message: null, dialog: false, status: null })
 
     const CFDialog = ({ st: ST, message: Message }) => {
@@ -106,6 +108,25 @@ function MobileService({ check, cb }) {
     return (
         <>
             <Grid item container xs={12} className='link-box-dev'>
+                <Grid item xs={9}><div>5G : </div></Grid>
+                <Grid item xs={3}><div className='text-right'>
+                   {is5G ? <CheckCircle className="success" /> : <Cancel className="danger" />} 
+                </div></Grid>
+            </Grid>
+            
+            <Grid item container xs={12} className='link-box-dev'>
+                <Grid item xs={9}><div>4G : </div></Grid>
+                <Grid item xs={3}><div className='text-right'>
+                    {check.load ? <Skeleton animation="wave" /> : <Switch
+                        size='small'
+                        checked={check.n_4g}
+                        onChange={() => { CFDialog({ st: '4G', message: check.n_4g ? <p className='center-cf'>ຕ້ອງການ ປິດ 4G ?</p> : <p className='center-cf'>ຕ້ອງການ ເປີດ 4G ?</p>, data: "4G" }) }}
+                        color="success"
+                    />}
+                </div></Grid>
+            </Grid>
+
+            <Grid item container xs={12} className='link-box-dev'>
                 <Grid item xs={9}><div>3G : </div></Grid>
                 <Grid item xs={3}><div className='text-right'>
                     {check.load ? <Skeleton animation="wave" /> : <Switch
@@ -116,18 +137,7 @@ function MobileService({ check, cb }) {
                     />}
                 </div></Grid>
             </Grid>
-            <Grid item container xs={12} className='link-box-dev'>
-                <Grid item xs={9}><div>4G : </div></Grid>
-                <Grid item xs={3}><div className='text-right'>
-                    {check.load ? <Skeleton animation="wave" /> : <Switch
-                        size='small'
-                        checked={check.n_4g}
-                        onChange={() => { CFDialog({ st: '4G', message: check.n_4g ? <p className='center-cf'>ຕ້ອງການ ປິດ 4G ?</p> : <p className='center-cf'>ຕ້ອງການ ເປີດ 4G ?</p>, data: "4G" }) }}
-                        color="success"
-                    />}
-
-                </div></Grid>
-            </Grid>
+            
             <Grid item container xs={12} className='link-box-dev'>
                 <Grid item xs={9}><div>RBT : </div></Grid>
                 <Grid item xs={3}><div className='text-right'>
