@@ -1,12 +1,14 @@
 import { WarningAmber } from '@mui/icons-material'
 import { Button, Dialog, Grid, Skeleton, Switch } from '@mui/material'
 import { Cancel, CheckCircle } from '@material-ui/icons'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { toast_success, toast_error } from '../../../../../Components/Toast'
-import { AxiosReq } from '../../../../../Components/Axios'
+import { AxiosAPI, AxiosReq } from '../../../../../Components/Axios'
+import axios from 'axios'
+import Cookies from 'js-cookie'
 
 function MobileService({ check, is5G, cb }) {
-    console.log(is5G)
+    // console.log(is5G)
     const [reason, setReason] = React.useState({ text: null, alert: false, message: null, dialog: false, status: null })
 
     const CFDialog = ({ st: ST, message: Message }) => {
@@ -15,6 +17,7 @@ function MobileService({ check, is5G, cb }) {
     const handleCloseCon = () => {
         setReason({ ...reason, dialog: false })
     }
+    const [smsST, setsmsST] = useState(false)
 
     const change3G = () => {
         var curr3G = check.n_3g
@@ -91,6 +94,22 @@ function MobileService({ check, is5G, cb }) {
             // })
         })
     }
+    const changeSMS = () => {
+        let sendData = {
+            msisdn: localStorage.getItem("ONE_PHONE"),
+            prov: smsST ? 'false' : 'true'
+        }
+        AxiosReq.post("CheckSms", sendData, { headers: { 'Authorization': 'Bearer ' + Cookies.get("ONE_TOKEN") } }).then(res => {
+            if (res.status === 200) {
+                setsmsST(smsST ? false : true)
+                toast_success({ text: res.data?.resultDesc })
+            } else {
+                toast_error({ text: res.data?.resultDesc })
+            }
+        }).catch(er => {
+            toast_error({ text: "API Error !!!" })
+        })
+    }
 
     const SaveCF = () => {
         if (reason.text === null || reason.text === '') {
@@ -101,19 +120,28 @@ function MobileService({ check, is5G, cb }) {
                 change3G()
             } else if (reason.status === '4G') {
                 change4G()
+            } else if (reason.status === "SMS") {
+                changeSMS()
             }
         }
     }
+    useEffect(() => {
+        AxiosReq.get("CheckSms?msisdn=" + localStorage.getItem("ONE_PHONE"), { headers: { 'Authorization': 'Bearer ' + Cookies.get("ONE_TOKEN") } }).then(res => {
+            if (res.status === 200) {
+                setsmsST(res.data?.status)
+            }
+        })
+    }, [])
 
     return (
         <>
             <Grid item container xs={12} className='link-box-dev'>
                 <Grid item xs={9}><div>5G : </div></Grid>
                 <Grid item xs={3}><div className='text-right'>
-                   {is5G ? <CheckCircle className="success" /> : <Cancel className="danger" />} 
+                    {is5G ? <CheckCircle className="success" /> : <Cancel className="danger" />}
                 </div></Grid>
             </Grid>
-            
+
             <Grid item container xs={12} className='link-box-dev'>
                 <Grid item xs={9}><div>4G : </div></Grid>
                 <Grid item xs={3}><div className='text-right'>
@@ -137,7 +165,7 @@ function MobileService({ check, is5G, cb }) {
                     />}
                 </div></Grid>
             </Grid>
-            
+
             <Grid item container xs={12} className='link-box-dev'>
                 <Grid item xs={9}><div>RBT : </div></Grid>
                 <Grid item xs={3}><div className='text-right'>
@@ -173,6 +201,18 @@ function MobileService({ check, is5G, cb }) {
                         color="success"
                     />}
 
+                </div></Grid>
+            </Grid>
+
+            <Grid item container xs={12} className='link-box-dev'>
+                <Grid item xs={9}><div>SMS : </div></Grid>
+                <Grid item xs={3}><div className='text-right'>
+                    {check.load ? <Skeleton animation="wave" /> : <Switch
+                        size='small'
+                        checked={smsST}
+                        onChange={() => { CFDialog({ st: 'SMS', message: smsST ? <p className='center-cf'>ຕ້ອງການ ປິດ SMS ?</p> : <p className='center-cf'>ຕ້ອງການ ເປີດ SMS ?</p>, data: "SMS" }) }}
+                        color="success"
+                    />}
                 </div></Grid>
             </Grid>
 
