@@ -23,7 +23,7 @@ function Banking() {
             <Grid container>
                 <Grid item xs={12} container className='link-box-pointer' onClick={() => setOpen({ ...open, fadao: true })}>
                     <Grid item xs={2}><AttachMoney /></Grid>
-                    <Grid item xs={6}>ຢືມ ແລະ ຕັດເງິນ ຟ້າດາວ :</Grid>
+                    <Grid item xs={6}>ຢືມ ແລະ ຕັດເງິນ:</Grid>
                     <Grid item xs={4}>
                         {loading.fadao ? <Skeleton animation="wave" /> : <div className={count.fadao > 0 ? 'text-right bage-success' : 'text-right bage-error'}><u>{count.fadao}</u></div>}
                     </Grid>

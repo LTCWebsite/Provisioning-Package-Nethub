@@ -45,7 +45,7 @@ function Fadao({ open, cb, stop, count }) {
                 <Grid container style={{ width: 1400 }}>
                     <Grid item container xs={12}>
                         <Grid item xs={1}></Grid>
-                        <Grid item xs={10}><div className="center"><h1>ຢືມ ແລະ ຕັດເງິນ ຟ້າດາວ</h1></div></Grid>
+                        <Grid item xs={10}><div className="center"><h1>ຢືມ ແລະ ຕັດເງິນ </h1></div></Grid>
                         <Grid item xs={1}>
                             <div className='right'><Close className='icon' onClick={() => cb(!open)} /></div>
                         </Grid>
