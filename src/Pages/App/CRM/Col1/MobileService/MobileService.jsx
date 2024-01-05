@@ -7,7 +7,7 @@ import { AxiosAPI, AxiosReq } from '../../../../../Components/Axios'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 
-function MobileService({ check, is5G, cb }) {
+function MobileService({ check, is5G, cb, cbis5G }) {
     // console.log(is5G)
     const [reason, setReason] = React.useState({ text: null, alert: false, message: null, dialog: false, status: null })
 
@@ -111,6 +111,23 @@ function MobileService({ check, is5G, cb }) {
         })
     }
 
+    const close5G = () => {
+        var phone = localStorage.getItem("ONE_PHONE")
+        let sendData = {
+            "msisdn": phone
+        }
+        axios.post("http://172.28.14.48:2030/close5g", sendData).then(res => {
+            if (res.status === 200) {
+                toast_success({ text: "ບັນທຶກຂໍ້ມູນ 5G ສຳເລັດ" })
+                cbis5G(!is5G)
+            } else {
+                toast_error({ text: res.data })
+            }
+        }).catch(er => {
+            toast_error({ text: er })
+        })
+    }
+
     const SaveCF = () => {
         if (reason.text === null || reason.text === '') {
             setReason({ ...reason, alert: true })
@@ -122,6 +139,8 @@ function MobileService({ check, is5G, cb }) {
                 change4G()
             } else if (reason.status === "SMS") {
                 changeSMS()
+            } else if (reason.status === '5G') {
+                close5G()
             }
         }
     }
@@ -138,7 +157,18 @@ function MobileService({ check, is5G, cb }) {
             <Grid item container xs={12} className='link-box-dev'>
                 <Grid item xs={9}><div>5G : </div></Grid>
                 <Grid item xs={3}><div className='text-right'>
-                    {is5G ? <CheckCircle className="success" /> : <Cancel className="danger" />}
+                    <Switch
+                        size='small'
+                        checked={is5G}
+                        onChange={() => {
+                            is5G && CFDialog({
+                                st: '5G', message: is5G ? <p className='center-cf'>ຕ້ອງການ ປິດ 5G ?</p>
+                                    : <p className='center-cf'>ຕ້ອງການ ເປີດ 5G ?</p>, data: "5G"
+                            })
+                        }}
+                        color="success"
+                    />
+                    {/* {is5G ? <CheckCircle className="success" /> : <Cancel className="danger" />} */}
                 </div></Grid>
             </Grid>
 
