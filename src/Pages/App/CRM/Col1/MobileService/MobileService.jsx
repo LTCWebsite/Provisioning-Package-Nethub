@@ -1,11 +1,13 @@
 import { WarningAmber } from '@mui/icons-material'
-import { Button, Dialog, Grid, Skeleton, Switch } from '@mui/material'
+import { Button, Dialog, DialogTitle, Grid, Skeleton, Switch } from '@mui/material'
 import { Cancel, CheckCircle } from '@material-ui/icons'
 import React, { useEffect, useState } from 'react'
 import { toast_success, toast_error } from '../../../../../Components/Toast'
 import { AxiosAPI, AxiosReq } from '../../../../../Components/Axios'
 import axios from 'axios'
 import Cookies from 'js-cookie'
+import Axios5g from 'axios'
+import { List } from '@material-ui/core'
 
 function MobileService({ check, is5G, cb }) {
     // console.log(is5G)
@@ -14,10 +16,18 @@ function MobileService({ check, is5G, cb }) {
     const CFDialog = ({ st: ST, message: Message }) => {
         setReason({ ...reason, message: Message, dialog: true, status: ST, alert: false, text: null })
     }
+
+    //dialog5g
+    const [reason5g, setReason5g] = React.useState({ text: null, alert: false, message: null, dialog: false, status: null })
+    const CFDialog5g = ({ st: ST, message: Message }) => {
+        setReason5g({ ...reason, message: Message, dialog: true, status: ST, alert: false, text: null })
+    }
     const handleCloseCon = () => {
         setReason({ ...reason, dialog: false })
     }
     const [smsST, setsmsST] = useState(false)
+
+    const [datapk, setDataPk] = useState()
 
     const change3G = () => {
         var curr3G = check.n_3g
@@ -126,21 +136,145 @@ function MobileService({ check, is5G, cb }) {
         }
     }
     useEffect(() => {
-        AxiosReq.get("CheckSms?msisdn=" + localStorage.getItem("ONE_PHONE"), { headers: { 'Authorization': 'Bearer ' + Cookies.get("ONE_TOKEN") } }).then(res => {
-            if (res.status === 200) {
-                setsmsST(res.data?.status)
+        AxiosReq.get("CheckSms?msisdn=" + localStorage.getItem("ONE_PHONE"), { headers: { 'Authorization': 'Bearer ' + Cookies.get("ONE_TOKEN") } })
+            .then(res => {
+                if (res.status === 200) {
+                    setsmsST(res.data?.status)
+                }
+            })
+    }, [])
+
+
+
+    const getInfo5g = () => {
+        Axios5g.post("http://172.28.14.48:2031/list-5g", { msisdn: localStorage.getItem("ONE_PHONE") }, {
+            headers: {
+                'Authorization': 'Basic cGFja2FnZTojTHRjMXFhejJ3c3hAcGs=',
+                'Content-Type': 'application/json'
             }
         })
+            .then(res => {
+                if (res.status === 200) {
+                    setDataPk(res.data.Data[0])
+                }
+
+                // setDataPk(res.data)
+
+            })
+    }
+
+    useEffect(() => {
+        getInfo5g()
+
     }, [])
+    // console.log(datapk);
+
+    // console.log(datapk);
+
+
+    const [isDialogOpen, setDialogOpen] = useState(false);
+
+    const [openDialog, handleDisplay] = React.useState(false);
+
+    const handleClose = () => {
+        handleDisplay(false);
+    };
+
+    const openDialogBox = () => {
+        handleDisplay(true);
+    };
+    const dialogStyle = {
+        padding: "20px",
+    };
+    const buttonStyle = {
+        width: "10rem",
+        fontsize: "1.5rem",
+        height: "2rem",
+        padding: "5px",
+        borderRadius: "10px",
+        backgroundColor: "green",
+        color: "White",
+        border: "2px solid yellow",
+    };
 
     return (
         <>
             <Grid item container xs={12} className='link-box-dev'>
                 <Grid item xs={9}><div>5G : </div></Grid>
                 <Grid item xs={3}><div className='text-right'>
-                    {is5G ? <CheckCircle className="success" /> : <Cancel className="danger" />}
+                    {is5G ? <CheckCircle className="success" />
+
+                        :
+                        <Cancel className="danger" />}
+
                 </div></Grid>
+
             </Grid>
+            {/* <Grid item container xs={12} className='link-box-dev'>
+                <Grid item xs={9}><div><Button>Info-5G</Button></div>
+                </Grid>
+             
+            </Grid> */}
+
+
+
+
+
+            <Grid item xs={12} container className='link-box-pointer'>
+                {datapk !== undefined ? (
+                    <Grid item xs={6} >IMEI:{datapk?.imei}</Grid>
+                ) : (
+                    <Grid item xs={6} >------</Grid>
+                )}
+            </Grid>
+
+            <Grid item xs={12} container className='link-box-pointer' >
+
+
+                {datapk !== undefined ? (
+                    <Grid item xs={6} >Brand Name: {datapk?.brand_name}</Grid>
+                ) : (
+                    <Grid item xs={6} >------</Grid>
+                )}
+            </Grid>
+            <Grid item xs={12} container className='link-box-pointer' >
+                {datapk !== undefined ? (
+                    <Grid item xs={6} >Device Type: {datapk?.device_type}</Grid>
+                ) : (
+                    <Grid item xs={6} >------</Grid>
+                )}
+
+            </Grid>
+
+            <Grid item xs={12} container className='link-box-pointer' >
+                {datapk !== undefined ? (
+                    <Grid item xs={6} >Marketing Name: {datapk?.marketing_name}</Grid>
+                ) : (
+                    <Grid item xs={6} >------</Grid>
+                )}
+
+            </Grid>
+
+
+
+
+
+
+            {/* <Dialog onClose = {handleClose} open = {openDialog}> */}
+            {/* <DialogTitle> Demo Dialog </DialogTitle> */}
+
+            {/* <Grid container style={{ paddingLeft: 20, paddingRight: 20 }}>
+                    <Grid item container xs={12}>
+                <h3>imei: </h3>
+                <h3>marketing_name: </h3>
+                <h3>brand_name: </h3>
+                <h3>os: </h3>
+                <h3>device_type: </h3>
+                <h3>create_date: </h3>
+                </Grid>
+                </Grid>
+            
+         </Dialog> */}
 
             <Grid item container xs={12} className='link-box-dev'>
                 <Grid item xs={9}><div>4G : </div></Grid>
