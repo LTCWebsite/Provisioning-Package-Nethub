@@ -9,6 +9,7 @@ import Cookies from "js-cookie";
 
 function MobileService({ check, is5G, cb, cbis5G }) {
   // console.log(is5G)
+  const [datapk, setDataPk] = useState();
   const [reason, setReason] = React.useState({
     text: null,
     alert: false,
@@ -152,6 +153,31 @@ function MobileService({ check, is5G, cb, cbis5G }) {
       });
   };
 
+  const getInfo5g = () => {
+    axios
+      .post(
+        "http://172.28.14.48:2031/list-5g",
+        { msisdn: localStorage.getItem("ONE_PHONE") },
+        {
+          headers: {
+            Authorization: "Basic cGFja2FnZTojTHRjMXFhejJ3c3hAcGs=",
+            "Content-Type": "application/json"
+          }
+        }
+      )
+      .then((res) => {
+        if (res.status === 200) {
+          setDataPk(res.data.Data[0]);
+        }
+
+        // setDataPk(res.data)
+      });
+  };
+
+  useEffect(() => {
+    getInfo5g();
+  }, []);
+
   const SaveCF = () => {
     if (reason.text === null || reason.text === "") {
       setReason({ ...reason, alert: true });
@@ -206,6 +232,58 @@ function MobileService({ check, is5G, cb, cbis5G }) {
             {/* {is5G ? <CheckCircle className="success" /> : <Cancel className="danger" />} */}
           </div>
         </Grid>
+      </Grid>
+
+      <Grid item xs={12} container className="link-box-pointer">
+        {datapk !== undefined ? (
+          <Grid item xs={6}>
+            IMEI:{datapk?.imei}
+          </Grid>
+        ) : (
+          <Grid item xs={6}>
+            ------
+          </Grid>
+        )}
+      </Grid>
+
+      <Grid item xs={12} container className="link-box-pointer">
+        {datapk !== undefined ? (
+          <Grid item xs={6}>
+            Brand Name: {datapk?.brand_name}
+          </Grid>
+        ) : (
+          <Grid item xs={6}>
+            ------
+          </Grid>
+        )}
+      </Grid>
+      <Grid item xs={12} container className="link-box-pointer">
+        {datapk !== undefined ? (
+          <Grid item xs={12}>
+            Device Type: {datapk?.device_type}
+          </Grid>
+        ) : (
+          <Grid item xs={12}>
+            ------
+          </Grid>
+        )}
+      </Grid>
+
+      <Grid item xs={12} container className="link-box-pointer">
+        {datapk !== undefined ? (
+          <Grid container xs={12}>
+            <Grid item xs={8}>
+              Marketing Name: {datapk?.marketing_name}
+            </Grid>
+            <Grid item xs={4} style={{textAlign:"right",fontSize:8,color:'green',fontWeight:'bolder'}}>
+              SUPPORT 5G
+            </Grid>
+          </Grid>
+        ) : (
+          <Grid item xs={6}>
+            ------
+          </Grid>
+        )}
       </Grid>
 
       <Grid item container xs={12} className="link-box-dev">
