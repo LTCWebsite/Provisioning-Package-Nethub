@@ -168,6 +168,7 @@ function MobileService({ check, is5G, cb, cbis5G }) {
       .then((res) => {
         if (res.status === 200) {
           setDataPk(res.data.Data[0]);
+        //   setDataPk(prev=>prev.status = false)
         }
 
         // setDataPk(res.data)
@@ -275,8 +276,8 @@ function MobileService({ check, is5G, cb, cbis5G }) {
             <Grid item xs={8}>
               Marketing Name: {datapk?.marketing_name}
             </Grid>
-            <Grid item xs={4} style={{textAlign:"right",fontSize:8,color:'green',fontWeight:'bolder'}}>
-              SUPPORT 5G
+            <Grid item xs={4} style={{textAlign:"right",fontSize:8,color:datapk?.status == true?"green":"red",fontWeight:'bolder'}}>
+             {datapk?.status == true?"SUPPORT 5G":"WAIT UPDATE"}  
             </Grid>
           </Grid>
         ) : (
