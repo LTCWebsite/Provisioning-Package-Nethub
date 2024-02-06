@@ -5,8 +5,9 @@ import React from 'react'
 import MyTable from '../../../../../../Components/MyTable'
 
 function Transfer({ open, cb, data }) {
-    //console.log(data)
+    // console.log(data)
     const columns = [
+        { title: 'Transaction ID', field: 'EXT_TRANS_ID' },
         { title: 'ເບີໂອນ', field: 'PRI_IDENTITY' },
         { title: 'ເບີຮັບ', field: 'ReceipNumber', render: row => row.ReceipNumber.substr(0, 7) + "xxx" + row.ReceipNumber.substr(10) },
         { title: 'ເວລາ', field: 'TRANSFER_DATE', minWidth: 150, render: row => row.TRANSFER_DATE.length > 15 ? moment(row?.TRANSFER_DATE).format("DD-MM-YYYY HH:mm:ss") : row.TRANSFER_DATE.substr(6, 2) + "-" + row.TRANSFER_DATE.substr(4, 2) + "-" + row.TRANSFER_DATE.substr(0, 4) + " " + row.TRANSFER_DATE.substr(8, 2) + ":" + row.TRANSFER_DATE.substr(10, 2) + ":" + row.TRANSFER_DATE.substr(12, 2) },
