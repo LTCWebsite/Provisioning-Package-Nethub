@@ -136,16 +136,37 @@ function MobileService({ check, is5G, cb, cbis5G }) {
   const close5G = () => {
     var phone = localStorage.getItem("ONE_PHONE");
     let sendData = {
-      msisdn: phone
+      msisdn: phone,
+      "channel": "one",
+      ussd: '*559*00#'
     };
-    axios
-      .post("http://172.28.14.48:2030/close5g", sendData)
+    // axios.post("http://172.28.14.48:2030/close5g", sendData)
+    //   .then((res) => {
+    //     if (res.status === 200) {
+    //       toast_success({ text: "ບັນທຶກຂໍ້ມູນ 5G ສຳເລັດ" });
+    //       cbis5G(!is5G);
+    //     } else {
+    //       toast_error({ text: res.data });
+    //     }
+    //   })
+    //   .catch((er) => {
+    //     toast_error({ text: er });
+    //   });
+    axios.post("http://172.28.26.146:2031/buy-package-5g", sendData,
+    // axios.post("http://localhost:2031/buy-package-5g", sendData,
+    {
+      headers: {
+        Authorization: "Basic cGFja2FnZTojTHRjMXFhejJ3c3hAcGs=",
+        "Content-Type": "application/json"
+      }
+    })
       .then((res) => {
-        if (res.status === 200) {
+        if (res?.status === 200 && res?.data?.ResultCode == 200) {
+          console.log(res)
           toast_success({ text: "ບັນທຶກຂໍ້ມູນ 5G ສຳເລັດ" });
-          cbis5G(!is5G);
+          cbis5G(false);
         } else {
-          toast_error({ text: res.data });
+          toast_error({ text: res?.data?.ResultDesc });
         }
       })
       .catch((er) => {
@@ -156,7 +177,7 @@ function MobileService({ check, is5G, cb, cbis5G }) {
   const getInfo5g = () => {
     axios
       .post(
-        "http://172.28.14.48:2031/list-5g",
+        "http://172.28.26.146:2031/list-5g",
         { msisdn: localStorage.getItem("ONE_PHONE") },
         {
           headers: {

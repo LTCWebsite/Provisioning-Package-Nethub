@@ -5,8 +5,9 @@ import React from 'react'
 import MyTable from '../../../../../../Components/MyTable'
 
 function Add({ open, cb, data }) {
-    //console.log(data);
+    // console.log(data);
     const columns = [
+        { title: 'Transaction ID', field: 'EXT_TRANS_ID' },
         { title: 'ເບີໂທ', field: 'PRI_IDENTITY' },
         { title: 'ເວລາ', field: 'TimeStamp', minWidth: 150, render: row => row.TimeStamp.length > 15 ? moment(row.TimeStamp).format("DD-MM-YYYY HH:mm:ss") : row.TimeStamp.substr(6, 2) + "-" + row.TimeStamp.substr(4, 2) + "-" + row.TimeStamp.substr(0, 4) + " " + row.TimeStamp.substr(8, 2) + ":" + row.TimeStamp.substr(10, 2) + ":" + row.TimeStamp.substr(12, 2) },
         // { title: 'CardSequence', field: 'CARD_SEQUENCE' },

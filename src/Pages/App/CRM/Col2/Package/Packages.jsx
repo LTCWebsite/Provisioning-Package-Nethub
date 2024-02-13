@@ -33,14 +33,14 @@ function Packages() {
         setPk({ ...pk, load: true, count: 0 })
         AxiosReq.get("NewQueryPackage?msisdn=" + phone,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200) {
-                let update = res.data.filter(row => row.remaining_data > 0).map((row, idx) => {
-                    row.idx = idx + 1
-                    return row
-                })
-                // let newData = res.data?.map((row, idx) => {
+                // let update = res.data.filter(row => row.remaining_data > 0).map((row, idx) => {
                 //     row.idx = idx + 1
                 //     return row
                 // })
+                let update = res.data?.map((row, idx) => {
+                    row.idx = idx + 1
+                    return row
+                })
                 setPk({ ...pk, load: false, count: parseInt(res.data.length), data: update })
             } else {
                 setPk({ ...pk, load: false, count: 0 })

@@ -19,7 +19,7 @@ function MasterSim({ open, cb }) {
         // console.log(cookie.get("ONE_TOKEN"))
         AxiosReq.get("CheckMasterSim",{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200) {
-                console.log(res.data)
+                // console.log(res.data)
                 var update = res.data.map((row, idx) => {
                     if (row.balance <= 1000000000 && row.balance > 5000 && row.tier_ === "Platinum" && row.status === true) {
                         row.dex = 1

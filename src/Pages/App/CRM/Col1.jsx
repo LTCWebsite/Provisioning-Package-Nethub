@@ -105,7 +105,7 @@ function Col1() {
                     <h2 className='blue'>Life Cycle</h2>
                     <LifeCycle cb={(e) => setBacklist(e)} load={(e) => setLoad(e)} cbCus={(e) => setCus(e)} />
                     <h2 className='blue'>Mobile Service Data</h2>
-                    <MobileService check={check} is5G={is5G} cb={(e) => setCheck(e)} />
+                    <MobileService check={check} is5G={is5G} cb={(e) => setCheck(e)} cbis5G={(e)=>{setIs5G(e)}} />
 
                     <h2 className='blue'>Application</h2>
                     <Application />
