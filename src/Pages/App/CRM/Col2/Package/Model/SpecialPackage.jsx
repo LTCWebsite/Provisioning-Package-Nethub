@@ -1,7 +1,7 @@
 import { Close } from '@mui/icons-material';
 import { Dialog, Grid, Slide } from '@mui/material'
 import moment from 'moment';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AxiosReq } from '../../../../../../Components/Axios';
 import MyTable from '../../../../../../Components/MyTable';
 import cookie from 'js-cookie'
@@ -33,10 +33,24 @@ function SpecialPackage({ open, cb, done, ifdone, count }) {
         { title: "Province", field: "province" },
     ];
 
-    useEffect(() => {
+    const columns_Firstact = [
+        { title: "No", field: "id_idx", maxWidth: 50 },
+        { title: "Package", field: "srv_name", maxWidth: 200 },
+        { title: "ເບີໂທ", field: "msisdn", maxWidth: 150 },
+        { 
+            title: "ວັນທີໄດ້ຮັບ", 
+            field: "date", 
+            maxWidth: 200,
+            render: rowData => rowData.date === "0001-01-01T00:00:00" ? null : moment(rowData.date).format("DD-MM-YYYY HH:mm:ss"),
+        },
+    ];
+
+    const [Firsact, setFirsact] = React.useState(null)
+    useEffect(async() => {
         ifdone(done)
+        let number = 0;
         let phone = localStorage.getItem("ONE_PHONE")
-        AxiosReq.get("api/SpecialPackage?msisdn=" + phone,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then((res) => {
+        await AxiosReq.get("api/SpecialPackage?msisdn=" + phone,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then((res) => {
             if (res.status === 200) {
                 var num = 0;
                 var update = res.data.map((row) => {
@@ -45,13 +59,32 @@ function SpecialPackage({ open, cb, done, ifdone, count }) {
                     return row;
                 })
                 ifdone(!done)
-                count(num)
+                number = num;
                 setSp({ ...sp, data: update });
             }
         }).catch((err) => {
             setSp({ ...sp, data: [] });
         })
+
+        await AxiosReq.post("api/SpecialPackage/GetProfirstac?msisdn=" + phone,{},{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then((res) => {
+            if (res.status === 200) {
+                var num = 0;
+                var update = res.data.map((row) => {
+                    row.id_idx = num + 1;
+                    num = num + 1;
+                    return row;
+                })
+                count(num + number);
+                setFirsact(update);
+                //console.log(update);
+            }
+        }).catch((err) => {
+            //setSp({ ...sp, data: [] });
+        })
     }, [])
+
+ 
+
 
     return (
         <>
@@ -80,6 +113,13 @@ function SpecialPackage({ open, cb, done, ifdone, count }) {
                                 tTitle={"Special Package"}
                                 tData={sp.data}
                                 tColumns={columns_sp}
+                            />
+                        </Grid>
+                        <Grid item xs={12} className="center">
+                        <MyTable
+                                tTitle={"Package Firstact"}
+                                tData={Firsact}
+                                tColumns={columns_Firstact}
                             />
                         </Grid>
                     </Grid>
