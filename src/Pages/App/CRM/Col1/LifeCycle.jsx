@@ -79,6 +79,7 @@ function LifeCycle({ cb, cbCus, load }) {
             if (res.status === 200) {
                 let active = res?.data?.activationTime
                 let barring = res?.data?.activeTimeLimit
+                console.log("HELLO: ",res.data)
                 cbCus(res.data)
                 setOffering({
                     firstActive: active.substring(6, 8) + '/' + active.substring(4, 6) + '/' +active.substring(0, 4)  + ' ' + active.substring(8, 10) + ':' + active.substring(10, 12) + ':' + active.substring(12, 14),
