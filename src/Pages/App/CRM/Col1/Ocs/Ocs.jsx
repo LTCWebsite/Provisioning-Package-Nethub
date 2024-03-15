@@ -21,7 +21,6 @@ function Ocs({ cus, load, st }) {
     const [pass, setPass] = useState(false)
     const [useIdel, setuseIdel] = useState(false)
 
-    // console.log(cus)
     useEffect(() => {
         setShow(load)
         let info = MyCryptTry("de", localStorage.getItem("ONE_DETAIL"))
