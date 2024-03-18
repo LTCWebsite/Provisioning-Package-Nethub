@@ -18,9 +18,9 @@ function BlackList({ data, load }) {
     // console.log(data)
     const [open, setOpen] = useState(false)
     const [btn, setBtn] = useState(false)
-    const [show, setShow] = useState(false)
+    // const [show, setShow] = useState(false)
     const [point, setPoint] = useState([])
-    const bl = data.blacklistStatus
+    let bl = data.blacklistStatus
 
     const UnBlackList = () => {
         setOpen(false)
@@ -47,14 +47,14 @@ function BlackList({ data, load }) {
         })
     }
     useEffect(() => {
-        setShow(false)
+        // setShow(false)
         let phone = localStorage.getItem("ONE_PHONE")
         let type = MyCrypt("de", localStorage.getItem("ONE_NETWORK"))
         // console.log(type)
         AxiosReq.get(`NewQueryPointCbs?msisdn=${phone}&network_code=${type?.NETWORK_CODE}`,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200) {
                 console.log(res.data)
-                setShow(true)
+                // setShow(true)
                 setPoint(res.data)
             }
         })
