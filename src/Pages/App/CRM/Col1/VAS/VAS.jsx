@@ -79,7 +79,7 @@ function VAS() {
             }
         }).catch(err => {
             setStop(true)
-            console.log("VAS get error !!")
+            // console.log("VAS get error !!")
         })
     }, [])
 

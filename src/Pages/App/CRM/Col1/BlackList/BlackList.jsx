@@ -53,7 +53,7 @@ function BlackList({ data, load }) {
         // console.log(type)
         AxiosReq.get(`NewQueryPointCbs?msisdn=${phone}&network_code=${type?.NETWORK_CODE}`,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200) {
-                console.log(res.data)
+                // console.log(res.data)
                 // setShow(true)
                 setPoint(res.data)
             }

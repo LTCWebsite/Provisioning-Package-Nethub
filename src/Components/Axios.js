@@ -20,3 +20,11 @@ export const Axios5g = axios.create({
         password: "#Ltc1qaz2wsx@pk"
     }
 })
+
+export const AxiosCBS = axios.create({
+    baseURL: "http://172.28.26.146:9910/",
+    auth: {
+        username: "admin",
+        password: "#Ltc1qaz2wsx@cbs"
+    }
+})
