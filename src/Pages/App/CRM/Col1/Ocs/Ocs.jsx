@@ -98,7 +98,15 @@ function Ocs({ cus, load, st }) {
                         <Grid item xs={1}><Visibility style={{ paddingTop: 4 }} /></Grid>
                         <Grid item xs={5}><div style={{ paddingTop: 4 }}>&nbsp;CBS Status : </div></Grid>
                         <Grid item xs={5} className="text-right">
-                            <div>&nbsp;{st}</div>
+                            <div>&nbsp;
+                                {cus?.offering[0]?.status === '1' && 'IDLE'}
+                                {cus?.offering[0]?.status === '2' && 'ACTIVE'}
+                                {cus?.offering[0]?.status === '3' && 'CALLBRARING/ SUSPEND'}
+                                {cus?.offering[0]?.status === '4' && 'DISABLE'}
+                                {cus?.offering[0]?.status === '5' && 'POOL'}
+                                {cus?.offering[0]?.status === '6' && 'DEACTIVE'}
+                                {cus?.offering[0]?.status === undefined && 'NULL'}
+                            </div>
                         </Grid>
                         <Grid item xs={1}>
                             {cus?.offering[0]?.status === '2' && <CheckCircle className={'link-icon-error'} style={{ paddingTop: 4 }} />}
@@ -106,7 +114,11 @@ function Ocs({ cus, load, st }) {
                             {cus?.offering[0]?.status !== '2' && <Can className={'link-icon-success'} style={{ paddingTop: 4 }} />}
                         </Grid>
                     </Grid>
-                    {type?.NETWORK_CODE !== 'M' &&
+                    <Grid item container xs={12} className={'link-box-click-hover link-box'}>
+                        <Grid item xs={6}><div>OfferingID : </div></Grid>
+                        <Grid item xs={6}><div className='text-right'>{cus?.primaryOffering}</div></Grid>
+                    </Grid>
+                    {type?.NETWORK_CODE === 'M' || type?.NETWORK_CODE === "H" || type?.NETWORK_CODE === 'W' ? null :
                         <Grid item container xs={12} className={'link-box-click-hover link-box'}>
                             <Grid item xs={6}><div>ຍອດໜີ້ : </div></Grid>
                             <Grid item xs={6}><div className='text-right'>{parseInt(data?.Summary?.Total).toLocaleString()}</div></Grid>
@@ -137,10 +149,10 @@ function Ocs({ cus, load, st }) {
                         </Grid>
                         {type?.NETWORK_CODE !== "M" &&
                             <Grid item xs={12} container>
-                                {/* <Grid item container xs={12} className='link-box'>
-                                    <Grid item xs={6}><div>Network Name : </div></Grid>
-                                    <Grid item xs={6}><div className='text-right'>{type?.NETWORK_NAME}</div></Grid>
-                                </Grid> */}
+                                <Grid item container xs={12} className='link-box'>
+                                    <Grid item xs={6}><div>Offering Name : </div></Grid>
+                                    <Grid item xs={6}><div className='text-right'>{cus?.offeringName}</div></Grid>
+                                </Grid>
                                 <Grid item container xs={12} className='link-box'>
                                     <Grid item xs={6}><div>Balance Type Name: </div></Grid>
                                     <Grid item xs={6}><div className='text-right'>{data?.C_MAIN_BILLING_ACCOUNT?.BalanceTypeName}</div></Grid>
