@@ -9,7 +9,8 @@ import OCSTab from './OCSTab'
 import axios from 'axios'
 import { toast_success, toast_error } from '../../../../../Components/Toast'
 import { MyCrypt, MyCryptTry } from '../../../../../Components/MyCrypt'
-import { AxiosCBS } from '../../../../../Components/Axios'
+import { AxiosCBS, AxiosReq } from '../../../../../Components/Axios'
+import Cookies from 'js-cookie'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -24,7 +25,8 @@ function Ocs({ cus, load, st }) {
     const [data, setdata] = useState([])
     const [show2, setShow2] = useState(false)
     let type = MyCrypt("de", localStorage.getItem("ONE_NETWORK"))
-    console.log(cus)
+    const [ftthData, setftthData] = useState([])
+    // console.log(cus)
     useEffect(() => {
         setShow(load)
         let info = MyCryptTry("de", localStorage.getItem("ONE_DETAIL"))
@@ -37,7 +39,19 @@ function Ocs({ cus, load, st }) {
         }
         loadCBS_Balance()
     }, [])
-
+    useEffect(() => {
+        if (type?.NETWORK_CODE === "F") {
+            loadFtth()
+        }
+    }, [type?.NETWORK_CODE])
+    const loadFtth = () => {
+        AxiosReq.get("Fiber?ftth=" + localStorage.getItem("ONE_PHONE"), { headers: { 'Authorization': 'Bearer ' + Cookies.get("ONE_TOKEN") } }).then(res => {
+            if (res.status === 200) {
+                setftthData(res.data)
+                // console.log(res.data)
+            }
+        })
+    }
     const loadCBS_Balance = () => {
         let phone = localStorage.getItem("ONE_PHONE")
         let sendData = {
@@ -160,6 +174,19 @@ function Ocs({ cus, load, st }) {
                                 <Grid item container xs={12} className='link-box'>
                                     <Grid item xs={6}><div>TotalAmount: </div></Grid>
                                     <Grid item xs={6}><div className='text-right'>{data?.C_MAIN_BILLING_ACCOUNT?.TotalAmount}</div></Grid>
+                                </Grid>
+                            </Grid>
+                        }
+                        {type?.NETWORK_CODE === "F" &&
+                            <Grid item xs={12} container>
+                                <Grid item container xs={12} className='link-box'>
+                                    <Grid item xs={6}><div>Expire Date : </div></Grid>
+                                    <Grid item xs={6}><div className='text-right'>
+                                        {/* {console.log(parseFloat((parseFloat(data?.Summary?.Total) / parseFloat(ftthData?.ftthPrice) * 30)))} */}
+                                        {parseFloat((parseFloat(data?.Summary?.Total) / parseFloat(ftthData?.ftthPrice) * 30)) <= 0 ?
+                                            Math.abs(Math.ceil(parseInt((parseFloat(data?.Summary?.Total) / parseFloat(ftthData?.ftthPrice) * 30)))) :
+                                            -1 * Math.ceil(parseFloat((parseFloat(data?.Summary?.Total) / parseFloat(ftthData?.ftthPrice) * 30)))} Days
+                                    </div></Grid>
                                 </Grid>
                             </Grid>
                         }
