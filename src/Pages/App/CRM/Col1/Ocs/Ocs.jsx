@@ -24,7 +24,7 @@ function Ocs({ cus, load, st }) {
     const [data, setdata] = useState([])
     const [show2, setShow2] = useState(false)
     let type = MyCrypt("de", localStorage.getItem("ONE_NETWORK"))
-    // console.log(cus)
+    console.log(cus)
     useEffect(() => {
         setShow(load)
         let info = MyCryptTry("de", localStorage.getItem("ONE_DETAIL"))
@@ -94,24 +94,24 @@ function Ocs({ cus, load, st }) {
                                 <Can className={'link-icon-success'} style={{ paddingTop: 4 }} />}
                         </Grid>
                     </Grid> */}
-                    <Grid item container xs={12} className={cus?.offering[0]?.status === '2' ? 'link-box-success-click-hover next' : 'link-box-error-click next'} onClick={() => setOpen(cus?.resultCode === "0" ? true : false)}>
+                    <Grid item container xs={12} className={cus?.status === '2' ? 'link-box-success-click-hover next' : 'link-box-error-click next'} onClick={() => setOpen(cus?.resultCode === "0" ? true : false)}>
                         <Grid item xs={1}><Visibility style={{ paddingTop: 4 }} /></Grid>
                         <Grid item xs={5}><div style={{ paddingTop: 4 }}>&nbsp;CBS Status : </div></Grid>
                         <Grid item xs={5} className="text-right">
                             <div>&nbsp;
-                                {cus?.offering[0]?.status === '1' && 'IDLE'}
-                                {cus?.offering[0]?.status === '2' && 'ACTIVE'}
-                                {cus?.offering[0]?.status === '3' && 'CALLBRARING/ SUSPEND'}
-                                {cus?.offering[0]?.status === '4' && 'DISABLE'}
-                                {cus?.offering[0]?.status === '5' && 'POOL'}
-                                {cus?.offering[0]?.status === '6' && 'DEACTIVE'}
-                                {cus?.offering[0]?.status === undefined && 'NULL'}
+                                {cus?.status === '1' && 'IDLE'}
+                                {cus?.status === '2' && 'ACTIVE'}
+                                {cus?.status === '3' && 'CALLBRARING/ SUSPEND'}
+                                {cus?.status === '4' && 'DISABLE'}
+                                {cus?.status === '5' && 'POOL'}
+                                {cus?.status === '6' && 'DEACTIVE'}
+                                {cus?.status === undefined && 'NULL'}
                             </div>
                         </Grid>
                         <Grid item xs={1}>
-                            {cus?.offering[0]?.status === '2' && <CheckCircle className={'link-icon-error'} style={{ paddingTop: 4 }} />}
+                            {cus?.status === '2' && <CheckCircle className={'link-icon-error'} style={{ paddingTop: 4 }} />}
 
-                            {cus?.offering[0]?.status !== '2' && <Can className={'link-icon-success'} style={{ paddingTop: 4 }} />}
+                            {cus?.status !== '2' && <Can className={'link-icon-success'} style={{ paddingTop: 4 }} />}
                         </Grid>
                     </Grid>
                     <Grid item container xs={12} className={'link-box-click-hover link-box'}>
@@ -125,7 +125,7 @@ function Ocs({ cus, load, st }) {
                         </Grid>}
 
                     {useIdel && <>
-                        {cus?.offering[0]?.status === '1' && !pass &&
+                        {cus?.status === '1' && !pass &&
                             <Grid item container xs={12} className={'link-box-danger-click-hover'} onClick={() => setidel(true)}>
                                 <Grid item xs={1}><Loop style={{ paddingTop: 4 }} /></Grid>
                                 <Grid item xs={11}><div style={{ paddingTop: 4 }}>&nbsp;IDEL to Active status</div></Grid>

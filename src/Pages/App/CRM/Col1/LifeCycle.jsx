@@ -102,10 +102,10 @@ function LifeCycle({ cb, cbCus, load }) {
                         <Grid item xs={4}><div>First Active : </div></Grid>
                         <Grid item xs={8}><div className='text-right'>{offering?.firstActive}</div></Grid>
                     </Grid>
-                    <Grid item container xs={12} className='link-box-defult'>
+                    {/* <Grid item container xs={12} className='link-box-defult'>
                         <Grid item xs={4}><div>Register Date : </div></Grid>
                         <Grid item xs={8}><div className='text-right'>{offering?.activeLimit}</div></Grid>
-                    </Grid>
+                    </Grid> */}
                 </Grid> :
                 <Grid item xs={12} container>
                     <Grid item xs={12}>
