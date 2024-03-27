@@ -182,10 +182,7 @@ function Ocs({ cus, load, st }) {
                                 <Grid item container xs={12} className='link-box'>
                                     <Grid item xs={6}><div>Expire Date : </div></Grid>
                                     <Grid item xs={6}><div className='text-right'>
-                                        {/* {console.log(parseFloat((parseFloat(data?.Summary?.Total) / parseFloat(ftthData?.ftthPrice) * 30)))} */}
-                                        {parseFloat((parseFloat(data?.Summary?.Total) / parseFloat(ftthData?.ftthPrice) * 30)) <= 0 ?
-                                            Math.abs(Math.ceil(parseInt((parseFloat(data?.Summary?.Total) / parseFloat(ftthData?.ftthPrice) * 30)))) :
-                                            -1 * Math.ceil(parseFloat((parseFloat(data?.Summary?.Total) / parseFloat(ftthData?.ftthPrice) * 30)))} Days
+                                        {Math.floor(((parseFloat(data?.Summary?.Total) * -1) / (parseFloat(ftthData?.ftthPrice) + 5000) * 30))} Days
                                     </div></Grid>
                                 </Grid>
                             </Grid>
