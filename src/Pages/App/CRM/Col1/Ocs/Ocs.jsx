@@ -60,7 +60,7 @@ function Ocs({ cus, load, st }) {
         AxiosCBS.post("query_balance", sendData).then(res => {
             if (res.status === 200) {
                 setdata(res.data)
-                // console.log(res.data)
+                console.log(res.data)
                 setShow2(true)
             }
         })
@@ -182,7 +182,7 @@ function Ocs({ cus, load, st }) {
                                 <Grid item container xs={12} className='link-box'>
                                     <Grid item xs={6}><div>Expire Date : </div></Grid>
                                     <Grid item xs={6}><div className='text-right'>
-                                        {Math.floor(((parseFloat(data?.Summary?.Total) * -1) / (parseFloat(ftthData?.ftthPrice) + 5000) * 30))} Days
+                                        {Math.floor(((parseFloat(data?.AccountCredit?.TotalRemainAmount) * -1) / (parseFloat(ftthData?.ftthPrice) + 5000) * 30))} Days
                                     </div></Grid>
                                 </Grid>
                             </Grid>
