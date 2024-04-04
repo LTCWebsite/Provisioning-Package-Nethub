@@ -182,7 +182,7 @@ function Ocs({ cus, load, st }) {
                                 <Grid item container xs={12} className='link-box'>
                                     <Grid item xs={6}><div>Expire Date : </div></Grid>
                                     <Grid item xs={6}><div className='text-right'>
-                                        {parseInt((parseFloat(data?.AccountCredit?.TotalRemainAmount) * -1) / (parseFloat(ftthData?.ftthPrice) + 5000) * 30)} Days
+                                        {parseInt((parseFloat(data?.AccountCredit?.TotalRemainAmount)) / (parseFloat(ftthData?.ftthPrice) + 5000) * 30)} Days
                                     </div></Grid>
                                 </Grid>
                             </Grid>

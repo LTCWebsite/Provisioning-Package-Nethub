@@ -41,10 +41,11 @@ function Debit() {
                         <Skeleton animation="wave" className="wave" />
                     </Grid>
                 </Grid> :
-                <Grid item container xs={12} className='link-box-green'>
-                    <Grid item xs={8}><div>ຍອດໜີ້ : </div></Grid>
-                    <Grid item xs={4}><div className='text-right'>{debit.totalDebit === null ? null : parseInt(debit.totalDebit).toLocaleString()}</div></Grid>
-                </Grid>
+                null
+                // <Grid item container xs={12} className='link-box-green'>
+                //     <Grid item xs={8}><div>ຍອດໜີ້ : </div></Grid>
+                //     <Grid item xs={4}><div className='text-right'>{debit.totalDebit === null ? null : parseInt(debit.totalDebit).toLocaleString()}</div></Grid>
+                // </Grid>
                 // balance?.map((row, key) => {
                 //     return (
                 //         <Grid item container xs={12} className='link-box-green' key={key}>
