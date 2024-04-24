@@ -173,16 +173,34 @@ function Ocs({ cus, load, st }) {
                                 </Grid>
                                 <Grid item container xs={12} className='link-box'>
                                     <Grid item xs={6}><div>TotalAmount: </div></Grid>
-                                    <Grid item xs={6}><div className='text-right'>{data?.C_MAIN_BILLING_ACCOUNT?.TotalAmount}</div></Grid>
+                                    <Grid item xs={6}><div className='text-right'>{parseInt(data?.C_MAIN_BILLING_ACCOUNT?.TotalAmount).toLocaleString()}</div></Grid>
                                 </Grid>
                             </Grid>
                         }
                         {type?.NETWORK_CODE === "F" &&
                             <Grid item xs={12} container>
                                 <Grid item container xs={12} className='link-box'>
+                                    <Grid item xs={6}><div>FTTH Package : </div></Grid>
+                                    <Grid item xs={6}><div className='text-right'>
+                                        {ftthData?.ftthPackage}
+                                    </div></Grid>
+                                </Grid>
+                                <Grid item container xs={12} className='link-box'>
                                     <Grid item xs={6}><div>Expire Date : </div></Grid>
                                     <Grid item xs={6}><div className='text-right'>
                                         {parseInt((parseFloat(data?.AccountCredit?.TotalRemainAmount)) / (parseFloat(ftthData?.ftthPrice) + 5000) * 30)} Days
+                                    </div></Grid>
+                                </Grid>
+                                <Grid item container xs={12} className='link-box'>
+                                    <Grid item xs={6}><div>Total Remain Amount in month : </div></Grid>
+                                    <Grid item xs={6}><div className='text-right'>
+                                        {parseFloat(data?.AccountCredit?.TotalRemainAmount).toLocaleString()}
+                                    </div></Grid>
+                                </Grid>
+                                <Grid item container xs={12} className='link-box'>
+                                    <Grid item xs={6}><div>Total Usage Amount in month : </div></Grid>
+                                    <Grid item xs={6}><div className='text-right'>
+                                        {parseFloat(data?.AccountCredit?.TotalUsageAmount).toLocaleString()}
                                     </div></Grid>
                                 </Grid>
                             </Grid>
