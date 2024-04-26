@@ -26,7 +26,7 @@ function Ocs({ cus, load, st }) {
     const [show2, setShow2] = useState(false)
     let type = MyCrypt("de", localStorage.getItem("ONE_NETWORK"))
     const [ftthData, setftthData] = useState([])
-    // console.log(cus)
+    // console.log(type)
     useEffect(() => {
         setShow(load)
         let info = MyCryptTry("de", localStorage.getItem("ONE_DETAIL"))
@@ -60,7 +60,7 @@ function Ocs({ cus, load, st }) {
         AxiosCBS.post("query_balance", sendData).then(res => {
             if (res.status === 200) {
                 setdata(res.data)
-                console.log(res.data)
+                // console.log(res.data)
                 setShow2(true)
             }
         })
@@ -161,22 +161,22 @@ function Ocs({ cus, load, st }) {
                             <Grid item xs={6}><div>Balance Type : </div></Grid>
                             <Grid item xs={6}><div className='text-right'>{data?.C_MAIN_BILLING_ACCOUNT?.BalanceType}</div></Grid>
                         </Grid>
-                        {type?.NETWORK_CODE !== "M" &&
-                            <Grid item xs={12} container>
-                                <Grid item container xs={12} className='link-box'>
-                                    <Grid item xs={6}><div>Offering Name : </div></Grid>
-                                    <Grid item xs={6}><div className='text-right'>{cus?.offeringName}</div></Grid>
-                                </Grid>
-                                <Grid item container xs={12} className='link-box'>
-                                    <Grid item xs={6}><div>Balance Type Name: </div></Grid>
-                                    <Grid item xs={6}><div className='text-right'>{data?.C_MAIN_BILLING_ACCOUNT?.BalanceTypeName}</div></Grid>
-                                </Grid>
-                                <Grid item container xs={12} className='link-box'>
-                                    <Grid item xs={6}><div>TotalAmount: </div></Grid>
-                                    <Grid item xs={6}><div className='text-right'>{parseInt(data?.C_MAIN_BILLING_ACCOUNT?.TotalAmount).toLocaleString()}</div></Grid>
-                                </Grid>
+
+                        <Grid item xs={12} container>
+                            <Grid item container xs={12} className='link-box'>
+                                <Grid item xs={6}><div>Offering Name : </div></Grid>
+                                <Grid item xs={6}><div className='text-right'>{cus?.offeringName}</div></Grid>
                             </Grid>
-                        }
+                            <Grid item container xs={12} className='link-box'>
+                                <Grid item xs={6}><div>Balance Type Name: </div></Grid>
+                                <Grid item xs={6}><div className='text-right'>{data?.C_MAIN_BILLING_ACCOUNT?.BalanceTypeName}</div></Grid>
+                            </Grid>
+                            {type?.NETWORK_CODE !== 'M' && <Grid item container xs={12} className='link-box'>
+                                <Grid item xs={6}><div>TotalAmount: </div></Grid>
+                                <Grid item xs={6}><div className='text-right'>{parseInt(data?.C_MAIN_BILLING_ACCOUNT?.TotalAmount).toLocaleString()}</div></Grid>
+                            </Grid>}
+                        </Grid>
+
                         {type?.NETWORK_CODE === "F" &&
                             <Grid item xs={12} container>
                                 <Grid item container xs={12} className='link-box'>
