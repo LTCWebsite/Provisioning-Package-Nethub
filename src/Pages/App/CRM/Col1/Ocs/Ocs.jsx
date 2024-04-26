@@ -112,6 +112,7 @@ function Ocs({ cus, load, st }) {
                         <Grid item xs={1}><Visibility style={{ paddingTop: 4 }} /></Grid>
                         <Grid item xs={5}><div style={{ paddingTop: 4 }}>&nbsp;CBS Status : </div></Grid>
                         <Grid item xs={5} className="text-right">
+                            {/* {console.log(cus)} */}
                             <div>&nbsp;
                                 {cus?.status === '1' && 'IDLE'}
                                 {cus?.status === '2' && 'ACTIVE'}
@@ -119,6 +120,7 @@ function Ocs({ cus, load, st }) {
                                 {cus?.status === '4' && 'DISABLE'}
                                 {cus?.status === '5' && 'POOL'}
                                 {cus?.status === '6' && 'DEACTIVE'}
+                                {cus?.status === '8' && 'POOL'}
                                 {cus?.status === undefined && 'NULL'}
                             </div>
                         </Grid>
