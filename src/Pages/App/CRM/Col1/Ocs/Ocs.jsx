@@ -206,7 +206,7 @@ function Ocs({ cus, load, st }) {
                                 <Grid item container xs={12} className='link-box'>
                                     <Grid item xs={6}><div>Expire Date : </div></Grid>
                                     <Grid item xs={6}><div className='text-right'>
-                                        {moment(data?.ExpireDate).format("YYYY-DD-MM HH:mm:ss")}
+                                        {moment(data?.ExpireDate).format("DD/MM/YYYY HH:mm:ss")}
                                     </div></Grid>
                                 </Grid>
                                 <Grid item container xs={12} className='link-box'>
