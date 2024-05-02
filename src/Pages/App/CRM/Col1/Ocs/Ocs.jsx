@@ -61,7 +61,7 @@ function Ocs({ cus, load, st }) {
                 AxiosCBS.post("query_balance", sendData2).then(res2 => {
                     if (res2.status === 200) {
                         setdata(res2.data)
-                        console.log(res2.data)
+                        // console.log(res2.data)
                         setShow2(true)
                     }
                 })
@@ -216,15 +216,15 @@ function Ocs({ cus, load, st }) {
                                     </div></Grid>
                                 </Grid>
                                 <Grid item container xs={12} className='link-box'>
-                                    <Grid item xs={6}><div>Total Remain Amount in month : </div></Grid>
+                                    <Grid item xs={6}><div>ຍອດຍັງເຫຼືອ : </div></Grid>
                                     <Grid item xs={6}><div className='text-right'>
-                                        {parseFloat(data?.AccountCredit?.TotalRemainAmount).toLocaleString()}
+                                        {parseFloat(data?.TotalRemainAmount).toLocaleString()}
                                     </div></Grid>
                                 </Grid>
                                 <Grid item container xs={12} className='link-box'>
-                                    <Grid item xs={6}><div>Total Usage Amount in month : </div></Grid>
+                                    <Grid item xs={6}><div>ຍອດນຳໃຊ້ : </div></Grid>
                                     <Grid item xs={6}><div className='text-right'>
-                                        {parseFloat(data?.AccountCredit?.TotalUsageAmount).toLocaleString()}
+                                        {parseFloat(data?.TotalUsageAmount).toLocaleString()}
                                     </div></Grid>
                                 </Grid>
                             </Grid>
