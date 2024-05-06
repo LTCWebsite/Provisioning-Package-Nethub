@@ -50,14 +50,14 @@ function OCS_payment({ open, cb }) {
                                 tTitle={"ປະຫວັດການຊຳລະ"}
                                 load={loading}
                                 tColumns={[
-                                    { title: "Pri_Identity", field: "pri_identity" },
-                                    { title: "Trans_Type", field: "trans_type" },
-                                    { title: "Transaction_Time", field: "transaction_time", render: row => moment(row?.transaction_time, 'YYYYMMDDHHmmss').add(7, 'hours').format("YYYY/MM/DD HH:mm:ss") },
-                                    { title: "Invoice_Amount", field: "invoice_amount", render: row => parseInt(row?.invoice_amount).toLocaleString() },
-                                    { title: "Outstanding_Amount", field: "outstanding_amount", render: row => parseInt(row?.outstanding_amount).toLocaleString() },
-                                    { title: "Transaction_Amount", field: "transaction_amount", render: row => parseInt(row?.transaction_amount).toLocaleString() },
-                                    { title: "Unused_Amount", field: "unused_amount", render: row => parseInt(row?.unused_amount).toLocaleString() },
-                                    { title: "Remarks", field: "remarks" },
+                                    { title: "ເບີໂທ", field: "pri_identity" },
+                                    { title: "ປະເພດທຸລະກຳ", field: "trans_type" },
+                                    { title: "ເວລາທຸລະກຳ", field: "transaction_time", render: row => moment(row?.transaction_time, 'YYYYMMDDHHmmss').add(7, 'hours').format("YYYY/MM/DD HH:mm:ss") },
+                                    { title: "ຈຳນວນໜີ້", field: "invoice_amount", render: row => parseInt(row?.invoice_amount).toLocaleString() },
+                                    { title: "ຍອດໜີ້ຍົງເຫຼືອ", field: "outstanding_amount", render: row => parseInt(row?.outstanding_amount).toLocaleString() },
+                                    { title: "ຈຳນວນທີ່ຈ່າຍ", field: "transaction_amount", render: row => parseInt(row?.transaction_amount).toLocaleString() },
+                                    { title: "ຍອດທີ່ບໍ່ທັນໃຊ້", field: "unused_amount", render: row => parseInt(row?.unused_amount).toLocaleString() },
+                                    { title: "ໝາຍເຫດ", field: "remarks" },
                                 ]}
                             />
                         </Grid>
