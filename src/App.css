@@ -1141,3 +1141,7 @@ tr .css-1q1u3t4-MuiTableRow-root {
   background-color: #26A65B;
 
 }
+
+.ant-picker-dropdown{
+  z-index: 1056!important;
+}

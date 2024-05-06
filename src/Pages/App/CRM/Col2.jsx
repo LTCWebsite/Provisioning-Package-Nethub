@@ -5,15 +5,31 @@ import BillQuery from './Col2/BillQuery/BillQuery'
 import Game from './Col2/Game/Game'
 import Others from './Col2/Others/Others'
 import Packages from './Col2/Package/Packages'
+import { MyCrypt } from '../../../Components/MyCrypt'
+import OCS_invoice from './Col2/PaymentHistory/OCS_invoice'
 
 function Col2() {
+  let type = MyCrypt("de", localStorage.getItem("ONE_NETWORK"))
   return (
     <>
       <Grid container>
         <Grid container item xs={12} md={12} lg={12} className="box-crm">
           <Grid item xs={12}>
-            <h2 className='blue'>Bill Query</h2>
-            <BillQuery />
+            {(type?.NETWORK_CODE === 'M' || type?.NETWORK_CODE === "H" || type?.NETWORK_CODE === 'W') ? <>
+              <h2 className='blue'>ປະຫວັດການຕັດເງິນ</h2>
+              <BillQuery />
+            </>
+              :
+              <Grid container>
+                <Grid item xs={12}>
+                  <h2 className='blue'>ປະຫວັດເບີລາຍເດືອນ</h2>
+
+                  <OCS_invoice />
+
+                </Grid>
+              </Grid>
+            }
+
 
           </Grid>
         </Grid>
