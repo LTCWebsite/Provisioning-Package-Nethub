@@ -42,9 +42,9 @@ function OCS_invoice({ open, cb }) {
                         arr.push(row)
                     }
                 })
-                arr.sort((a,b) => new Date(a.dateTime) - new Date(b.dateTime))
+                arr.sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime))
                 setdata(arr)
-                // console.log(arr)
+                console.log(arr)
             }
             setloading(false)
         }).catch(er => {
@@ -124,14 +124,23 @@ function OCS_invoice({ open, cb }) {
                                             { title: "ໜີ້ປະຈຳເດືອນ", field: "dateTime" },
                                             { title: "ລະຫັດບັນຊີ", field: "AcctCode", render: row => row?.invoice_data[0]?.AcctCode },
                                             { title: "ປະເພດບິນ", field: "TransType", render: row => row?.invoice_data[0]?.TransType },
+                                            {
+                                                title: "ສະຖານະບິນ", field: "Status", render: row =>
+                                                    row?.invoice_data[0]?.Status === 'C' ? 'closed' :
+                                                        row?.invoice_data[0]?.Status === 'O' ? 'opened' :
+                                                            row?.invoice_data[0]?.Status === 'D' ? 'disputed' :
+                                                                row?.invoice_data[0]?.Status === 'P' ? 'pending' :
+                                                                    row?.invoice_data[0]?.Status === 'W' ? 'written off' :
+                                                                        row?.invoice_data[0]?.Status === 'R' ? 'reversed' :
+                                                                            row?.invoice_data[0]?.Status
+                                            },
                                             { title: "ຕ້ອງຊຳລະກ່ອນ", field: "DueDate", render: row => moment(row?.invoice_data[0]?.DueDate, 'YYYYMMDDHHmmss').format("DD/MM/YYYY") },
-                                            { title: "ຮອບວຽນເລີ່ມຕົ້ນ", field: "BillCycleBeginTime", render: row => moment(row?.invoice_data[0]?.BillCycleBeginTime, 'YYYYMMDDHHmmss').format("DD/MM/YYYY") },
-                                            { title: "ຮອບວຽນສິ້ນສຸດ", field: "BillCycleEndTime", render: row => moment(row?.invoice_data[0]?.BillCycleEndTime, 'YYYYMMDDHHmmss').format("DD/MM/YYYY") },
+                                            { title: "ວັນທີປິດບິນ", field: "SettleDate", render: row => moment(row?.invoice_data[0]?.SettleDate, 'YYYYMMDDHHmmss').format("DD/MM/YYYY") },
+                                            // { title: "ຮອບວຽນເລີ່ມຕົ້ນ", field: "BillCycleBeginTime", render: row => moment(row?.invoice_data[0]?.BillCycleBeginTime, 'YYYYMMDDHHmmss').format("DD/MM/YYYY") },
+                                            // { title: "ຮອບວຽນສິ້ນສຸດ", field: "BillCycleEndTime", render: row => moment(row?.invoice_data[0]?.BillCycleEndTime, 'YYYYMMDDHHmmss').format("DD/MM/YYYY") },
+                                            { title: "ຍອດຄ້າງຊຳລະ", field: "OpenAmount", render: row => parseInt(row?.invoice_data[0]?.OpenAmount).toLocaleString() },
+                                            { title: "ອາກອນ", field: "OpenTaxAmount", render: row => parseInt(row?.invoice_data[0]?.OpenTaxAmount).toLocaleString() },
                                             { title: "ຈຳນວນຍອດໜີ້", field: "InvoiceAmount", render: row => parseInt(row?.invoice_data[0]?.InvoiceAmount).toLocaleString() },
-                                            // { title: "Outstanding_Amount", field: "outstanding_amount", render: row => parseInt(row?.outstanding_amount).toLocaleString() },
-                                            // { title: "Transaction_Amount", field: "transaction_amount", render: row => parseInt(row?.transaction_amount).toLocaleString() },
-                                            // { title: "Unused_Amount", field: "unused_amount", render: row => parseInt(row?.unused_amount).toLocaleString() },
-                                            // { title: "Remarks", field: "remarks" },
                                         ]}
                                     />}
                             </>}

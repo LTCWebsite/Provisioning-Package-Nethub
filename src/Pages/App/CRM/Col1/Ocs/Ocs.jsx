@@ -76,7 +76,7 @@ function Ocs({ cus, load, st }) {
         AxiosCBS.post("query_balance", sendData).then(res => {
             if (res.status === 200) {
                 setdata(res.data)
-                console.log('1 => ' + res.data)
+                // console.log('1 => ' + res.data)
                 setShow2(true)
             }
         })

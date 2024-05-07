@@ -1,14 +1,14 @@
 import { WarningAmber } from "@mui/icons-material";
 import { Button, Dialog, Grid, Skeleton, Switch } from "@mui/material";
-import { Cancel, CheckCircle } from "@material-ui/icons";
+// import { Cancel, CheckCircle } from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
 import { toast_success, toast_error } from "../../../../../Components/Toast";
-import { AxiosAPI, AxiosReq } from "../../../../../Components/Axios";
+import { AxiosReq } from "../../../../../Components/Axios";
 import axios from "axios";
 import Cookies from "js-cookie";
 
 function MobileService({ check, is5G, cb, cbis5G }) {
-  // console.log(is5G)
+  // console.log(check)
   const [datapk, setDataPk] = useState();
   const [reason, setReason] = React.useState({
     text: null,
@@ -45,7 +45,7 @@ function MobileService({ check, is5G, cb, cbis5G }) {
       text = "ປິດ";
     }
     var phone = localStorage.getItem("ONE_PHONE");
-    AxiosReq.post("InternetOpen?msisdn=" + phone + "&orderType=" + send, {})
+    AxiosReq.post("InternetOpen?msisdn=" + phone + "&orderType=" + send, {}, { headers: { 'Authorization': 'Bearer ' + Cookies.get("ONE_TOKEN") } })
       .then((res) => {
         if (res.data.orderChangeResult.resultDesc === "Operation successed.") {
           toast_success({ text: "ບັນທຶກຂໍ້ມູນ " + text + " 3G ສຳເລັດ" });
@@ -85,7 +85,7 @@ function MobileService({ check, is5G, cb, cbis5G }) {
       text = "ປິດ";
     }
     var phone = localStorage.getItem("ONE_PHONE");
-    AxiosReq.post("InternetOpen?msisdn=" + phone + "&orderType=" + send, {})
+    AxiosReq.post("InternetOpen?msisdn=" + phone + "&orderType=" + send, {}, { headers: { 'Authorization': 'Bearer ' + Cookies.get("ONE_TOKEN") } })
       .then((res) => {
         if (res.data.orderChangeResult.resultDesc === "Operation successed.") {
           toast_success({ text: "ບັນທຶກຂໍ້ມູນ " + text + " 4G ສຳເລັດ" });
@@ -110,6 +110,56 @@ function MobileService({ check, is5G, cb, cbis5G }) {
         //     info: reason.text,
         //     resualt: 'error',
         // })
+      });
+  };
+  const changeDataIR = () => {
+    var currDataIR = check.ir_data;
+    var send = "";
+    var text = "";
+    if (currDataIR === false) {
+      send = "DI";
+      text = "ເປີດ";
+    } else if (currDataIR === true) {
+      send = "CI";
+      text = "ປິດ";
+    }
+    var phone = localStorage.getItem("ONE_PHONE");
+    AxiosReq.post("InternetOpen?msisdn=" + phone + "&orderType=" + send, {}, { headers: { 'Authorization': 'Bearer ' + Cookies.get("ONE_TOKEN") } })
+      .then((res) => {
+        if (res.data.orderChangeResult.resultDesc === "Operation successed.") {
+          toast_success({ text: "ບັນທຶກຂໍ້ມູນ " + text + " Data IR ສຳເລັດ" });
+          cb({ ...check, ir_data: !check.ir_data });
+        } else {
+          toast_error({ text: res.data.orderChangeResult.resultDesc });
+        }
+      })
+      .catch((err) => {
+        toast_error({ text: err });
+      });
+  };
+  const changeVoiceIR = () => {
+    var currVoiceIR = check.ir_call;
+    var send = "";
+    var text = "";
+    if (currVoiceIR === false) {
+      send = "IR";
+      text = "ເປີດ";
+    } else if (currVoiceIR === true) {
+      send = "CR";
+      text = "ປິດ";
+    }
+    var phone = localStorage.getItem("ONE_PHONE");
+    AxiosReq.post("InternetOpen?msisdn=" + phone + "&orderType=" + send, {}, { headers: { 'Authorization': 'Bearer ' + Cookies.get("ONE_TOKEN") } })
+      .then((res) => {
+        if (res.data.orderChangeResult.resultDesc === "Operation successed.") {
+          toast_success({ text: "ບັນທຶກຂໍ້ມູນ " + text + " Voice IR ສຳເລັດ" });
+          cb({ ...check, ir_call: !check.ir_call });
+        } else {
+          toast_error({ text: res.data.orderChangeResult.resultDesc });
+        }
+      })
+      .catch((err) => {
+        toast_error({ text: err });
       });
   };
   const changeSMS = () => {
@@ -153,13 +203,13 @@ function MobileService({ check, is5G, cb, cbis5G }) {
     //     toast_error({ text: er });
     //   });
     axios.post("http://172.28.26.146:2031/buy-package-5g", sendData,
-    // axios.post("http://localhost:2031/buy-package-5g", sendData,
-    {
-      headers: {
-        Authorization: "Basic cGFja2FnZTojTHRjMXFhejJ3c3hAcGs=",
-        "Content-Type": "application/json"
-      }
-    })
+      // axios.post("http://localhost:2031/buy-package-5g", sendData,
+      {
+        headers: {
+          Authorization: "Basic cGFja2FnZTojTHRjMXFhejJ3c3hAcGs=",
+          "Content-Type": "application/json"
+        }
+      })
       .then((res) => {
         if (res?.status === 200 && res?.data?.ResultCode == 200) {
           console.log(res)
@@ -189,7 +239,7 @@ function MobileService({ check, is5G, cb, cbis5G }) {
       .then((res) => {
         if (res.status === 200) {
           setDataPk(res.data.Data[0]);
-        //   setDataPk(prev=>prev.status = false)
+          //   setDataPk(prev=>prev.status = false)
         }
 
         // setDataPk(res.data)
@@ -213,6 +263,10 @@ function MobileService({ check, is5G, cb, cbis5G }) {
         changeSMS();
       } else if (reason.status === "5G") {
         close5G();
+      } else if (reason.status === 'Data IR') {
+        changeDataIR()
+      } else if (reason.status === 'Voice IR') {
+        changeVoiceIR()
       }
     }
   };
@@ -229,10 +283,10 @@ function MobileService({ check, is5G, cb, cbis5G }) {
   return (
     <>
       <Grid item container xs={12} className="link-box-dev">
-        <Grid item xs={9}>
+        <Grid item xs={8}>
           <div>5G : </div>
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={4}>
           <div className="text-right">
             <Switch
               size="small"
@@ -297,8 +351,8 @@ function MobileService({ check, is5G, cb, cbis5G }) {
             <Grid item xs={8}>
               Marketing Name: {datapk?.marketing_name}
             </Grid>
-            <Grid item xs={4} style={{textAlign:"right",fontSize:8,color:datapk?.status == true?"green":"red",fontWeight:'bolder'}}>
-             {datapk?.status == true?"SUPPORT 5G":"WAIT UPDATE"}  
+            <Grid item xs={4} style={{ textAlign: "right", fontSize: 8, color: datapk?.status == true ? "green" : "red", fontWeight: 'bolder' }}>
+              {datapk?.status == true ? "SUPPORT 5G" : "WAIT UPDATE"}
             </Grid>
           </Grid>
         ) : (
@@ -309,10 +363,10 @@ function MobileService({ check, is5G, cb, cbis5G }) {
       </Grid>
 
       <Grid item container xs={12} className="link-box-dev">
-        <Grid item xs={9}>
+        <Grid item xs={8}>
           <div>4G : </div>
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={4}>
           <div className="text-right">
             {check.load ? (
               <Skeleton animation="wave" />
@@ -339,10 +393,10 @@ function MobileService({ check, is5G, cb, cbis5G }) {
       </Grid>
 
       <Grid item container xs={12} className="link-box-dev">
-        <Grid item xs={9}>
+        <Grid item xs={8}>
           <div>3G : </div>
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={4}>
           <div className="text-right">
             {check.load ? (
               <Skeleton animation="wave" />
@@ -369,10 +423,10 @@ function MobileService({ check, is5G, cb, cbis5G }) {
       </Grid>
 
       <Grid item container xs={12} className="link-box-dev">
-        <Grid item xs={9}>
+        <Grid item xs={8}>
           <div>RBT : </div>
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={4}>
           <div className="text-right">
             {check.load ? (
               <Skeleton animation="wave" />
@@ -389,10 +443,10 @@ function MobileService({ check, is5G, cb, cbis5G }) {
       </Grid>
 
       <Grid item container xs={12} className="link-box-dev">
-        <Grid item xs={9}>
+        <Grid item xs={8}>
           <div>Voice IR : </div>
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={4}>
           <div className="text-right">
             {check.load ? (
               <Skeleton animation="wave" />
@@ -400,6 +454,17 @@ function MobileService({ check, is5G, cb, cbis5G }) {
               <Switch
                 size="small"
                 checked={check.ir_call}
+                onChange={() => {
+                  CFDialog({
+                    st: "Voice IR",
+                    message: check.ir_call ? (
+                      <p className="center-cf">ຕ້ອງການ ປິດ Voice IR ?</p>
+                    ) : (
+                      <p className="center-cf">ຕ້ອງການ ເປີດ Voice IR ?</p>
+                    ),
+                    data: "Voice IR"
+                  });
+                }}
                 // onChange={() => setCheck({ ...check, voice: !check.voice })}
                 color="success"
               />
@@ -408,10 +473,10 @@ function MobileService({ check, is5G, cb, cbis5G }) {
         </Grid>
       </Grid>
       <Grid item container xs={12} className="link-box-dev">
-        <Grid item xs={9}>
+        <Grid item xs={8}>
           <div>Data IR : </div>
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={4}>
           <div className="text-right">
             {check.load ? (
               <Skeleton animation="wave" />
@@ -419,6 +484,17 @@ function MobileService({ check, is5G, cb, cbis5G }) {
               <Switch
                 size="small"
                 checked={check.ir_data}
+                onChange={() => {
+                  CFDialog({
+                    st: "Data IR",
+                    message: check.ir_data ? (
+                      <p className="center-cf">ຕ້ອງການ ປິດ Data IR ?</p>
+                    ) : (
+                      <p className="center-cf">ຕ້ອງການ ເປີດ Data IR ?</p>
+                    ),
+                    data: "Data IR"
+                  });
+                }}
                 // onChange={() => setCheck({ ...check, data: !check.data })}
                 color="success"
               />
@@ -428,10 +504,10 @@ function MobileService({ check, is5G, cb, cbis5G }) {
       </Grid>
 
       <Grid item container xs={12} className="link-box-dev">
-        <Grid item xs={9}>
+        <Grid item xs={8}>
           <div>SMS : </div>
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={4}>
           <div className="text-right">
             {check.load ? (
               <Skeleton animation="wave" />
