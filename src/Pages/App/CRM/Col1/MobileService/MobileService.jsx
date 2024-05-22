@@ -238,7 +238,8 @@ function MobileService({ check, is5G, cb, cbis5G }) {
       )
       .then((res) => {
         if (res.status === 200) {
-          setDataPk(res.data.Data[0]);
+          // console.log("first",res?.data)
+          setDataPk(res?.data?.Data && res?.data?.Data[0] );
           //   setDataPk(prev=>prev.status = false)
         }
 

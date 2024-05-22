@@ -11,31 +11,34 @@ Or tinker with CountUp in [Stackblitz](https://stackblitz.com/edit/countup-types
 
 ## Jump to:
 
-- **[Features](#features)**
 - **[Usage](#usage)**
 - **[Including CountUp](#including-countup)**
 - **[Contributing](#contributing)**
-
-
-## CountUp for frameworks and plugins:
-
-- **[CountUp.js Angular 2+ Module](https://github.com/inorganik/ngx-countUp)**
-- **[CountUp.js Angular 1.x Module](https://github.com/inorganik/countUp.js-angular1)**
-- **[CountUp.js React](https://github.com/glennreyes/react-countup)**
-- **[CountUp.js Vue component wrapper](https://github.com/xlsdg/vue-countup-v2)**
-- **[CountUp.js WordPress Plugin](https://wordpress.org/plugins/countup-js/)**
-- **[CountUp.js jQuery Plugin](https://gist.github.com/inorganik/b63dbe5b3810ff2c0175aee4670a4732)**
-
+- **[Creating Animation Plugins](#creating-animation-plugins)**
 
 ## Features
-- **Animate when element scrolls into view** - new in v2.1.0. Use option `enableScrollSpy`.
+- **Animate when element scrolls into view.** Use option `enableScrollSpy`.
 - **Highly customizeable** with a large range of options, you can even substitute numerals.
 - **Smart easing**: CountUp intelligently defers easing until it gets close enough to the end value for easing to be visually noticeable. Configureable in the [options](#options).
-- **Separate bundles** for modern and legacy browsers, with and without the requestAnimationFrame polyfill. Choose `countUp.min.js` for modern browsers or `countUp.withPolyfill.min.js` for IE9 and older, and Opera mini.
+- **Plugins** allow for alternate animations like the [Odometer plugin](https://www.npmjs.com/package/odometer_countup)
+
+![Odomoeter plugin](./demo/images/odometer_plugin.gif)
 
 ## Usage:
 
-**On npm** as: `countup.js`. You can import as a module or include the UMD script and access CountUp as a global. See [detailed instructions](#including-countup) below.
+**Use CountUp with:**
+
+- [Angular 2+](https://github.com/inorganik/ngx-countUp)
+- [Angular 1.x](https://github.com/inorganik/countUp.js-angular1)
+- [React](https://gist.github.com/inorganik/2cf776865a4c65c12857027870e9898e)
+- [Svelte](https://gist.github.com/inorganik/85a66941ab88cc10c5fa5b26aead5f2a)
+- [Vue](https://github.com/xlsdg/vue-countup-v2)
+- [WordPress](https://wordpress.org/plugins/countup-js/)
+- [jQuery](https://gist.github.com/inorganik/b63dbe5b3810ff2c0175aee4670a4732)
+
+**Use CountUp directly:**
+
+On npm as `countup.js`. You can import as a module, or include the UMD script and access CountUp as a global. See [detailed instructions](#including-countup) on including CountUp.
 
 **Params**:
 - `target: string | HTMLElement | HTMLInputElement` - id of html element, input, svg text element, or DOM element reference where counting occurs
@@ -50,6 +53,7 @@ interface CountUpOptions {
   decimalPlaces?: number; // number of decimal places (0)
   duration?: number; // animation duration in seconds (2)
   useGrouping?: boolean; // example: 1,000 vs 1000 (true)
+  useIndianSeparators?: boolean; // example: 1,00,000 vs 100,000 (false)
   useEasing?: boolean; // ease animation (true)
   smartEasingThreshold?: number; // smooth easing for large numbers above this if useEasing (999)
   smartEasingAmount?: number; // amount to be eased for numbers above threshold (333)
@@ -64,6 +68,9 @@ interface CountUpOptions {
   enableScrollSpy?: boolean; // start animation when target is in view
   scrollSpyDelay?: number; // delay (ms) after target comes into view
   scrollSpyOnce?: boolean; // run only once
+  onCompleteCallback?: () => any; // gets called when animation completes
+  onStartCallback?: () => any; // gets called when animation starts
+  plugin?: CountUpPlugin; // for alternate animations
 }
 ```
 
@@ -83,12 +90,15 @@ Pass options:
 const countUp = new CountUp('targetId', 5234, options);
 ```
 
-with optional callback:
+with optional complete callback:
 
 ```js
-countUp.start(someMethodToCallOnComplete);
+const countUp = new CountUp('targetId', 5234, { onCompleteCallback: someMethod });
 
-// or an anonymous function
+// or (passing fn to start will override options.onCompleteCallback)
+countUp.start(someMethod);
+
+// or
 countUp.start(() => console.log('Complete!'));
 ```
 
@@ -112,7 +122,8 @@ Update the end value and animate:
 countUp.update(989);
 ```
 
-### Animate when the element is scrolled into view
+---
+### **Animate when the element is scrolled into view**
 
 Use the scroll spy option to animate when the element is scrolled into view. When using scroll spy, just initialize CountUp but do not call start();
 
@@ -129,10 +140,24 @@ CountUp checks the scroll position as soon as it's initialized. So if you initia
 countUp.handleScroll();
 ```
 ---
+### **Alternate animations with plugins**
+
+Currently there's just one plugin, the **[Odometer Plugin](https://github.com/msoler75/odometer_countup.js)**.
+
+To use a plugin, you'll need to first install the plugin package. Then you can include it and use the plugin option. See each plugin's docs for more detailed info.
+```js
+const countUp = new CountUp('targetId', 5234, {
+  plugin: new Odometer({ duration: 2.3, lastDigitDelay: 0 }),
+  duration: 3.0
+});
+```
+If you'd like to make your own plugin, see [the docs](#creating-animation-plugins) below!
+
+---
 
 ## Including CountUp
 
-CountUp is distributed as an ES6 module because it is the most standardized and most widely compatible module for browsers, though a UMD module is [also included](#umd-module).
+CountUp is distributed as an ES6 module because it is the most standardized and most widely compatible module for browsers, though a UMD module is [also included](#umd-module), along with a separate requestAnimationFrame polyfill (see below).
 
 For the examples below, first install CountUp. This will give you the latest:
 ```
@@ -182,6 +207,10 @@ var numAnim = new countUp.CountUp('myTarget', 2000);
 numAnim.start()
 ```
 
+### requestAnimationFrame polyfill
+
+You can include `dist/requestAnimationFrame.polyfill.js` if you want to support IE9 and older, and Opera mini.
+
 ---
 
 ## Contributing
@@ -201,3 +230,32 @@ Before you make a pull request, please be sure to follow these instructions:
 4. npm publish
 
 -->
+
+---
+
+## Creating Animation Plugins
+
+CountUp supports plugins as of v2.6.0. Plugins implement their own render method to display each frame's formatted value. A class instance or object can be passed to the `plugin` property of CountUpOptions, and the plugin's render method will be called instead of CountUp's.
+
+```ts
+export declare interface CountUpPlugin {
+  render(elem: HTMLElement, formatted: string): void;
+}
+```
+
+An example of a plugin:
+```ts
+export class SomePlugin implements CountUpPlugin {
+  // ...some properties here
+
+  constructor(options: SomePluginOptions) {
+    // ...setup code here if you need it
+  }
+
+  render(elem: HTMLElement, formatted: string): void {
+    // render DOM here
+  }
+}
+```
+
+If you make a plugin, be sure to create a PR to add it to this README!

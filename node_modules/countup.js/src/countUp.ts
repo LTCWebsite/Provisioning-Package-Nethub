@@ -3,6 +3,7 @@ export interface CountUpOptions { // (default)
   decimalPlaces?: number; // number of decimal places (0)
   duration?: number; // animation duration in seconds (2)
   useGrouping?: boolean; // example: 1,000 vs 1000 (true)
+  useIndianSeparators?: boolean; // example: 1,00,000 vs 100,000 (false)
   useEasing?: boolean; // ease animation (true)
   smartEasingThreshold?: number; // smooth easing for large numbers above this if useEasing (999)
   smartEasingAmount?: number; // amount to be eased for numbers above threshold (333)
@@ -17,18 +18,26 @@ export interface CountUpOptions { // (default)
   enableScrollSpy?: boolean; // start animation when target is in view
   scrollSpyDelay?: number; // delay (ms) after target comes into view
   scrollSpyOnce?: boolean; // run only once
+  onCompleteCallback?: () => any; // gets called when animation completes
+  onStartCallback?: () => any; // gets called when animation starts
+  plugin?: CountUpPlugin; // for alternate animations
+}
+
+export declare interface CountUpPlugin {
+  render(elem: HTMLElement, formatted: string): void;
 }
 
 // playground: stackblitz.com/edit/countup-typescript
 export class CountUp {
 
-  version = '2.3.2';
+  version = '2.8.0';
   private defaults: CountUpOptions = {
     startVal: 0,
     decimalPlaces: 0,
     duration: 2,
     useEasing: true,
     useGrouping: true,
+    useIndianSeparators: false,
     smartEasingThreshold: 999,
     smartEasingAmount: 333,
     separator: ',',
@@ -39,16 +48,15 @@ export class CountUp {
     scrollSpyDelay: 200,
     scrollSpyOnce: false,
   };
-  private el: HTMLElement | HTMLInputElement;
   private rAF: any;
   private startTime: number;
   private remaining: number;
   private finalEndVal: number = null; // for smart easing
   private useEasing = true;
   private countDown = false;
+  el: HTMLElement | HTMLInputElement;
   formattingFn: (num: number) => string;
   easingFn?: (t: number, b: number, c: number, d: number) => number;
-  callback: (args?: any) => any;
   error = '';
   startVal = 0;
   duration: number;
@@ -107,6 +115,7 @@ export class CountUp {
     if (!self || !window || self.once) return;
     const bottomOfScroll = window.innerHeight +  window.scrollY;
     const rect = self.el.getBoundingClientRect();
+    const topOfEl = rect.top + window.pageYOffset;
     const bottomOfEl = rect.top + rect.height + window.pageYOffset;
     if (bottomOfEl < bottomOfScroll && bottomOfEl >  window.scrollY && self.paused) {
       // in view
@@ -114,8 +123,11 @@ export class CountUp {
       setTimeout(() => self.start(), self.options.scrollSpyDelay);
       if (self.options.scrollSpyOnce)
         self.once = true;
-    } else if ( window.scrollY > bottomOfEl && !self.paused) {
-      // scrolled past
+    } else if (
+        (window.scrollY > bottomOfEl || topOfEl > bottomOfScroll) &&
+        !self.paused
+      ) {
+      // out of view
       self.reset();
     }
   }
@@ -124,7 +136,7 @@ export class CountUp {
    * Smart easing works by breaking the animation into 2 parts, the second part being the
    * smartEasingAmount and first part being the total amount minus the smartEasingAmount. It works
    * by disabling easing for the first part and enabling it on the second part. It is used if
-   * usingEasing is true and the total animation amount exceeds the smartEasingThreshold.
+   * useEasing is true and the total animation amount exceeds the smartEasingThreshold.
    */
   private determineDirectionAndSmartEasing(): void {
     const end = (this.finalEndVal) ? this.finalEndVal : this.endVal;
@@ -152,7 +164,12 @@ export class CountUp {
     if (this.error) {
       return;
     }
-    this.callback = callback;
+    if (this.options.onStartCallback) {
+      this.options.onStartCallback();
+    }
+    if (callback) {
+      this.options.onCompleteCallback = callback;
+    }
     if (this.duration > 0) {
       this.determineDirectionAndSmartEasing();
       this.paused = false;
@@ -237,15 +254,19 @@ export class CountUp {
       // smart easing
       this.update(this.finalEndVal);
     } else {
-      if (this.callback) {
-        this.callback();
+      if (this.options.onCompleteCallback) {
+        this.options.onCompleteCallback();
       }
     }
   }
 
   printValue(val: number): void {
+    if (!this.el) return;
     const result = this.formattingFn(val);
-
+    if (this.options.plugin?.render) {
+      this.options.plugin.render(this.el, result);
+      return;
+    }
     if (this.el.tagName === 'INPUT') {
       const input = this.el as HTMLInputElement;
       input.value = result;
@@ -280,10 +301,7 @@ export class CountUp {
 
   formatNumber = (num: number): string => {
     const neg = (num < 0) ? '-' : '';
-    let result: string,
-      x1: string,
-      x2: string,
-      x3: string;
+    let result: string, x1: string, x2: string, x3: string;
     result = Math.abs(num).toFixed(this.options.decimalPlaces);
     result += '';
     const x = result.split('.');
@@ -291,10 +309,16 @@ export class CountUp {
     x2 = x.length > 1 ? this.options.decimal + x[1] : '';
     if (this.options.useGrouping) {
       x3 = '';
+      let factor = 3, j = 0;
       for (let i = 0, len = x1.length; i < len; ++i) {
-        if (i !== 0 && (i % 3) === 0) {
+        if (this.options.useIndianSeparators && i === 4) {
+          factor = 2;
+          j = 1;
+        }
+        if (i !== 0 && (j % factor) === 0) {
           x3 = this.options.separator + x3;
         }
+        j++;
         x3 = x1[len - i - 1] + x3;
       }
       x1 = x3;
