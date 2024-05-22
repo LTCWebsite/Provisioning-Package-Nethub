@@ -10,8 +10,8 @@ export const AxiosAPI = axios.create({
 })
 
 export const AxiosReq = axios.create({
-    // baseURL: "http://10.30.6.148:5678/",
-    baseURL: "http://localhost:5001/",
+    baseURL: "http://10.30.6.148:5678/",
+    // baseURL: "http://localhost:5001/",
 })
 
 export const Axios5g = axios.create({
@@ -19,5 +19,13 @@ export const Axios5g = axios.create({
     auth: {
         username: "package",
         password: "#Ltc1qaz2wsx@pk"
+    }
+})
+
+export const AxiosCBS = axios.create({
+    baseURL: "http://172.28.26.146:9910/",
+    auth: {
+        username: "admin",
+        password: "#Ltc1qaz2wsx@cbs"
     }
 })

@@ -6,6 +6,7 @@ import Col1 from './Col1'
 import Col2 from './Col2'
 import { useHistory } from 'react-router-dom'
 import { toast_error } from '../../../Components/Toast'
+import axios from 'axios'
 
 function CRM() {
   const [ready, setReady] = useState({ load: false })
@@ -21,14 +22,28 @@ function CRM() {
         history.push("/app")
       } else {
         setReady({ ...ready, load: true })
-        AxiosReq.get("NewNetworkType?msisdn=" + phone).then(res => {
+        AxiosReq.get("api/CbsToBss?msisdn=" + phone).then(res => {
           if (res.status === 200) {
-            // console.log(res.data)
-            localStorage.setItem("ONE_NETWORK", Crypt({ Type: "crypt", Value: JSON.stringify(res.data) }))
+            let res_data = res.data
+            let save_data = {
+              "NETWORK_CODE": res_data?.ProductCode,
+              "NETWORK_NAME": res_data?.ProductType,
+              "RESULT":"1",
+              "PRODUCT_TYPE":"0"
+            }
+            localStorage.setItem("ONE_NETWORK", Crypt({ Type: "crypt", Value: JSON.stringify(save_data) }))
             setReady({ ...ready, load: false })
             setLoad(false)
           }
         })
+        // AxiosReq.get("NewNetworkType?msisdn=" + phone).then(res => {
+        //   if (res.status === 200) {
+        //     // console.log(res.data)
+        //     localStorage.setItem("ONE_NETWORK", Crypt({ Type: "crypt", Value: JSON.stringify(res.data) }))
+        //     setReady({ ...ready, load: false })
+        //     setLoad(false)
+        //   }
+        // })
       }
     } catch (error) {
       toast_error({ text: "ກະລຸນາປ້ອນເບີ !!" })

@@ -18,11 +18,14 @@ function Register3Grab() {
     useEffect(() => {
         setShow(false)
         let phone = localStorage.getItem("ONE_PHONE")
-        AxiosReq.get("Register3Grab?msisdn=" + phone,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
+        AxiosReq.get("Register3Grab?msisdn=" + phone, { headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200) {
                 setData(res.data)
                 setShow(true)
             }
+        }).catch(er => {
+            setShow(true)
+            setData({ name: 'None' })
         })
     }, [])
     return (

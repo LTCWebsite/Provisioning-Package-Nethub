@@ -55,7 +55,7 @@ function SearchCRM() {
             searchPhoneNumber()
         }
     }
-    console.log(localStorage.getItem('USERNAME'))
+    // console.log(localStorage.getItem('USERNAME'))
     // if(localStorage.getItem('USERNAME').includes('tplus')){
     //     console.log('laotel')
     // }else{

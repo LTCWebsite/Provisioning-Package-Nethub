@@ -18,9 +18,9 @@ function BlackList({ data, load }) {
     // console.log(data)
     const [open, setOpen] = useState(false)
     const [btn, setBtn] = useState(false)
-    const [show, setShow] = useState(false)
+    // const [show, setShow] = useState(false)
     const [point, setPoint] = useState([])
-    const bl = data.blacklistStatus
+    let bl = data.blacklistStatus
 
     const UnBlackList = () => {
         setOpen(false)
@@ -47,14 +47,14 @@ function BlackList({ data, load }) {
         })
     }
     useEffect(() => {
-        setShow(false)
+        // setShow(false)
         let phone = localStorage.getItem("ONE_PHONE")
         let type = MyCrypt("de", localStorage.getItem("ONE_NETWORK"))
         // console.log(type)
         AxiosReq.get(`NewQueryPointCbs?msisdn=${phone}&network_code=${type?.NETWORK_CODE}`,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200) {
                 // console.log(res.data)
-                setShow(true)
+                // setShow(true)
                 setPoint(res.data)
             }
         })
@@ -79,9 +79,20 @@ function BlackList({ data, load }) {
                 <Grid item xs={5} className="text-right"><div>{load ? <Skeleton animation="wave" /> : bl === 0 ? 'No' : 'Yes'}</div></Grid>
                 <Grid item xs={1}>{load ? <Skeleton animation="wave" /> : bl !== 0 ? <Cancel className='link-icon' /> : <CheckCircle className='link-icon' />}</Grid>
             </Grid>
+            <Grid item container xs={12} className="link-box-text bg-sr">
+                <Grid item xs={12}><div><center><b>{point?.walletType}</b></center></div></Grid>
+            </Grid>
             <Grid item container xs={12} className="link-box-text">
-                <Grid item xs={5}><div>Point ({point?.walletType}) : </div></Grid>
-                <Grid item xs={7} className="right"><div>{load ? <Skeleton animation="wave" /> : point?.point }</div></Grid>
+                <Grid item xs={5}><div>Main Point : </div></Grid>
+                <Grid item xs={7} className="right"><div>{load ? <Skeleton animation="wave" /> : point?.mainPoint?.toLocaleString() }</div></Grid>
+            </Grid>
+            <Grid item container xs={12} className="link-box-text">
+                <Grid item xs={5}><div>Bonus Point : </div></Grid>
+                <Grid item xs={7} className="right"><div>{load ? <Skeleton animation="wave" /> : point?.bonusPoint?.toLocaleString() }</div></Grid>
+            </Grid>
+            <Grid item container xs={12} className="link-box-text">
+                <Grid item xs={5}><div>Total Point : </div></Grid>
+                <Grid item xs={7} className="right"><div>{load ? <Skeleton animation="wave" /> : point?.totalPoint?.toLocaleString() }</div></Grid>
             </Grid>
 
             <Dialog
