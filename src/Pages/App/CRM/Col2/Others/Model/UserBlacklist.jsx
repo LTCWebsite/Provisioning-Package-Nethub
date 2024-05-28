@@ -1,6 +1,6 @@
 import { Close, Search } from '@mui/icons-material'
 import { Button, Dialog, DialogTitle, Grid, TextField } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { AxiosCBS } from '../../../../../../Components/Axios'
 import UserBlacklistTable from './UserBlacklistTable'
 
