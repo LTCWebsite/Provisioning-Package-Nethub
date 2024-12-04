@@ -18,7 +18,7 @@ function All({ open, cb, data }) {
                 backgroundColor: row.type === "Add" ? '#1DC88A' : row.type === "Sms" ? '#023e8a' : row.type === "Package" ? '#ffb703' : row.type === "Game" ? '#E74A3B' : row.type === 'Call' ? '#fb5607' : row.type === 'Mmoney' ? '#ff006e' : row.type === "Vote" ? '#9b5de5' : row.type === "Transfer" ? '#9e0059' : row.type==="happyCall" &&  row.CHG_BALANCE == "200" ? "#E74A3B":"#8d99ae"  ,
                 color: '#fff',
                 padding: '2px 10px'
-            }}>{row.type==="happyCall" &&  row.CHG_BALANCE == "200" ? "Debug" : row.type}</u>
+            }}>{row.type==="happyCall"  ? "Debug Game" : row.type}</u>
         },
         { title: 'Charge', field: 'CHG_BALANCE', type: 'numeric', render: row => row?.adjustAmount === 0 || row?.adjustAmount === undefined ? row.Charge === undefined ? 0 : row.Charge?.toLocaleString() : row?.CHG_BALANCE?.toLocaleString() },
         { title: 'CurrentBalance', field: 'CUR_BALANCE', render: row => row?.CUR_BALANCE?.toLocaleString() },

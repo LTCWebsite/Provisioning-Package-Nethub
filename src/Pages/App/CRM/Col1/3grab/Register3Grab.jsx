@@ -1,18 +1,24 @@
+import { Button, Dialog, Grid, IconButton, Slide, isShowSuccess, setIsShowSuccess } from '@mui/material'
+import { AllInbox, Close, Done } from '@mui/icons-material'
 import { CheckCircle, } from '@mui/icons-material'
-import { Grid, Skeleton } from '@mui/material'
-import React from 'react'
-import { useState } from 'react'
-import { useEffect } from 'react'
+import { Skeleton } from '@mui/material'
+import React, { useEffect, useState } from 'react'
 import { AxiosReq } from '../../../../../Components/Axios'
+import { AxiosReq2 } from '../../../../../Components/Axios'
 import Can from '@material-ui/icons/Cancel'
 import cookie from 'js-cookie'
-// import GetPhoneNumber from '../../../../../Components/GetPhoneNumber'
+import moment from 'moment'
 
-// const Transition = React.forwardRef(function Transition(props, ref) {
-//     return <Slide direction="up" ref={ref} {...props} />;
-// });
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
+
 
 function Register3Grab() {
+
+    const [bkData, setBkData] = React.useState({})
+    const [isLoading, setIsLoading] = React.useState(false)
+    const [isShowSuccess, setIsShowSuccess] = React.useState(false)
     const [data, setData] = useState([])
     const [show, setShow] = useState(false)
     useEffect(() => {
@@ -28,6 +34,23 @@ function Register3Grab() {
             setData({ name: 'None' })
         })
     }, [])
+
+    const _onOrderchange = () => {
+        //console.log("Ku Test Button clicked U der"); 
+        setIsLoading(!isLoading)
+        let phone = localStorage.getItem("ONE_PHONE")
+        //console.log(phone + ' ' + "Bug bg ber")
+        AxiosReq2.post("RerunOrderchange?msisdn=" + phone,{}, { headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
+            if (res.status === 200 && res.data.resultCode === "1000") {
+                setBkData(res.data)
+            } else {
+                setBkData(res.data)
+            }
+        }).catch(err => {
+            console.log({ err })
+        })
+    }
+
     return (
         <>
             {!show ?
@@ -52,9 +75,42 @@ function Register3Grab() {
                             <Grid item xs={7}><div className='text-right'>{data.name + " " + data.surname}</div></Grid>
                             <Grid item xs={5}><div>ທີ່ຢູ່ : </div></Grid>
                             <Grid item xs={7}><div className='text-right'>{data.address}</div></Grid>
+                            <Grid item xs={5}><div>ວັນທີລົງທະບຽນ : </div></Grid>
+                            <Grid item xs={7}><div className='text-right'>{moment(data.autoDate).format("YYYY-MM-DD HH:mm:ss")}</div></Grid>
+                            <Button variant="contained" color="error" className='btn-primary' fullWidth style={{ height: 25, marginTop: 5 }} onClick={_onOrderchange}>
+                                <a>Rerun 1Grab</a>
+                            </Button>
                         </Grid>
                     }
                 </>}
+
+            <Dialog
+                maxWidth="xl"
+                open={isShowSuccess}
+                onClose={() => setIsShowSuccess(!isShowSuccess)}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+                TransitionComponent={Transition}
+            >
+                <Grid container>
+                    <Grid item container xs={12} style={{ width: 600 }}>
+                        <Grid item xs={1}></Grid>
+                        <Grid item xs={10}>
+                            <div className="center">
+                                <h1>{bkData.resultDesc}</h1>
+                                <h3>{bkData.responMsg}</h3>
+                            </div>
+                        </Grid>
+                        <Grid item xs={1}>
+                            <div className="right">
+                                <IconButton aria-label="delete" onClick={() => setIsShowSuccess(!isShowSuccess)}>
+                                    <Close />
+                                </IconButton>
+                            </div>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Dialog>
         </>
     )
 }
