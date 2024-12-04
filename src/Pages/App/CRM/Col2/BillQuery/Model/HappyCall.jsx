@@ -16,7 +16,7 @@ function HappyCall({ open, cb, data }) {
                 backgroundColor: row.CHG_BALANCE == "200" ? "#E74A3B":"#8d99ae",
                 color: '#fff',
                 padding: '2px 10px'
-            }}>{row.CHG_BALANCE == "200" ? "Debug":"Happycall"}</u>
+            }}>Debug Game</u>
         },
         { title: 'ຈຳນວນເງີນຕັດ', field: 'CHG_BALANCE', type: 'numeric', render: row => row.CHG_BALANCE.toLocaleString() },
         { title: 'ຈຳນວນເງີນກ່ອນຕັດ', field: 'CUR_BALANCE', render: row => row.CUR_BALANCE.toLocaleString() },
@@ -33,7 +33,7 @@ function HappyCall({ open, cb, data }) {
                 <Grid container>
                     <Grid item xs={3}></Grid>
                     <Grid item xs={6}>
-                        <DialogTitle className='center'>Debug or HappyCall</DialogTitle>
+                        <DialogTitle className='center'>Debug Game</DialogTitle>
                     </Grid>
                     <Grid item xs={3}>
                         <div className='right'><Close className='icon' onClick={() => cb(!open)} /></div>
@@ -41,7 +41,7 @@ function HappyCall({ open, cb, data }) {
                 </Grid>
                 <Grid container>
                     <Grid item xs={12} style={{ width: 1400 }}>
-                        <MyTable tTitle={"Debug or HappyCall"} tData={data} tColumns={columns} />
+                        <MyTable tTitle={"Debug Game"} tData={data} tColumns={columns} />
                     </Grid>
                 </Grid>
             </Dialog>
