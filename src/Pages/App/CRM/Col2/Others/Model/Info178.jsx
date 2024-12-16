@@ -64,6 +64,7 @@ function Info178({ open, cb }) {
             }
         }).catch(err => {
             setStop(true)
+            console.log(err)
             // Doing({
             //     msisdn: Crypt({ type: "decrypt", value: localStorage.getItem("input-phone") }).text,
             //     username: Crypt({ type: "decrypt", value: localStorage.getItem("one_info") }).username,
