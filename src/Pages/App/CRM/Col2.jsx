@@ -7,6 +7,7 @@ import Others from './Col2/Others/Others'
 import Packages from './Col2/Package/Packages'
 import { MyCrypt } from '../../../Components/MyCrypt'
 import OCS_invoice from './Col2/PaymentHistory/OCS_invoice'
+import FtthBundle from './Col2/FtthBundle/FTTHBundleTap'
 
 function Col2() {
   let type = MyCrypt("de", localStorage.getItem("ONE_NETWORK"))
@@ -41,7 +42,9 @@ function Col2() {
             <h2 className='blue'>Banking</h2>
 
             <Banking />
+            <h2 className='blue'>FTTH Bundle</h2>
 
+            <FtthBundle />
           </Grid>
         </Grid>
         <Grid container item xs={12} md={12} lg={6} className="box-crm">

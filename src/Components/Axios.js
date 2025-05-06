@@ -19,6 +19,10 @@ export const AxiosReq2 = axios.create({
      baseURL: "http://10.30.6.148:5678/api/",
     // baseURL: "http://localhost:5001/",
 })
+export const AxiosReq3 = axios.create({
+    baseURL: "http://10.30.6.148:5678/",
+   // baseURL: "http://localhost:5001/",
+})
 
 export const Axios5g = axios.create({
     baseURL: "172.28.14.48:2031/",
