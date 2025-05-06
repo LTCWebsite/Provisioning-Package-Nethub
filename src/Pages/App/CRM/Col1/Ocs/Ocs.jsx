@@ -160,8 +160,8 @@ function Ocs({ cus, load, st }) {
                         {cus?.status === '1' && !pass &&
                             <Grid item container xs={12} className={'link-box-danger-click-hover'} onClick={() => setidel(true)}>
                                 <Grid item xs={1}><Loop style={{ paddingTop: 4 }} /></Grid>
-                                <Grid item xs={11}><div style={{ paddingTop: 4 }}>&nbsp;IDEL to Active status</div></Grid>
-                            </Grid>}
+                                <Grid item xs={11}><div style={{ paddingTop: 4 }}>&nbsp;IDLE to Active status</div></Grid>
+                            </Grid>}  
                     </>}
 
                     {/* <Grid item xs={12} container className=''>

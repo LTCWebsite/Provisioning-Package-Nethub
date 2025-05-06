@@ -94,7 +94,6 @@ function Col1() {
                     </Grid> */}
                     <ResetPassCBS />
 
-
                     <h2 className='blue'>Value Add Service</h2>
                     <VAS />
                    
