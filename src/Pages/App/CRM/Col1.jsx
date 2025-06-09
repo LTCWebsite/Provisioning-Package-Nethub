@@ -94,10 +94,10 @@ function Col1() {
                     </Grid> */}
                     <ResetPassCBS />
 
-                    <h2 className='blue'>Value Add Service</h2>
-                    <VAS />
+                    <h2 className='blue'>Value Add Service ປິດໄວ້ຊົ່ວຄາວ</h2>
+                    {/* <VAS /> */}
                    
-
+                   
                 </Grid>
 
                 <Grid item xs={12} md={12} lg={6} className="box-crm">
