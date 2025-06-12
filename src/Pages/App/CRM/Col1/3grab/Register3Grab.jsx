@@ -8,6 +8,10 @@ import { AxiosReq2 } from '../../../../../Components/Axios'
 import Can from '@material-ui/icons/Cancel'
 import cookie from 'js-cookie'
 import moment from 'moment'
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -35,21 +39,48 @@ function Register3Grab() {
         })
     }, [])
 
+    const toast_success = ({ text }) => toast.success(text);
+    const toast_error = ({ text }) => toast.error(text);
+
     const _onOrderchange = () => {
-        //console.log("Ku Test Button clicked U der"); 
-        setIsLoading(!isLoading)
-        let phone = localStorage.getItem("ONE_PHONE")
-        //console.log(phone + ' ' + "Bug bg ber")
-        AxiosReq2.post("RerunOrderchange?msisdn=" + phone, {}, { headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
-            if (res.status === 200 && res.data.resultCode === "1000") {
-                setBkData(res.data)
+        setIsLoading(!isLoading);
+        const phone = localStorage.getItem("ONE_PHONE");
+
+        AxiosReq2.post("RerunOrderchange?msisdn=" + phone, {}, {
+            headers: {
+                'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN")
+            }
+        }).then(res => {
+            if (res.status === 200 && res.data?.resultcode == "1000") {
+                setBkData(res.data);
+                toast_success({ text: res.data?.responMsg || "ສຳເລັດ" });
             } else {
-                setBkData(res.data)
+                setBkData(res.data);
+                toast_error({ text: res.data?.responMsg || "ບໍ່ສໍາເລັດ" });
             }
         }).catch(err => {
-            console.log({ err })
-        })
-    }
+            toast_error({ text: err.message });
+        });
+    };
+
+
+    // const _onOrderchange = () => {
+    //     //console.log("Ku Test Button clicked U der"); 
+    //     setIsLoading(!isLoading)
+    //     let phone = localStorage.getItem("ONE_PHONE")
+    //     //console.log(phone + ' ' + "Bug bg ber")
+    //     AxiosReq2.post("RerunOrderchange?msisdn=" + phone, {}, { headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
+    //         if (res.status === 200 && res.data.resultCode === "1000") {
+    //             setBkData(res.data);
+    //             toast_success({ text: res.data.orderChangeResult.responMsg });
+    //         } else {
+    //             setBkData(res.data);
+    //             toast_error({ text: res.data.orderChangeResult.resultDesc });
+    //         }
+    //     }).catch(err => {
+    //         console.log({ err })
+    //     })
+    // }
 
     return (
         <>
@@ -59,7 +90,7 @@ function Register3Grab() {
                 </Grid> :
                 <>
 
-                    <Grid item container xs={12} className={data.name !== "None" && data.status === "Approved" ? 'link-box-success-click'  : 'link-box-error-click'}>
+                    <Grid item container xs={12} className={data.name !== "None" && data.status === "Approved" ? 'link-box-success-click' : 'link-box-error-click'}>
                         <Grid item xs={6}><div>ລົງທະບຽນ 3 ແກັບ : </div></Grid>
                         <Grid item xs={5} className="text-right">
                             <div>{data.name !== "None" ? 'ສໍາເລັດ' : 'ບໍ່ສໍາເລັດ'}</div>
