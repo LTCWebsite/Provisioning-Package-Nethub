@@ -38,6 +38,8 @@ const tableIcons = {
 
 
 function MyTable({ tTitle: title, tColumns: columns, tData: data, load }) {
+  // console.log("columns", columns);
+  // console.log("data", data);
   const [loading, setloading] = useState(false)
   useEffect(() => {
     if(load!==undefined){
