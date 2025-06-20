@@ -22,7 +22,8 @@ function MTopup({ open, cb, stop, count }) {
             startDate: date_start,
             endDate: date_end,
         }
-        AxiosReq.post("controller?Telephone=" + phone + "&msisdn=" + phone, sendData,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
+        //AxiosReq.post("controller?Telephone=" + phone + "&msisdn=" + phone, sendData,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
+            AxiosReq.post("MTopupPlus?msisdn=" + phone, sendData,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200) {
                 var num = 0
                 var update = res.data.map(row => {
@@ -45,6 +46,7 @@ function MTopup({ open, cb, stop, count }) {
             }
         }).catch(err => {
             stop(false)
+            console.log(err)
             // Doing({
             //     msisdn: Crypt({ type: "decrypt", value: localStorage.getItem("input-phone") }).text,
             //     username: Crypt({ type: "decrypt", value: localStorage.getItem("one_info") }).username,

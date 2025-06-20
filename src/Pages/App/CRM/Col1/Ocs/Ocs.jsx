@@ -8,7 +8,10 @@ import { Visibility } from '@material-ui/icons'
 import OCSTab from './OCSTab'
 import axios from 'axios'
 import { toast_success, toast_error } from '../../../../../Components/Toast'
-import { MyCryptTry } from '../../../../../Components/MyCrypt'
+import { MyCrypt, MyCryptTry } from '../../../../../Components/MyCrypt'
+import { AxiosCBS, AxiosReq } from '../../../../../Components/Axios'
+import Cookies from 'js-cookie'
+import moment from 'moment'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -20,7 +23,11 @@ function Ocs({ cus, load, st }) {
     const [idel, setidel] = useState(false)
     const [pass, setPass] = useState(false)
     const [useIdel, setuseIdel] = useState(false)
-
+    const [data, setdata] = useState([])
+    const [show2, setShow2] = useState(false)
+    let type = MyCrypt("de", localStorage.getItem("ONE_NETWORK"))
+    const [ftthData, setftthData] = useState([])
+    // console.log(cus)
     useEffect(() => {
         setShow(load)
         let info = MyCryptTry("de", localStorage.getItem("ONE_DETAIL"))
@@ -31,7 +38,49 @@ function Ocs({ cus, load, st }) {
                 }
             })
         }
+        if (type?.NETWORK_CODE !== "F") {
+            loadCBS_Balance()
+        }
     }, [])
+    useEffect(() => {
+        if (type?.NETWORK_CODE === "F") {
+            loadFtth()
+        }
+    }, [type?.NETWORK_CODE])
+    const loadFtth = () => {
+        AxiosReq.get("Fiber?ftth=" + localStorage.getItem("ONE_PHONE"), { headers: { 'Authorization': 'Bearer ' + Cookies.get("ONE_TOKEN") } }).then(res => {
+            if (res.status === 200) {
+                setftthData(res.data)
+                // console.log(res.data)
+                let phone = localStorage.getItem("ONE_PHONE")
+                let sendData2 = {
+                    msisdn: phone,
+                    product_type: "FTTH",
+                    package_price: parseInt(res.data?.ftthPrice)
+                }
+                AxiosCBS.post("query_balance", sendData2).then(res2 => {
+                    if (res2.status === 200) {
+                        setdata(res2.data)
+                        // console.log(res2.data)
+                        setShow2(true)
+                    }
+                })
+            }
+        })
+    }
+    const loadCBS_Balance = () => {
+        let phone = localStorage.getItem("ONE_PHONE")
+        let sendData = {
+            msisdn: phone
+        }
+        AxiosCBS.post("query_balance", sendData).then(res => {
+            if (res.status === 200) {
+                setdata(res.data)
+                // console.log('1 => ' + res.data)
+                setShow2(true)
+            }
+        })
+    }
     // console.log('por',st)
     const SaveIDEL = () => {
         let sendData = {
@@ -75,27 +124,47 @@ function Ocs({ cus, load, st }) {
                                 <Can className={'link-icon-success'} style={{ paddingTop: 4 }} />}
                         </Grid>
                     </Grid> */}
-                    <Grid item container xs={12} className={st === 'Active' ? 'link-box-success-click-hover next' : 'link-box-error-click next'} onClick={() => setOpen(cus?.resultCode === "0" ? true : false)}>
+                    <Grid item container xs={12} className={cus?.status === '2' ? 'link-box-success-click-hover next' : 'link-box-error-click next'} onClick={() => setOpen(cus?.resultCode === "0" ? true : false)}>
                         <Grid item xs={1}><Visibility style={{ paddingTop: 4 }} /></Grid>
                         <Grid item xs={5}><div style={{ paddingTop: 4 }}>&nbsp;CBS Status : </div></Grid>
                         <Grid item xs={5} className="text-right">
-                            <div>&nbsp;{st}</div>
+                            {/* {console.log(cus)} */}
+                            <div>&nbsp;
+                                {cus?.status === '1' && 'IDLE'}
+                                {cus?.status === '2' && 'ACTIVE'}
+                                {cus?.status === '3' && 'CALLBRARING/ SUSPEND'}
+                                {cus?.status === '4' && 'DISABLE'}
+                                {cus?.status === '5' && 'POOL'}
+                                {cus?.status === '6' && 'DEACTIVE'}
+                                {cus?.status === '8' && 'POOL'}
+                                {cus?.status === undefined && 'NULL'}
+                            </div>
                         </Grid>
                         <Grid item xs={1}>
-                            {st === 'Active' ?
-                                <CheckCircle className={'link-icon-error'} style={{ paddingTop: 4 }} /> :
-                                <Can className={'link-icon-success'} style={{ paddingTop: 4 }} />}
+                            {cus?.status === '2' && <CheckCircle className={'link-icon-error'} style={{ paddingTop: 4 }} />}
+
+                            {cus?.status !== '2' && <Can className={'link-icon-success'} style={{ paddingTop: 4 }} />}
                         </Grid>
                     </Grid>
+                    <Grid item container xs={12} className={'link-box-click-hover link-box'}>
+                        <Grid item xs={6}><div>OfferingID : </div></Grid>
+                        <Grid item xs={6}><div className='text-right'>{cus?.primaryOffering}</div></Grid>
+                    </Grid>
+                    {type?.NETWORK_CODE === 'M' || type?.NETWORK_CODE === "H" || type?.NETWORK_CODE === 'W' ? null :
+                        <Grid item container xs={12} className={'link-box-click-hover link-box'}>
+                            <Grid item xs={6}><div>ຍອດໜີ້ : </div></Grid>
+                            <Grid item xs={6}><div className='text-right'>{parseInt(data?.Summary?.Total).toLocaleString()}</div></Grid>
+                        </Grid>}
+
                     {useIdel && <>
-                        {st?.toUpperCase() === 'IDLE' && !pass &&
+                        {cus?.status === '1' && !pass &&
                             <Grid item container xs={12} className={'link-box-danger-click-hover'} onClick={() => setidel(true)}>
                                 <Grid item xs={1}><Loop style={{ paddingTop: 4 }} /></Grid>
-                                <Grid item xs={11}><div style={{ paddingTop: 4 }}>&nbsp;IDEL to Active status</div></Grid>
-                            </Grid>}
+                                <Grid item xs={11}><div style={{ paddingTop: 4 }}>&nbsp;IDLE to Active status</div></Grid>
+                            </Grid>}  
                     </>}
 
-                    <Grid item xs={12} container className=''>
+                    {/* <Grid item xs={12} container className=''>
                         <Grid item container xs={12} className='link-box'>
                             <Grid item xs={6}><div>Offering ID : </div></Grid>
                             <Grid item xs={6}><div className='text-right'>{cus?.primaryOffering}</div></Grid>
@@ -104,6 +173,62 @@ function Ocs({ cus, load, st }) {
                             <Grid item xs={6}><div>Offering Name : </div></Grid>
                             <Grid item xs={6}><div className='text-right'>{cus?.offeringName}</div></Grid>
                         </Grid>
+                    </Grid> */}
+                    <Grid item xs={12} container>
+                        <Grid item container xs={12} className='link-box'>
+                            <Grid item xs={6}><div>Balance Type : </div></Grid>
+                            <Grid item xs={6}><div className='text-right'>{data?.C_MAIN_BILLING_ACCOUNT?.BalanceType}</div></Grid>
+                        </Grid>
+
+                        <Grid item xs={12} container>
+                            <Grid item container xs={12} className='link-box'>
+                                <Grid item xs={6}><div>Offering Name : </div></Grid>
+                                <Grid item xs={6}><div className='text-right'>{cus?.offeringName}</div></Grid>
+                            </Grid>
+                            <Grid item container xs={12} className='link-box'>
+                                <Grid item xs={6}><div>Balance Type Name: </div></Grid>
+                                <Grid item xs={6}><div className='text-right'>{data?.C_MAIN_BILLING_ACCOUNT?.BalanceTypeName}</div></Grid>
+                            </Grid>
+                            {type?.NETWORK_CODE !== 'M' && <Grid item container xs={12} className='link-box'>
+                                <Grid item xs={6}><div>TotalAmount: </div></Grid>
+                                <Grid item xs={6}><div className='text-right'>{parseInt(data?.C_MAIN_BILLING_ACCOUNT?.TotalAmount).toLocaleString()}</div></Grid>
+                            </Grid>}
+                        </Grid>
+
+                        {type?.NETWORK_CODE === "F" &&
+                            <Grid item xs={12} container>
+                                <Grid item container xs={12} className='link-box'>
+                                    <Grid item xs={6}><div>FTTH Package : </div></Grid>
+                                    <Grid item xs={6}><div className='text-right'>
+                                        {ftthData?.ftthPackage}
+                                    </div></Grid>
+                                </Grid>
+                                <Grid item container xs={12} className='link-box'>
+                                    <Grid item xs={6}><div>Expire Date : </div></Grid>
+                                    <Grid item xs={6}><div className='text-right'>
+                                        {moment(data?.ExpireDate).format("DD/MM/YYYY HH:mm:ss")}
+                                    </div></Grid>
+                                </Grid>
+                                <Grid item container xs={12} className='link-box'>
+                                    <Grid item xs={6}><div>Remaining Date : </div></Grid>
+                                    <Grid item xs={6}><div className='text-right'>
+                                        {parseInt(data?.RemainingDate).toLocaleString()} Days
+                                    </div></Grid>
+                                </Grid>
+                                <Grid item container xs={12} className='link-box'>
+                                    <Grid item xs={6}><div>ຍອດຍັງເຫຼືອ : </div></Grid>
+                                    <Grid item xs={6}><div className='text-right'>
+                                        {parseFloat(data?.TotalRemainAmount).toLocaleString()}
+                                    </div></Grid>
+                                </Grid>
+                                <Grid item container xs={12} className='link-box'>
+                                    <Grid item xs={6}><div>ຍອດນຳໃຊ້ : </div></Grid>
+                                    <Grid item xs={6}><div className='text-right'>
+                                        {parseFloat(data?.TotalUsageAmount).toLocaleString()}
+                                    </div></Grid>
+                                </Grid>
+                            </Grid>
+                        }
                     </Grid>
                 </>}
 

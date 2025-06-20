@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 import MaterialTable from 'material-table'
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
@@ -37,7 +37,15 @@ const tableIcons = {
 };
 
 
-function MyTable({ tTitle: title, tColumns: columns, tData: data }) {
+function MyTable({ tTitle: title, tColumns: columns, tData: data, load }) {
+  // console.log("columns", columns);
+  // console.log("data", data);
+  const [loading, setloading] = useState(false)
+  useEffect(() => {
+    if(load!==undefined){
+      setloading(load)
+    }
+  }, [load])
   const checkRows = (myLength) => {
     var length = myLength
     var result = []
@@ -61,6 +69,7 @@ function MyTable({ tTitle: title, tColumns: columns, tData: data }) {
       columns={columns}
       data={data}
       onPageChange={true}
+      isLoading={loading}
       options={{
         sorting: true,
         exportButton: true,

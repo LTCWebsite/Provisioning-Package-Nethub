@@ -1,4 +1,4 @@
-import { ClearAll, Info, SentimentSatisfiedAlt, SettingsBackupRestore, SignalWifi3Bar, SimCardAlert, Subject, Textsms } from '@mui/icons-material'
+import { Block, ClearAll, Info, RemoveCircleOutline, SentimentSatisfiedAlt, SettingsBackupRestore, SignalWifi3Bar, SimCardAlert, Subject, Textsms } from '@mui/icons-material'
 import { Grid, Skeleton } from '@mui/material'
 import React, { useState } from 'react'
 import HappyCall from './Model/HappyCall'
@@ -9,9 +9,12 @@ import ResetSim from './Model/ResetSim'
 import SmsTicket from './Model/SmsTicket'
 import Wifi from './Model/Wifi'
 import OrderChange from './Model/OrderChage'
+import UserBlacklist from './Model/UserBlacklist'
+// import QueryUnbar from './Model/QueryUnbar'
+// import { MyCrypt } from '../../../../../Components/MyCrypt'
 
 function Others() {
-    const [open, setOpen] = useState({ reset: false, sms_ticket: false, happyCall: false, mastersim: false, info178: false, wifi: false, hlr: false, orderChange: false })
+    const [open, setOpen] = useState({ reset: false, sms_ticket: false, happyCall: false, mastersim: false, info178: false, wifi: false, hlr: false, orderChange: false, user_blacklist: false, queryunbar: false })
     const [hlr, setHlr] = useState(false)
     const [countSms, setCountSms] = useState(0)
     const [countHC, setCountHC] = useState(0)
@@ -21,6 +24,7 @@ function Others() {
     const [loadWifi, setLoadWifi] = useState(true)
     const [loadOrderChange, setLoadOrderChange] = useState(true)
     const [orderChangeCount, setOrderChangeCount] = useState(0)
+    // let type = MyCrypt("de", localStorage.getItem("ONE_NETWORK"))
 
     return (
         <>
@@ -71,6 +75,15 @@ function Others() {
                     </Grid>
                 </Grid>
 
+                <Grid item xs={12} container className='link-box-pointer' onClick={() => setOpen({ ...open, user_blacklist: true })}>
+                    <Grid item xs={2}><Block /></Grid>
+                    <Grid item xs={10}>user blacklist</Grid>
+                </Grid>
+                {/* {type?.NETWORK_CODE === 'F' && <Grid item xs={12} container className='link-box-pointer' onClick={() => setOpen({ ...open, queryunbar: true })}>
+                    <Grid item xs={2}><RemoveCircleOutline /></Grid>
+                    <Grid item xs={10}>Query Unbar</Grid>
+                </Grid>} */}
+
             </Grid>
 
             <ResetSim show={open.reset} cb={(e) => setOpen({ ...open, reset: e })} />
@@ -82,6 +95,14 @@ function Others() {
             <HlrData open={hlr} cb={(e) => setHlr(e)} />
             <Wifi open={open.wifi} cb={(e) => setOpen({ ...open, wifi: e })} count={(e) => setCountWifi(e)} stop={(e) => setLoadWifi(e)} />
             <OrderChange open={open.orderChange} cb={(e) => setOpen({ ...open, orderChange: e })} count={(e) => setOrderChangeCount(e)} done={loadOrderChange} ifdone={(e) => setLoadOrderChange(e)} />
+            <UserBlacklist
+                open={open.user_blacklist}
+                cb={(e) => setOpen({ ...open, user_blacklist: e })}
+            />
+            {/* <QueryUnbar
+                open={open.queryunbar}
+                cb={(e) => setOpen({ ...open, queryunbar: e })}
+            /> */}
         </>
     )
 }

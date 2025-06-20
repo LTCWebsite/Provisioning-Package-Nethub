@@ -1,4 +1,4 @@
-import { Close, Done } from '@mui/icons-material'
+import { AllInbox, Close, Done } from '@mui/icons-material'
 import { Button, CircularProgress, Dialog, DialogTitle, Grid, IconButton, Slide } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { AxiosReq } from '../../../../../../Components/Axios'
@@ -13,20 +13,23 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 function BuyPackage({ open, cb, done, ifdone, count }) {
     const [data, setData] = useState([])
     const [pkCode, setPkCode] = React.useState('')
+    const [pkSrv, setPkSrv] = React.useState('')
     const [isShowConfirm, setIsShowConfirm] = React.useState(false)
     const [isLoading, setIsLoading] = React.useState(false)
     const [bkData, setBkData] = React.useState({})
     const [isShowSuccess, setIsShowSuccess] = React.useState(false)
     const [bssNetworkType, setBssNetworkType] = React.useState()
     const [productType, setProductType] = React.useState()
+   
 
     const columns = [
         { title: 'No', field: 'id_idx', maxWidth: 50, sorting: false },
-        { title: 'ລະຫັດແພັກເກັດ', field: 'pK_CODE', minWidth: 100, sorting: false },
+        //{ title: 'ລະຫັດແພັກເກັດ', field: 'pK_CODE', minWidth: 100, sorting: false },
         { title: 'ຊື່ແພັກເກັດ', field: 'srV_NAME', minWidth: 250 },
-        { title: 'ມື້', field: 'days', minWidth: 100 },
-        { title: 'ຈຳນວນເງີນ', field: 'pK_CHG', minWidth: 150, type: 'numeric', render: row => row?.pK_CHG.toLocaleString() },
-        { title: 'ຈັດການ', field: 'action', minWidth: 200 },
+        { title: 'ມື້', field: 'days' , minWidth: 100 },
+        { title: 'ຈຳນວນດາຕ້າ', field: 'pK_DESC', minWidth: 100, sorting: false },
+        { title: 'ຈຳນວນເງີນ', field: 'pK_CHG', minWidth: 100, render: row => row?.pK_CHG.toLocaleString() },
+        { title: 'ຈັດການ', field: 'action', minWidth: 200, align: 'center' },
     ]
 
     useEffect(() => {
@@ -43,7 +46,8 @@ function BuyPackage({ open, cb, done, ifdone, count }) {
                     row.action =
                         <Button variant="contained" color="error" className='btn-primary' fullWidth style={{ height: 39, marginTop: 5 }} onClick={() => {
                             setPkCode(row.pK_CODE)
-                            setProductType(row.signonE_PK)
+                            setPkSrv(row.srV_NAME)
+                            //setProductType(row.signonE_PK)
                             setIsShowConfirm(!isShowConfirm)
                         }}>
                             <a>ຊື້ແພັກເກັດ</a>
@@ -67,6 +71,7 @@ function BuyPackage({ open, cb, done, ifdone, count }) {
         const datas = {
             "msisdn": phone,
             "packageCode": pkCode + "",
+            "counterName": pkSrv + "",
             "networkType": productType?.includes('IR') ? productType : bssNetworkType
         }
         console.log(datas)

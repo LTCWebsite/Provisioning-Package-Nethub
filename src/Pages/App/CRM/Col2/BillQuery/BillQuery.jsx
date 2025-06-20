@@ -63,9 +63,11 @@ function BillQuery() {
         let transfer_count = 0
         let transfer_data = []
         transfer?.map(row => {
-          transfer_data.push(row._source)
-          transfer_count = transfer_count + parseInt(row._source.CHG_BALANCE)
-          all_data.push({ ...row._source, type: "Transfer" })
+          if (row._source?.HANDLING_CHARGE != 0) {
+            transfer_data.push(row._source)
+            transfer_count = transfer_count + parseInt(row._source.CHG_BALANCE)
+            all_data.push({ ...row._source, type: "Transfer" })
+          }
         })
         all_count = all_count + transfer_count
         ///////
@@ -318,7 +320,7 @@ function BillQuery() {
               {/* <Badge badgeContent={data.happyCall.length.toString()} color="primary"><SentimentSatisfiedAlt /></Badge> */}
               <SentimentSatisfiedAlt />
             </Grid>
-            <Grid item xs={8}>Debug or HappyCall</Grid>
+            <Grid item xs={8}>Debug Game</Grid>
             <Grid item xs={2} className="text-right">
               {load ? <Skeleton animation="wave" /> : count.happyCall.toLocaleString()}
             </Grid>
