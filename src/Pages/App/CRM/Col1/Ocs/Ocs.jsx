@@ -116,14 +116,12 @@ function Ocs({ cus, load, st }) {
             }
         }).then(res => {
             if (res.status === 200) {
-                setdata1grab(res?.data1grab);
-                console.log("Ku lorng Bug Bg sue2" + res.data1grab?.name)
+                setdata1grab(res?.data);
+                //console.log("Ku lorng Bug Bg sue2" + res.data?.name)
             }
         }).catch(error => {
             //console.error("Ku lorng Bug Bg API Error:", error);
             setdata1grab({ name: 'None' });
-            // setShow(false);
-            setuseIdel(false);
         });
     }, []);
 
