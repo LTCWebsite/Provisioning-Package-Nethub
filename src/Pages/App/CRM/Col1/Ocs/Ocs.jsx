@@ -24,6 +24,7 @@ function Ocs({ cus, load, st }) {
     const [pass, setPass] = useState(false)
     const [useIdel, setuseIdel] = useState(false)
     const [data, setdata] = useState([])
+    const [data1grab, setdata1grab] = useState([])
     const [show2, setShow2] = useState(false)
     let type = MyCrypt("de", localStorage.getItem("ONE_NETWORK"))
     const [ftthData, setftthData] = useState([])
@@ -115,12 +116,12 @@ function Ocs({ cus, load, st }) {
             }
         }).then(res => {
             if (res.status === 200) {
-                setdata(res?.data);
-                console.log("Ku lorng Bug Bg sue2" + res.data?.name)
+                setdata1grab(res?.data1grab);
+                console.log("Ku lorng Bug Bg sue2" + res.data1grab?.name)
             }
         }).catch(error => {
-            console.error("Ku lorng Bug Bg API Error:", error);
-            setdata({ name: 'None' });
+            //console.error("Ku lorng Bug Bg API Error:", error);
+            setdata1grab({ name: 'None' });
             // setShow(false);
             setuseIdel(false);
         });
@@ -178,8 +179,7 @@ function Ocs({ cus, load, st }) {
                         </Grid>}
 
                     <>
-
-                        {data?.name !== null && useIdel && cus?.status === '1' && !pass && (
+                        {data1grab?.name !== null && useIdel && cus?.status === '1' && !pass && (
                             <Grid item container xs={12} className={'link-box-danger-click-hover'} onClick={() => setidel(true)}>
                                 <Grid item xs={1}><Loop style={{ paddingTop: 4 }} /></Grid>
                                 <Grid item xs={11}>
@@ -189,7 +189,7 @@ function Ocs({ cus, load, st }) {
                         )}
                     </>
 
-                    {/* ເລີ້ມຕົ້ນ Idle To Active ເງື່ອນໄຂກ່ອນໜ້າ */}
+                    {/* ເລີ້ມຕົ້ນເງື່ອນໄຂກ່ອນໜ້າ Idle To Active  */}
                     {/* {useIdel && <>
                             {cus?.status === '1' && !pass &&
                                 <Grid item container xs={12} className={'link-box-danger-click-hover'} onClick={() => setidel(true)}>
@@ -197,7 +197,7 @@ function Ocs({ cus, load, st }) {
                                     <Grid item xs={11}><div style={{ paddingTop: 4 }}>&nbsp;IDLE to Active status</div></Grid>
                                 </Grid>}
                         </>}  */}
-                    {/* ປິດ Idle To Active ເງື່ອນໄຂກ່ອນໜ້າ */}
+                    {/* ປິດເງື່ອນໄຂກ່ອນໜ້າ Idle To Active  */}
 
 
                     {/* <Grid item xs={12} container className=''>
