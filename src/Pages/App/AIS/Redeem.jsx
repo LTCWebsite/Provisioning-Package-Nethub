@@ -17,7 +17,6 @@ import {
 } from "@mui/material";
 import useDetails from "../../../hooks/useDetails";
 import useRedeem from "../../../hooks/useRedeem";
-import { AlertError, AlertSuccess } from "../../../Components/Toast";
 import { ToastContainer } from "react-toastify";
 
 const Redeem = () => {
@@ -28,7 +27,7 @@ const Redeem = () => {
   });
   const [openConfirm, setOpenConfirm] = useState(false);
   const details = useDetails();
-  const { redeemCode, data: response, loading, error } = useRedeem();
+  const { redeemCode, loading } = useRedeem();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -47,11 +46,6 @@ const Redeem = () => {
     setOpenConfirm(false);
     await redeemCode(formData);
   };
-
-  useEffect(() => {
-    if (error) AlertError(error);
-    if (response) AlertSuccess({ text: "Redeem successful!" });
-  }, [error, response]);
 
   return (
     <Stack gap={2} sx={{ maxWidth: 400, mx: "auto", mt: 5 }}>
