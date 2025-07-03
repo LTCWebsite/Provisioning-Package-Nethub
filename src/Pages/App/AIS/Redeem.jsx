@@ -10,6 +10,10 @@ import {
   Typography,
   CircularProgress,
   Stack,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
 import useDetails from "../../../hooks/useDetails";
 import useRedeem from "../../../hooks/useRedeem";
@@ -22,7 +26,7 @@ const Redeem = () => {
     msisdn: "",
     detailId: "",
   });
-
+  const [openConfirm, setOpenConfirm] = useState(false);
   const details = useDetails();
   const { redeemCode, data: response, loading, error } = useRedeem();
 
@@ -34,12 +38,16 @@ const Redeem = () => {
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
+    setOpenConfirm(true);
+  };
+
+  const handleConfirm = async () => {
+    setOpenConfirm(false);
     await redeemCode(formData);
   };
 
-  // ✅ Show toast on error or success
   useEffect(() => {
     if (error) AlertError(error);
     if (response) AlertSuccess({ text: "Redeem successful!" });
@@ -92,9 +100,29 @@ const Redeem = () => {
           sx={{ mt: 2 }}
           disabled={loading}
         >
-          {loading ? <CircularProgress size={24} color="inherit" /> : "Submit"}
+          {loading ? <CircularProgress size={24} color="inherit" /> : "Redeem"}
         </Button>
       </Stack>
+      <Dialog
+        maxWidth="sm"
+        fullWidth
+        open={openConfirm}
+        onClose={() => setOpenConfirm(false)}
+      >
+        <DialogTitle>ກະລຸນາຢືນຢັນ</DialogTitle>
+        <DialogContent>ທ່ານແນ່ໃຈບໍ່ວ່າຈະໃຊ້ໂຄດນີ້?</DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenConfirm(false)}>ຍົກເລີກ</Button>
+          <Button
+            onClick={handleConfirm}
+            variant="contained"
+            color="primary"
+            disabled={loading}
+          >
+            {loading ? <CircularProgress size={20} /> : "ຕົກລົງ"}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Stack>
   );
 };
