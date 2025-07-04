@@ -24,10 +24,11 @@ function Ocs({ cus, load, st }) {
     const [pass, setPass] = useState(false)
     const [useIdel, setuseIdel] = useState(false)
     const [data, setdata] = useState([])
+    const [data1grab, setdata1grab] = useState([])
     const [show2, setShow2] = useState(false)
     let type = MyCrypt("de", localStorage.getItem("ONE_NETWORK"))
     const [ftthData, setftthData] = useState([])
-    // console.log(cus)
+    //console.log(cus)
     useEffect(() => {
         setShow(load)
         let info = MyCryptTry("de", localStorage.getItem("ONE_DETAIL"))
@@ -105,6 +106,25 @@ function Ocs({ cus, load, st }) {
             toast_error({ text: "API error" })
         })
     }
+
+    useEffect(() => {
+        const phone = localStorage.getItem("ONE_PHONE");
+
+        AxiosReq.get("Register3Grab?msisdn=" + phone, {
+            headers: {
+                Authorization: 'Bearer ' + Cookies.get("ONE_TOKEN")
+            }
+        }).then(res => {
+            if (res.status === 200) {
+                setdata1grab(res?.data);
+                //console.log("Ku lorng Bug Bg sue2" + res.data?.name)
+            }
+        }).catch(error => {
+            //console.error("Ku lorng Bug Bg API Error:", error);
+            setdata1grab({ name: 'None' });
+        });
+    }, []);
+
     return (
         <>
             {!show ?
@@ -156,13 +176,27 @@ function Ocs({ cus, load, st }) {
                             <Grid item xs={6}><div className='text-right'>{parseInt(data?.Summary?.Total).toLocaleString()}</div></Grid>
                         </Grid>}
 
-                    {useIdel && <>
-                        {cus?.status === '1' && !pass &&
+                    <>
+                        {data1grab?.name !== null && useIdel && cus?.status === '1' && !pass && (
                             <Grid item container xs={12} className={'link-box-danger-click-hover'} onClick={() => setidel(true)}>
                                 <Grid item xs={1}><Loop style={{ paddingTop: 4 }} /></Grid>
-                                <Grid item xs={11}><div style={{ paddingTop: 4 }}>&nbsp;IDLE to Active status</div></Grid>
-                            </Grid>}  
-                    </>}
+                                <Grid item xs={11}>
+                                    <div style={{ paddingTop: 4 }}>&nbsp;IDLE to Active status</div>
+                                </Grid>
+                            </Grid>
+                        )}
+                    </>
+
+                    {/* ເລີ້ມຕົ້ນເງື່ອນໄຂກ່ອນໜ້າ Idle To Active  */}
+                    {/* {useIdel && <>
+                            {cus?.status === '1' && !pass &&
+                                <Grid item container xs={12} className={'link-box-danger-click-hover'} onClick={() => setidel(true)}>
+                                    <Grid item xs={1}><Loop style={{ paddingTop: 4 }} /></Grid>
+                                    <Grid item xs={11}><div style={{ paddingTop: 4 }}>&nbsp;IDLE to Active status</div></Grid>
+                                </Grid>}
+                        </>}  */}
+                    {/* ປິດເງື່ອນໄຂກ່ອນໜ້າ Idle To Active  */}
+
 
                     {/* <Grid item xs={12} container className=''>
                         <Grid item container xs={12} className='link-box'>
