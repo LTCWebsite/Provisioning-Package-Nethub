@@ -19,8 +19,8 @@ function useRedeem() {
       AlertSuccess({ text: "Redeem successful!" });
       return response.data;
     } catch (err) {
-      setError(err.response?.data?.message || "Something went wrong.");
-      AlertError(err.response?.data?.message || "Something went wrong.");
+      setError(err.response?.data?.error || "Something went wrong.");
+      AlertError(err.response?.data?.error || "Something went wrong.");
     } finally {
       setLoading(false);
     }
