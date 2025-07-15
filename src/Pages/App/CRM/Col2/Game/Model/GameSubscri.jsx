@@ -2,6 +2,7 @@ import { Close } from '@mui/icons-material'
 import { Dialog, Grid, Slide } from '@mui/material'
 import React from 'react'
 import GameSubscriTab from './GameSubscriTab'
+import TabSubscriNew from './TabSubscriNew';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -28,7 +29,8 @@ function GameSubscrib({ open, cb }) {
                             <div className='right'><Close className='icon' onClick={() => cb(!open)} /></div>
                         </Grid>
                         <Grid item xs={12}>
-                            <GameSubscriTab />
+                            {/* <GameSubscriTab /> */}
+                            <TabSubscriNew />
                         </Grid>
                     </Grid>
                 </Grid>
