@@ -68,6 +68,9 @@ export default function NewLogin() {
                 if (res.status === 200) {
                     setdbtn(false)
                     let user_detail = res.data
+
+                    console.log("user detail", user_detail)
+
                     let token = res.data?.token
                     let sendData = {
                         staff_id: data.username,

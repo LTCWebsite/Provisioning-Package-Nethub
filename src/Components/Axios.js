@@ -44,3 +44,9 @@ export const AxiosCBS = axios.create({
 export const AxiosSpecialRedeem = axios.create({
   baseURL: "http://10.30.6.148:3002/api/",
 });
+
+export const AxiosSubscriber = axios.create({
+  baseURL: "http://10.30.6.148:5678",
+});
+
+

@@ -3,13 +3,12 @@ import MyTable from "../../../../../../Components/MyTable";
 import { LoadingTable } from "../../../../../../Components/TableLoading";
 import { AxiosReq2, AxiosSubscriber } from "../../../../../../Components/Axios";
 import cookie from "js-cookie";
-import TableSub from "../Model/TableSub";
+import TableMember from "../Model/TableMember";
 
-function SubscriberGame() {
+function Members() {
   const [stop, setStop] = useState(false);
   const [data, setData] = useState([]);
-  const [name, setName] = useState("Detail Subscriber");
-  let p = localStorage.getItem("ONE_PHONE");
+  const [name, setName] = useState("Detail Members");
 
   useEffect(() => {
     const phone = localStorage.getItem("ONE_PHONE");
@@ -19,25 +18,8 @@ function SubscriberGame() {
       return;
     }
 
-    // AxiosReq2.get(`SubScribeGame?msisdn=${phone}`, {
-    //     headers: { Authorization: `Bearer ${cookie.get("ONE_TOKEN")}` },
-    // })
-    //     .then(res => {
-    //         if (res.status === 200 && Array.isArray(res.data)) {
-    //             setData(res.data);
-    //         } else {
-    //             setData([]);
-    //         }
-    //     })
-    //     .catch(err => {
-    //         setData([]);
-    //     })
-    //     .finally(() => {
-    //         setStop(true);
-    //     });
-
     AxiosSubscriber.post(
-      `/SubmemberGame?msisdn=${phone}`,
+      `/SubscriberGame?msisdn=${phone}`,
       {},
       {
         headers: { Authorization: `Bearer ${cookie.get("ONE_TOKEN")}` },
@@ -71,22 +53,23 @@ function SubscriberGame() {
     { title: "ລາຍລະອຽດ", field: "resultDesc" },
   ];
 
-  
-  //   function showData({data}) {
-  //     console.log("data showData", data)
-
+  // function showData() {
   //     return data.length > 0 ? (
-  //       //   <MyTable tTitle={name} tData={data} tColumns={columns} />
-  //       <TableSub tData={data} />
+  //         <MyTable tTitle={name} tData={data} tColumns={columns} />
   //     ) : (
-  //       <div style={{ textAlign: "center", padding: "20px", color: "gray" }}>
-  //         No data available.
-  //       </div>
+  //         <div style={{ textAlign: "center", padding: "20px", color: "gray" }}>
+  //             No data available.
+  //         </div>
   //     );
-  //   }
+  // }
 
-  //   return <>{!stop ? <LoadingTable /> : showData()}</>;
-  return <TableSub tData={data} />
+  // return (
+  //     <>
+  //         {!stop ? <LoadingTable /> : showData()}
+  //     </>
+  // );
+
+  return <TableMember tData={data} />;
 }
 
-export default SubscriberGame;
+export default Members;
