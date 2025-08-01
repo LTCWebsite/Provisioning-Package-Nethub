@@ -5,6 +5,7 @@ import BillQuery from './Col2/BillQuery/BillQuery'
 import Game from './Col2/Game/Game'
 import Others from './Col2/Others/Others'
 import Packages from './Col2/Package/Packages'
+import Packages101 from './Col2/Package/Packages101'
 import { MyCrypt } from '../../../Components/MyCrypt'
 import OCS_invoice from './Col2/PaymentHistory/OCS_invoice'
 import FtthBundle from './Col2/FtthBundle/FTTHBundleTap'
@@ -31,7 +32,6 @@ function Col2() {
               </Grid>
             }
 
-
           </Grid>
         </Grid>
         <Grid container item xs={12} md={12} lg={6} className="box-crm">
@@ -39,6 +39,9 @@ function Col2() {
             <h2 className='blue'>ດາຕ້າແພັກເກັດ</h2>
 
             <Packages />
+            <h2 className='blue'>ດາຕ້າແພັກເກັດ 101</h2>
+
+            <Packages101 />
             <h2 className='blue'>Banking</h2>
 
             <Banking />
