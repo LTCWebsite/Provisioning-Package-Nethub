@@ -6,6 +6,9 @@ import { MyCrypt } from '../../../../../../Components/MyCrypt'
 import MyTable from '../../../../../../Components/MyTable'
 import cookie from 'js-cookie'
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
 
 function BuyPackage({ open, cb, done, ifdone, count }) {
     const [data, setData] = useState([])
@@ -17,21 +20,13 @@ function BuyPackage({ open, cb, done, ifdone, count }) {
     const [isShowSuccess, setIsShowSuccess] = React.useState(false)
     const [bssNetworkType, setBssNetworkType] = React.useState()
     const [productType, setProductType] = React.useState()
-
-    const [value, setValue] = React.useState('1');
-    const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-        setValue(newValue);
-    };
-    const Transition = React.forwardRef(function Transition(props, ref) {
-        return <Slide direction="up" ref={ref} {...props} />;
-    });
-
+   
 
     const columns = [
         { title: 'No', field: 'id_idx', maxWidth: 50, sorting: false },
         //{ title: 'ລະຫັດແພັກເກັດ', field: 'pK_CODE', minWidth: 100, sorting: false },
         { title: 'ຊື່ແພັກເກັດ', field: 'srV_NAME', minWidth: 250 },
-        { title: 'ມື້', field: 'days', minWidth: 100 },
+        { title: 'ມື້', field: 'days' , minWidth: 100 },
         { title: 'ຈຳນວນດາຕ້າ', field: 'pK_DESC', minWidth: 100, sorting: false },
         { title: 'ຈຳນວນເງີນ', field: 'pK_CHG', minWidth: 100, render: row => row?.pK_CHG.toLocaleString() },
         { title: 'ຈັດການ', field: 'action', minWidth: 200, align: 'center' },
@@ -42,7 +37,7 @@ function BuyPackage({ open, cb, done, ifdone, count }) {
         count(0)
         let network = MyCrypt("de", localStorage.getItem("ONE_NETWORK"))
         setBssNetworkType(network?.NETWORK_CODE)
-        AxiosReq.get("Package?networkType=" + network?.NETWORK_CODE, { headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
+        AxiosReq.get("Package?networkType=" + network?.NETWORK_CODE,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200) {
                 var num = 0
                 var newUpdate = res.data.listPackage.map(row => {
@@ -80,7 +75,7 @@ function BuyPackage({ open, cb, done, ifdone, count }) {
             "networkType": productType?.includes('IR') ? productType : bssNetworkType
         }
         console.log(datas)
-        AxiosReq.post("Package", datas, { headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
+        AxiosReq.post("Package", datas,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200 && res.data.resultCode === "200") {
                 setBkData(res.data)
                 setIsShowSuccess(!isShowSuccess)
@@ -113,8 +108,6 @@ function BuyPackage({ open, cb, done, ifdone, count }) {
                         <div className='right'><Close className='icon' onClick={() => cb(!open)} /></div>
                     </Grid>
                 </Grid>
-           
-
                 <Grid container>
                     <Grid item xs={12} style={{ width: 1200 }}>
                         <MyTable tTitle={"Buy Package"} tData={data} tColumns={columns} />
@@ -181,7 +174,7 @@ function BuyPackage({ open, cb, done, ifdone, count }) {
                                     <Close />
                                 </IconButton>
                             </div>
-                        </Grid>
+                        </Grid>  
                     </Grid>
                 </Grid>
             </Dialog>

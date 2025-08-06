@@ -37,16 +37,15 @@ function Col2() {
         <Grid container item xs={12} md={12} lg={6} className="box-crm">
           <Grid item xs={12}>
             <h2 className='blue'>ດາຕ້າແພັກເກັດ</h2>
-
             <Packages />
-            <h2 className='blue'>ດາຕ້າແພັກເກັດ 101</h2>
 
-            <Packages101 />
+            {/* <h2 className='blue'>ດາຕ້າແພັກເກັດ 101</h2>
+            <Packages101 /> */}
+
             <h2 className='blue'>Banking</h2>
-
             <Banking />
-            <h2 className='blue'>FTTH Bundle</h2>
 
+            <h2 className='blue'>FTTH Bundle</h2>
             <FtthBundle />
           </Grid>
         </Grid>
