@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import { Close } from "@mui/icons-material";
 import {
   Button,
@@ -54,7 +55,28 @@ function Monomax({ open, cb, done }) {
         }
       })
       .catch((err) => {
-        toast_error({ text: "Failed to resend password! " + err.message });
+        toast_error({ text: "Failed to resend password! " + + err?.response?.data?.message || err.message });
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+  const _handleCancelPackage = async () => {
+    setLoading(true);
+    AxiosMonomax.post("unsubscriptions", {
+      action: "terminate",
+      msisdn: localStorage.getItem("ONE_PHONE"),
+      network_type: "prepaid",
+      trans_id: "O_" + uuidv4(),
+    })
+      .then(async (res) => {
+        if (res.status === 200) {
+          console.log("first");
+          toast_success({ text: "Package cancelled successfully!" });
+        }
+      })
+      .catch((err) => {
+        toast_error({ text: "Cancel package failed: " + err?.response?.data?.message || err.message});
       })
       .finally(() => {
         setLoading(false);
@@ -93,6 +115,15 @@ function Monomax({ open, cb, done }) {
                     onClick={_handleResendPassword}
                   >
                     {loading ? "Loading..." : "Resend Password"}
+                  </Button>
+                  <div style={{marginLeft:200}}></div>
+                  <Button
+                    disabled={loading}
+                    variant="contained"
+                    className="btn-danger"
+                    onClick={_handleCancelPackage}
+                  >
+                    {loading ? "Loading..." : "Cancel Package"}
                   </Button>
                 </div>
               </Grid>
