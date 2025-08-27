@@ -78,7 +78,7 @@ export default function NewLogin() {
                     }
                     loadTopMenu(sendData, (user_role) => {
                         Auth.login(() => {
-                            Cookies.set("ONE_TOKEN", token, { expires: 8 / 24 })
+                            Cookies.set("ONE_TOKEN", token, { expires: 2 / 24 })
                             localStorage.setItem("ONE_DETAIL", Crypt({ Type: "crypt", Value: JSON.stringify(user_detail) }))
                             localStorage.setItem("ONE_USER_ROLE", Crypt({ Type: "crypt", Value: JSON.stringify(user_role) }))
                             localStorage.setItem("USERNAME", res?.data?.username)
@@ -139,6 +139,7 @@ export default function NewLogin() {
                                             setdalert({ ...dalert, username: e.target.value.length > 0 ? false : true })
                                         }}
                                         error={dalert.username}
+                                        autoComplete="off"
                                     />
                                 </div>
                                 {dalert.username || (data.username === "" && btn) ? <div className='err'>ກະລຸນາປ້ອນລະຫັດພະນັກງານ</div> : null}
@@ -160,6 +161,8 @@ export default function NewLogin() {
                                             setdalert({ ...dalert, password: e.target.value.length > 0 ? false : true })
                                         }}
                                         error={dalert.password}
+                                        autoComplete="new-password"
+
                                     />
                                 </div>
                                 {dalert.password || (data.password === "" && btn) ? <div className='err'>ກະລຸນາປ້ອນລະຫັດຜ່ານ</div> : null}
