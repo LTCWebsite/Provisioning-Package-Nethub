@@ -30,7 +30,7 @@ const Resetpass = () => {
             toast_error({ text: 'ຢືນຢັນລະຫັດຜ່ານບໍ່ຕົງກັນ' })
         }
         try {
-            const resetpass = await axios.patch(`http://localhost:3210/api/resetpasswordOnescreen`,
+            const resetpass = await axios.patch(`http://172.28.14.49:3210/api/resetpasswordOnescreen`,
                 {
                     "user_name": username,
                     "oldpass": oldpass,
