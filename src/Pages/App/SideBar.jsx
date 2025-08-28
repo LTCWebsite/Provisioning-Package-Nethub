@@ -10,6 +10,7 @@ import {
   ScreenshotMonitor,
   WifiCalling3,
   RedeemSharp,
+  Key,
 } from "@mui/icons-material";
 import React from "react";
 import logo from "../../Image/logo-2.png";
@@ -28,6 +29,7 @@ function SideBar({ height }) {
     card: true,
     user: true,
     ais: true,
+    reset: true,
   });
   const ChangeRoute = (e) => {
     if (e === "/app") {
@@ -54,6 +56,13 @@ function SideBar({ height }) {
       setEffect({ ...effect, ais: false });
       setTimeout(() => {
         setEffect({ ...effect, ais: true });
+      }, 500);
+      history.push(e);
+    }
+    else if (e === "/app/resetpassword") {
+      setEffect({ ...effect, reset: false });
+      setTimeout(() => {
+        setEffect({ ...effect, reset: true });
       }, 500);
       history.push(e);
     }
@@ -156,6 +165,21 @@ function SideBar({ height }) {
               <RedeemSharp color="primary" className="bar-icon" />
             )}
             <div>AIS Redeem</div>
+          </FadeIn>
+        </div>
+        <div
+          className={
+            location.pathname === "/app/resetpassword" ? "bar bar-active" : "bar"
+          }
+          onClick={() => ChangeRoute("/app/resetpassword")}
+        >
+          <FadeIn visible={effect.reset}>
+            {effect.reset && location.pathname === "/app/resetpassword" ? (
+              <Key className="bar-icon" />
+            ) : (
+              <Key color="primary" className="bar-icon" />
+            )}
+            <div>Reset Password</div>
           </FadeIn>
         </div>
         <div
