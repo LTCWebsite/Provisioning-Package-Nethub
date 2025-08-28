@@ -49,7 +49,8 @@ function Ocs({ cus, load, st }) {
         }
     }, [type?.NETWORK_CODE])
     const loadFtth = () => {
-        AxiosReq.get("Fiber?ftth=" + localStorage.getItem("ONE_PHONE"), { headers: { 'Authorization': 'Bearer ' + Cookies.get("ONE_TOKEN") } }).then(res => {
+        AxiosReq.get("Fiber?ftth=" + localStorage.getItem("ONE_PHONE"), { headers: { 'Authorization': 'Bearer ' + Cookies.get("ONE_TOKEN") } })
+        .then(res => {
             if (res.status === 200) {
                 setftthData(res.data)
                 // console.log(res.data)

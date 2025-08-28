@@ -74,7 +74,7 @@ function BuyPackage({ open, cb, done, ifdone, count }) {
             "counterName": pkSrv + "",
             "networkType": productType?.includes('IR') ? productType : bssNetworkType
         }
-        console.log(datas)
+        //console.log("Un kao: ",datas)
         AxiosReq.post("Package", datas,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200 && res.data.resultCode === "200") {
                 setBkData(res.data)

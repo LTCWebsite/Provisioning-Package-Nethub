@@ -11,8 +11,7 @@ function Packages101() {
     const [buyC, setBuyC] = useState(0)
 
     useEffect(() => {
-        let phone = localStorage.getItem("ONE_PHONE")
-
+        // let phone = localStorage.getItem("ONE_PHONE")
 
         setPk({ ...pk, load: true, count: 0 })
         AxiosReq2.get("Package101",{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
