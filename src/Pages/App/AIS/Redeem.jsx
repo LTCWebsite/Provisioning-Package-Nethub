@@ -18,6 +18,7 @@ import {
 import useDetails from "../../../hooks/useDetails";
 import useRedeem from "../../../hooks/useRedeem";
 import { ToastContainer } from "react-toastify";
+import { AlertError } from "../../../Components/Toast";
 
 const Redeem = () => {
   const [formData, setFormData] = useState({
@@ -28,6 +29,8 @@ const Redeem = () => {
   const [openConfirm, setOpenConfirm] = useState(false);
   const details = useDetails();
   const { redeemCode, loading } = useRedeem();
+  const [error, setError] = useState(false);
+  const [msisdnError, setMsisdnError] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -39,12 +42,22 @@ const Redeem = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setOpenConfirm(true);
+    // setOpenConfirm(true);
+    e.preventDefault();
+    if (formData.msisdn.length !== 10 || !/^\d{10}$/.test(formData.msisdn)) {
+      setMsisdnError(true);
+       AlertError("ກະລຸນາປ້ອນໂຕໜັງສືໃຫ້ຄົບ 10 ຫລັກ!");
+    }else if(formData?.detailId === "" || formData?.code === ""){
+       AlertError("ກະລຸນາປ້ອນໃຫ້ຄົບ!");
+    }else {
+      setOpenConfirm(true);
+    }
   };
 
-  const handleConfirm = async () => {
+  const handleConfirm = async (e) => {
     setOpenConfirm(false);
     await redeemCode(formData);
+
   };
 
   return (
@@ -68,6 +81,7 @@ const Redeem = () => {
           label="Phone Number (MSISDN)"
           name="msisdn"
           value={formData.msisdn}
+          inputProps={{ maxLength: 10 }}
           onChange={handleChange}
         />
         <FormControl fullWidth margin="normal">

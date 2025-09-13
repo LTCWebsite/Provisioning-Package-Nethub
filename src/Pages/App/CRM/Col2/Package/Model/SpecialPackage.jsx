@@ -81,9 +81,7 @@ function SpecialPackage({ open, cb, done, ifdone, count }) {
         }).catch((err) => {
             //setSp({ ...sp, data: [] });
         })
-    }, [])
-
- 
+    }, []) 
 
 
     return (

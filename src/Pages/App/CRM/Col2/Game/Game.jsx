@@ -14,7 +14,7 @@ function Game() {
             <Grid container>
                 <Grid item xs={12} container className='link-box-pointer' onClick={() => setGameUn(true)}>
                     <Grid item xs={2}><SportsEsports /></Grid>
-                    <Grid item xs={10}>ເກມ UnSubscribe</Grid>
+                    <Grid item xs={10}>ເກມ Purchase</Grid>
                 </Grid>
 
                 <Grid item xs={12} container className='link-box-pointer' onClick={() => setGameSub(true)}>

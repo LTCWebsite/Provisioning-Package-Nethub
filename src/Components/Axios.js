@@ -15,6 +15,16 @@ export const AxiosReq = axios.create({
   // baseURL: "http://localhost:5001/",
 });
 
+export const AxiosMonomax = axios.create({
+  //baseURL: "http://10.30.6.148:5678/",
+  baseURL: "http://172.28.26.123:9000",
+  auth: {
+    username: "monomax",
+    password: "#Monomax@2025",
+  },
+  // baseURL: "http://localhost:5001/",
+});
+
 export const AxiosReq2 = axios.create({
   baseURL: "http://10.30.6.148:5678/api/",
   // baseURL: "http://localhost:5001/",
@@ -43,4 +53,8 @@ export const AxiosCBS = axios.create({
 
 export const AxiosSpecialRedeem = axios.create({
   baseURL: "http://10.30.6.148:3002/api/",
+});
+
+export const AxiosSubscriber = axios.create({
+  baseURL: "http://10.30.6.148:5678",
 });

@@ -24,7 +24,7 @@ function Ocs({ cus, load, st }) {
     const [pass, setPass] = useState(false)
     const [useIdel, setuseIdel] = useState(false)
     const [data, setdata] = useState([])
-    const [data1grab, setdata1grab] = useState([])
+    const [data1grab, setdata1grab] = useState({ name: 'None' })
     const [show2, setShow2] = useState(false)
     let type = MyCrypt("de", localStorage.getItem("ONE_NETWORK"))
     const [ftthData, setftthData] = useState([])
@@ -49,7 +49,8 @@ function Ocs({ cus, load, st }) {
         }
     }, [type?.NETWORK_CODE])
     const loadFtth = () => {
-        AxiosReq.get("Fiber?ftth=" + localStorage.getItem("ONE_PHONE"), { headers: { 'Authorization': 'Bearer ' + Cookies.get("ONE_TOKEN") } }).then(res => {
+        AxiosReq.get("Fiber?ftth=" + localStorage.getItem("ONE_PHONE"), { headers: { 'Authorization': 'Bearer ' + Cookies.get("ONE_TOKEN") } })
+        .then(res => {
             if (res.status === 200) {
                 setftthData(res.data)
                 // console.log(res.data)
@@ -121,7 +122,7 @@ function Ocs({ cus, load, st }) {
             }
         }).catch(error => {
             //console.error("Ku lorng Bug Bg API Error:", error);
-            setdata1grab({ name: 'None' });
+            // setdata1grab({ name: 'None' });
         });
     }, []);
 
@@ -176,8 +177,9 @@ function Ocs({ cus, load, st }) {
                             <Grid item xs={6}><div className='text-right'>{parseInt(data?.Summary?.Total).toLocaleString()}</div></Grid>
                         </Grid>}
 
+
                     <>
-                        {data1grab?.name !== null && useIdel && cus?.status === '1' && !pass && (
+                        { data1grab.name !== "None" && useIdel && cus?.status === '1' && !pass && (
                             <Grid item container xs={12} className={'link-box-danger-click-hover'} onClick={() => setidel(true)}>
                                 <Grid item xs={1}><Loop style={{ paddingTop: 4 }} /></Grid>
                                 <Grid item xs={11}>

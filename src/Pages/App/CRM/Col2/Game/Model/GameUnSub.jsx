@@ -23,7 +23,7 @@ function GameUnSub({ open, cb }) {
                     <Grid item container xs={12}>
                         <Grid item xs={1}>
                         </Grid>
-                        <Grid item xs={10}><div className="center"><h1>ເກມ UnSubscribe</h1></div></Grid>
+                        <Grid item xs={10}><div className="center"><h1>ເກມ Purchase</h1></div></Grid>
                         <Grid item xs={1}>
                             <div className='right'><Close className='icon' onClick={() => cb(!open)} /></div>
                         </Grid>
