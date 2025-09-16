@@ -516,6 +516,7 @@ function MobileService({ check, is5G, cb, cbis5G }) {
               <Switch
                 size="small"
                 checked={smsST}
+                disabled
                 onChange={() => {
                   CFDialog({
                     st: "SMS",
