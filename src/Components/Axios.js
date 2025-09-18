@@ -15,6 +15,10 @@ export const AxiosReq = axios.create({
   // baseURL: "http://localhost:5001/",
 });
 
+export const AxiosElastic = axios.create({
+  baseURL: "http://172.28.26.97:9200/"
+});
+
 export const AxiosMonomax = axios.create({
   //baseURL: "http://10.30.6.148:5678/",
   baseURL: "http://172.28.26.123:9000",

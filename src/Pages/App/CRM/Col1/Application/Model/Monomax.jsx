@@ -168,7 +168,7 @@ function Monomax({ open, cb, done }) {
                         <TableCell align="left">{row?.channel}</TableCell>
                         <TableCell align="left">{row?.package_id}</TableCell>
                         <TableCell align="left">
-                          {row?.price.toLocaleString()}
+                          {row?.price?.toLocaleString()}
                         </TableCell>
                         <TableCell align="left">
                           {moment(row?.start_date)
