@@ -25,10 +25,9 @@ function Col2() {
       .then(res => {
         if (res.success !== true) {
           setData(res?.data)
-          console.log("Bg Hide Tag", res.data)
         }
       }).catch(error => {
-        console.log("Maeng :", error.message)
+        //console.log("Maeng :", error.message)
       });
   }, []);
 
