@@ -75,11 +75,11 @@ export default function ElasticSearchTable() {
     };
 
     return (
-        <Paper sx={{ width: "100%", overflow: "hidden", p: 2 }}>
+        <Paper sx={{ width: "100%", overflow: "hidden", p: 2, display: "flex", justifyContent: "center", alignItems: "center", minHeight: 400 }}>
             {loading ? (
                 <CircularProgress />
             ) : (
-                <>
+                <div style={{ width: "100%" }}>
                     <TableContainer>
                         <Table>
                             <TableHead>
@@ -157,9 +157,9 @@ export default function ElasticSearchTable() {
                         onPageChange={handleChangePage}
                         rowsPerPage={rowsPerPage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
-                        rowsPerPageOptions={[5, 10, 20]}
+                        rowsPerPageOptions={[5, 10, 20, 30, 40, 50, 100]}
                     />
-                </>
+                </div>
             )}
         </Paper>
     );
