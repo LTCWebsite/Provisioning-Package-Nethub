@@ -3,6 +3,7 @@ import { Grid, TextField, Button, Paper, Typography, InputAdornment, IconButton 
 import { Grid3x3, Grid4x4, GridViewRounded, Visibility, VisibilityOff } from "@mui/icons-material";
 import axios from "axios";
 import { AlertError, AlertSuccess, toast_error } from "../../../Components/Toast";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const Resetpass = () => {
     const [showPassword, setShowpassword] = useState(false);
@@ -10,6 +11,8 @@ const Resetpass = () => {
     const [oldpass, setOldpass] = useState('');
     const [newpass, setNewpass] = useState('');
     const [confirmpass, setConfirmpass] = useState('');
+    const history = useHistory();
+
 
     const handleshowpass = () => {
         setShowpassword(!showPassword)
@@ -18,6 +21,8 @@ const Resetpass = () => {
         setShowNewpassword(!showNewPassword)
     }
     const username = localStorage.getItem('USERNAME');
+    const expired = localStorage.getItem('PASSWORDEXPIRED');
+
 
     const defaultdata = () => {
         setOldpass('');
@@ -26,19 +31,30 @@ const Resetpass = () => {
     }
 
     const ResetPassword = async () => {
-        if (newpass != confirmpass) {
-            toast_error({ text: 'ຢືນຢັນລະຫັດຜ່ານບໍ່ຕົງກັນ' })
+        if (!oldpass || !newpass || !confirmpass) {
+            return toast_error({ text: 'ກະລຸນາປ້ອນຂໍ້ມູນໃຫ້ຄົບຖ້ວນ' })
         }
+        if (newpass != confirmpass) {
+            return toast_error({ text: 'ຢືນຢັນລະຫັດຜ່ານບໍ່ຕົງກັນ' })
+        }
+        if (newpass.length < 8 || !/[A-Z]/.test(newpass)) {
+        return toast_error({
+            text: 'ລະຫັດຜ່ານຕ້ອງຍາວຫຼາຍກວ່າ 8 ຕົວ ແລະ ມີຕົວພິມໃຫຍ່'
+        });
+    }
         try {
             const resetpass = await axios.patch(`http://172.28.14.49:3210/api/resetpasswordOnescreen`,
                 {
                     "user_name": username,
                     "oldpass": oldpass,
-                    "Password": newpass
+                    "Password": confirmpass
                 }
             )
             AlertSuccess({ text: 'ປ່ຽນລະຫັດສຳເລັດ' });
             defaultdata();
+            if (expired === 'isExpired') {
+                history.push('/')
+            }
         } catch (error) {
             console.log(error)
             if (error.response && error.response.status === 400) {
@@ -50,7 +66,7 @@ const Resetpass = () => {
             }
         }
     }
-    
+
     return (
         <Grid container justifyContent="center" marginTop="10px" sx={{ px: { xs: 2, sm: 4, md: 8, lg: 12 } }}>
             <Grid item xs={12} sm={10} md={8} lg={6} xl={4}>

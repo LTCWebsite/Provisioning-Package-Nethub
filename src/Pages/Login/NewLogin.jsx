@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { TextField } from '@mui/material';
@@ -14,6 +14,8 @@ import { useHistory } from 'react-router-dom'
 import LoadingLottie from '../../Components/LoadingLottie';
 import FadeIn from 'react-fade-in';
 import { AxiosAPI, AxiosReq } from '../../Components/Axios';
+import axios from 'axios';
+import { Checkbox, IconButton, InputAdornment } from '@material-ui/core';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -47,7 +49,11 @@ export default function NewLogin() {
     const [loading, setLoading] = React.useState({ use: false, lottie: false })
     const [btn, setBtn] = React.useState(false)
     const [dbtn, setdbtn] = useState(false)
+    const [showpass, setShowpass] = useState(false)
 
+    const handleClickShowPass = () => {
+        setShowpass(!showpass)
+    }
     setTimeout(() => {
         setLoading({ ...loading, lottie: true })
     }, 1000)
@@ -66,9 +72,9 @@ export default function NewLogin() {
             setAlert({ ...alert, use: false })
             AxiosReq.post("Authenticate", data).then(res => {
                 if (res.status === 200) {
+                    console.log(res.data)
                     setdbtn(false)
                     let user_detail = res.data
-
                     console.log("user detail", user_detail)
 
                     let token = res.data?.token
@@ -82,12 +88,17 @@ export default function NewLogin() {
                             localStorage.setItem("ONE_DETAIL", Crypt({ Type: "crypt", Value: JSON.stringify(user_detail) }))
                             localStorage.setItem("ONE_USER_ROLE", Crypt({ Type: "crypt", Value: JSON.stringify(user_role) }))
                             localStorage.setItem("USERNAME", res?.data?.username)
-                            setTimeout(() => {
-                                history.push("/app")
-                            }, 1000)
+                            localStorage.setItem("PASSWORDEXPIRED", res.data.isExpired)
+
+                            if (res.data.isExpired === 'isExpired') {
+                                history.push("/app/resetpassword");
+                            } else {
+                                history.push("/app");
+                            }
                         })
                     })
                 }
+
             }).catch(er => {
                 setAlert({ text: "ລະຫັດພະນັກງານ ຫຼື ລະຫັດຜ່ານ ຜິດພາດ", use: true })
                 setdbtn(false)
@@ -140,6 +151,7 @@ export default function NewLogin() {
                                         }}
                                         error={dalert.username}
                                         autoComplete="off"
+
                                     />
                                 </div>
                                 {dalert.username || (data.username === "" && btn) ? <div className='err'>ກະລຸນາປ້ອນລະຫັດພະນັກງານ</div> : null}
@@ -154,7 +166,7 @@ export default function NewLogin() {
                                         InputLabelProps={{
                                             shrink: true,
                                         }}
-                                        type="password"
+                                        type={showpass ? "text" : "password"}
                                         value={data.password}
                                         onChange={(e) => {
                                             setdata({ ...data, password: e.target.value })
@@ -162,7 +174,19 @@ export default function NewLogin() {
                                         }}
                                         error={dalert.password}
                                         autoComplete="new-password"
-
+                                        InputProps={{
+                                            endAdornment: (
+                                                <InputAdornment position="end">
+                                                    <IconButton
+                                                        onClick={handleClickShowPass}
+                                                        edge="end"
+                                                        color={showpass ? "error" : "default"} // 👈 red when visible
+                                                    >
+                                                        {showpass ? <Checkbox /> : <Checkbox />}
+                                                    </IconButton>
+                                                </InputAdornment>
+                                            ),
+                                        }}
                                     />
                                 </div>
                                 {dalert.password || (data.password === "" && btn) ? <div className='err'>ກະລຸນາປ້ອນລະຫັດຜ່ານ</div> : null}
