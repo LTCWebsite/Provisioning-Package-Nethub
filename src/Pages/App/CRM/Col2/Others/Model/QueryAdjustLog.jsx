@@ -172,11 +172,11 @@ const QueryAdjustLog = ({ open, cb }) => {
                                 {/* <TableCell>Primary Identity</TableCell> */}
                                 <TableCell>Login</TableCell>
                                 <TableCell>Remark</TableCell>
-
+                                <TableCell>ປະເພດ</TableCell>
                                 <TableCell>ຈຳນວນເງິນ</TableCell>
                                 <TableCell>ເງິນຍັງເຫຼືອ</TableCell>
                                 <TableCell>ຖັງເງິນ</TableCell>
-                                <TableCell>ປະເພດ</TableCell>
+                                
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -207,14 +207,6 @@ const QueryAdjustLog = ({ open, cb }) => {
                                             {/* <TableCell>{r.primaryIdentity}</TableCell> */}
                                             <TableCell>{loginSystemCode || ""}</TableCell>
                                             <TableCell>{r.remark || ""}</TableCell>
-
-                                            <TableCell>
-                                                {Number(r.balanceAdjustmentInfo?.adjustmentAmt || 0).toLocaleString()}
-                                            </TableCell>
-                                            <TableCell>
-                                                {Number(r.balanceAdjustmentInfo?.curAmt || 0).toLocaleString()}
-                                            </TableCell>
-                                            <TableCell>{r.balanceAdjustmentInfo?.balanceType}</TableCell>
                                             <TableCell>
                                                 <Chip
                                                     label={adjustmentTypeText}
@@ -222,6 +214,14 @@ const QueryAdjustLog = ({ open, cb }) => {
                                                     size="small"
                                                 />
                                             </TableCell>
+                                            <TableCell>
+                                                {Number(r.balanceAdjustmentInfo?.adjustmentAmt || 0).toLocaleString()}
+                                            </TableCell>
+                                            <TableCell>
+                                                {Number(r.balanceAdjustmentInfo?.curAmt || 0).toLocaleString()}
+                                            </TableCell>
+                                            <TableCell>{r.balanceAdjustmentInfo?.balanceType}</TableCell>
+                                            
                                         </TableRow>
                                     );
                                 })

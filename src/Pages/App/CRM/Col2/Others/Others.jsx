@@ -83,11 +83,11 @@ function Others() {
                 </Grid>
                 <Grid item xs={12} container className='link-box-pointer' onClick={() => setOpen({ ...open, adjustment_log: true })}>
                     <Grid item xs={2}><CurrencyExchange /></Grid>
-                    <Grid item xs={10}>Adjustment log</Grid>
+                    <Grid item xs={10}>Adjustment log (CBS)</Grid>
                 </Grid>
                 <Grid item xs={12} container className='link-box-pointer' onClick={() => setOpen({ ...open, package_bss: true })}>
                     <Grid item xs={2}><AddCard /></Grid>
-                    <Grid item xs={10}>Package log BSS</Grid>
+                    <Grid item xs={10}>Package log (BSS)</Grid>
                 </Grid>
                 {/* {type?.NETWORK_CODE === 'F' && <Grid item xs={12} container className='link-box-pointer' onClick={() => setOpen({ ...open, queryunbar: true })}>
                     <Grid item xs={2}><RemoveCircleOutline /></Grid>
