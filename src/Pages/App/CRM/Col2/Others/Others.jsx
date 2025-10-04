@@ -1,4 +1,4 @@
-import { Block, ClearAll, Info, RemoveCircleOutline, SentimentSatisfiedAlt, SettingsBackupRestore, SignalWifi3Bar, SimCardAlert, Subject, Textsms } from '@mui/icons-material'
+import { Block, ClearAll, Info, RemoveCircleOutline, SentimentSatisfiedAlt, SettingsBackupRestore, SignalWifi3Bar, SimCardAlert, Subject, Textsms, CurrencyExchange } from '@mui/icons-material'
 import { Grid, Skeleton } from '@mui/material'
 import React, { useState } from 'react'
 import HappyCall from './Model/HappyCall'
@@ -10,11 +10,12 @@ import SmsTicket from './Model/SmsTicket'
 import Wifi from './Model/Wifi'
 import OrderChange from './Model/OrderChage'
 import UserBlacklist from './Model/UserBlacklist'
+import QueryAdjustLog from './Model/QueryAdjustLog'
 // import QueryUnbar from './Model/QueryUnbar'
 // import { MyCrypt } from '../../../../../Components/MyCrypt'
 
 function Others() {
-    const [open, setOpen] = useState({ reset: false, sms_ticket: false, happyCall: false, mastersim: false, info178: false, wifi: false, hlr: false, orderChange: false, user_blacklist: false, queryunbar: false })
+    const [open, setOpen] = useState({ reset: false, sms_ticket: false, happyCall: false, mastersim: false, info178: false, wifi: false, hlr: false, orderChange: false, user_blacklist: false, queryunbar: false, adjustment_log: false })
     const [hlr, setHlr] = useState(false)
     const [countSms, setCountSms] = useState(0)
     const [countHC, setCountHC] = useState(0)
@@ -79,6 +80,10 @@ function Others() {
                     <Grid item xs={2}><Block /></Grid>
                     <Grid item xs={10}>user blacklist</Grid>
                 </Grid>
+                <Grid item xs={12} container className='link-box-pointer' onClick={() => setOpen({ ...open, adjustment_log: true })}>
+                    <Grid item xs={2}><CurrencyExchange /></Grid>
+                    <Grid item xs={10}>Adjustment log</Grid>
+                </Grid>
                 {/* {type?.NETWORK_CODE === 'F' && <Grid item xs={12} container className='link-box-pointer' onClick={() => setOpen({ ...open, queryunbar: true })}>
                     <Grid item xs={2}><RemoveCircleOutline /></Grid>
                     <Grid item xs={10}>Query Unbar</Grid>
@@ -98,6 +103,10 @@ function Others() {
             <UserBlacklist
                 open={open.user_blacklist}
                 cb={(e) => setOpen({ ...open, user_blacklist: e })}
+            />
+            <QueryAdjustLog
+                open={open.adjustment_log}
+                cb={(e) => setOpen({ ...open, adjustment_log: e })}
             />
             {/* <QueryUnbar
                 open={open.queryunbar}

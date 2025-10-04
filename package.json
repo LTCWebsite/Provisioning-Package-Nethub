@@ -23,6 +23,7 @@
     "crypto-js": "^4.1.1",
     "date-fns": "^2.8.1",
     "dayjs": "^1.11.11",
+    "fast-xml-parser": "^5.3.0",
     "formik": "^2.2.9",
     "global": "^4.4.0",
     "js-cookie": "^3.0.1",
