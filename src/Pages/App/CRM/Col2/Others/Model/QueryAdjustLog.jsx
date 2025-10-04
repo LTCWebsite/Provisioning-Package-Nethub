@@ -39,7 +39,7 @@ const QueryAdjustLog = ({ open, cb }) => {
 
         const now = moment();
         const thirtyDaysAgo = moment().subtract(30, "days");
-        setEndTime(now.format("YYYY-MM-DDTHH:mm"));
+        setEndTime(now.add(1, 'minute').format("YYYY-MM-DDTHH:mm"));
         setStartTime(thirtyDaysAgo.format("YYYY-MM-DDTHH:mm"));
     }, []);
 
