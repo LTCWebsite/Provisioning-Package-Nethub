@@ -605,6 +605,106 @@ export default function QueryCustomerInfo() {
                 </div>
               </div>
             )}
+
+            {/* Offering Instances */}
+            {data.accounts?.[0]?.offeringInsts?.length > 0 && (
+              <div style={{ 
+                background: 'white', 
+                borderRadius: '12px', 
+                boxShadow: '0 4px 6px rgba(0,0,0,0.1)', 
+                padding: '32px'
+              }}>
+                <h2 style={{ 
+                  fontSize: '24px', 
+                  fontWeight: 'bold', 
+                  color: '#1a202c', 
+                  marginBottom: '24px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  margin: '0 0 24px 0'
+                }}>
+                  <span style={{ color: '#805ad5' }}><CalendarIcon /></span>
+                  Offering Instances
+                </h2>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  {data.accounts[0].offeringInsts.map((offering, idx) => (
+                    <div key={idx} style={{ 
+                      padding: '20px', 
+                      background: '#faf5ff', 
+                      borderRadius: '8px',
+                      border: '1px solid #d6bcfa'
+                    }}>
+                      <div style={{ marginBottom: '12px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                          <p style={{ fontWeight: '600', color: '#1a202c', margin: 0, fontSize: '18px' }}>
+                            Offering ID: {offering.offeringID}
+                          </p>
+                          <div style={{ 
+                            padding: '4px 12px', 
+                            background: offering.status === '2' ? '#c6f6d5' : '#fed7d7',
+                            borderRadius: '12px',
+                            fontSize: '12px',
+                            fontWeight: '600',
+                            color: offering.status === '2' ? '#22543d' : '#742a2a'
+                          }}>
+                            {getStatusName(offering.status)}
+                          </div>
+                        </div>
+                        <p style={{ fontSize: '14px', color: '#6b46c1', margin: '0 0 8px 0' }}>
+                          Purchase Seq: {offering.purchaseSeq}
+                        </p>
+                      </div>
+                      
+                      <div style={{ 
+                        display: 'grid', 
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
+                        gap: '12px',
+                        paddingTop: '12px',
+                        borderTop: '1px solid #e9d8fd'
+                      }}>
+                        <div>
+                          <p style={{ fontSize: '12px', color: '#6b46c1', margin: '0 0 4px 0' }}>Class</p>
+                          <p style={{ fontSize: '14px', fontWeight: '600', color: '#1a202c', margin: 0 }}>
+                            {offering.offeringClass}
+                          </p>
+                        </div>
+                        <div>
+                          <p style={{ fontSize: '12px', color: '#6b46c1', margin: '0 0 4px 0' }}>Bundled Flag</p>
+                          <p style={{ fontSize: '14px', fontWeight: '600', color: '#1a202c', margin: 0 }}>
+                            {offering.bundledFlag}
+                          </p>
+                        </div>
+                        <div>
+                          <p style={{ fontSize: '12px', color: '#6b46c1', margin: '0 0 4px 0' }}>Activation Mode</p>
+                          <p style={{ fontSize: '14px', fontWeight: '600', color: '#1a202c', margin: 0 }}>
+                            {offering.activationMode}
+                          </p>
+                        </div>
+                        <div>
+                          <p style={{ fontSize: '12px', color: '#6b46c1', margin: '0 0 4px 0' }}>Effective Time</p>
+                          <p style={{ fontSize: '14px', fontWeight: '600', color: '#1a202c', margin: 0 }}>
+                            {formatDate(offering.effectiveTime)}
+                          </p>
+                        </div>
+                        <div>
+                          <p style={{ fontSize: '12px', color: '#6b46c1', margin: '0 0 4px 0' }}>Expiration Time</p>
+                          <p style={{ fontSize: '14px', fontWeight: '600', color: '#1a202c', margin: 0 }}>
+                            {formatDate(offering.expirationTime)}
+                          </p>
+                        </div>
+                        <div>
+                          <p style={{ fontSize: '12px', color: '#6b46c1', margin: '0 0 4px 0' }}>Activation Time</p>
+                          <p style={{ fontSize: '14px', fontWeight: '600', color: '#1a202c', margin: 0 }}>
+                            {formatDate(offering.activationTime)}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>
