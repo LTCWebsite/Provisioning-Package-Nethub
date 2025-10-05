@@ -55,6 +55,30 @@ export default function QueryCustomerInfo() {
     return new Intl.NumberFormat('en-US').format(amount);
   };
 
+  const getStatusName = (statusCode) => {
+    const statusMap = {
+      '1': 'IDLE',
+      '2': 'ACTIVE',
+      '3': 'CALLBARRING/SUSPEND',
+      '4': 'DISABLE',
+      '8': 'POOL',
+      '9': 'DEACTIVE'
+    };
+    return statusMap[statusCode] || `Status ${statusCode}`;
+  };
+
+  const getStatusColor = (statusCode) => {
+    const colorMap = {
+      '1': '#718096',  // Gray for IDLE
+      '2': '#48bb78',  // Green for ACTIVE
+      '3': '#ed8936',  // Orange for CALLBARRING/SUSPEND
+      '4': '#f56565',  // Red for DISABLE
+      '8': '#4299e1',  // Blue for POOL
+      '9': '#a0aec0'   // Gray for DEACTIVE
+    };
+    return colorMap[statusCode] || '#718096';
+  };
+
   const isPrepaid = data?.primaryOffering === '3000001';
   const isPostpaid = data?.primaryOffering === '2000002';
 
@@ -234,8 +258,13 @@ export default function QueryCustomerInfo() {
               }}>
                 <div style={{ padding: '20px', background: '#f7fafc', borderRadius: '8px' }}>
                   <p style={{ fontSize: '14px', color: '#718096', marginBottom: '8px' }}>Status</p>
-                  <p style={{ fontSize: '18px', fontWeight: '600', color: '#1a202c', margin: 0 }}>
-                    {data.status === '2' ? 'Active' : `Status ${data.status}`}
+                  <p style={{ 
+                    fontSize: '18px', 
+                    fontWeight: '600', 
+                    color: getStatusColor(data.status),
+                    margin: 0 
+                  }}>
+                    {getStatusName(data.status)}
                   </p>
                 </div>
                 <div style={{ padding: '20px', background: '#f7fafc', borderRadius: '8px' }}>
@@ -260,7 +289,7 @@ export default function QueryCustomerInfo() {
             </div>
 
             {/* Lifecycle Status */}
-            {data.lifeCycleDetails?.[0]?.lifeCycleStatuses?.length > 0 && (
+            {data.lifeCycleDetails?.[0] && (
               <div style={{ 
                 background: 'white', 
                 borderRadius: '12px', 
@@ -280,33 +309,58 @@ export default function QueryCustomerInfo() {
                   <span style={{ color: '#48bb78' }}><ClockIcon /></span>
                   Lifecycle Status
                 </h2>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                  {data.lifeCycleDetails[0].lifeCycleStatuses.map((status, idx) => (
-                    <div key={idx} style={{ 
-                      padding: '20px', 
-                      background: '#f7fafc', 
-                      borderRadius: '8px',
-                      borderLeft: '4px solid #667eea'
+                
+                {/* Blacklist Status */}
+                <div style={{ 
+                  padding: '20px', 
+                  background: data.lifeCycleDetails[0].rBlacklistStatus === '1' ? '#fff5f5' : '#f0fff4',
+                  borderRadius: '8px',
+                  border: `2px solid ${data.lifeCycleDetails[0].rBlacklistStatus === '1' ? '#fc8181' : '#9ae6b4'}`,
+                  marginBottom: '16px'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <p style={{ fontSize: '14px', color: '#718096', margin: 0 }}>Blacklist Status:</p>
+                    <p style={{ 
+                      fontSize: '16px', 
+                      fontWeight: '600', 
+                      color: data.lifeCycleDetails[0].rBlacklistStatus === '1' ? '#c53030' : '#22543d',
+                      margin: 0 
                     }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <div>
-                          <p style={{ fontWeight: '600', color: '#1a202c', margin: '0 0 4px 0' }}>
-                            {status.statusName}
-                          </p>
-                          <p style={{ fontSize: '14px', color: '#718096', margin: 0 }}>
-                            Index: {status.statusIndex}
-                          </p>
-                        </div>
-                        <div style={{ textAlign: 'right' }}>
-                          <p style={{ fontSize: '14px', color: '#718096', margin: '0 0 4px 0' }}>Expires</p>
-                          <p style={{ fontWeight: '600', color: '#1a202c', margin: 0 }}>
-                            {formatDate(status.statusExpireTime)}
-                          </p>
+                      {data.lifeCycleDetails[0].rBlacklistStatus === '1' ? 'BLACKLIST' : 'NO'}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Lifecycle Statuses */}
+                {data.lifeCycleDetails[0].lifeCycleStatuses?.length > 0 && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    {data.lifeCycleDetails[0].lifeCycleStatuses.map((status, idx) => (
+                      <div key={idx} style={{ 
+                        padding: '20px', 
+                        background: '#f7fafc', 
+                        borderRadius: '8px',
+                        borderLeft: '4px solid #667eea'
+                      }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <div>
+                            <p style={{ fontWeight: '600', color: '#1a202c', margin: '0 0 4px 0' }}>
+                              {status.statusName}
+                            </p>
+                            <p style={{ fontSize: '14px', color: '#718096', margin: 0 }}>
+                              Index: {status.statusIndex}
+                            </p>
+                          </div>
+                          <div style={{ textAlign: 'right' }}>
+                            <p style={{ fontSize: '14px', color: '#718096', margin: '0 0 4px 0' }}>Expires</p>
+                            <p style={{ fontWeight: '600', color: '#1a202c', margin: 0 }}>
+                              {formatDate(status.statusExpireTime)}
+                            </p>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
 
@@ -338,9 +392,26 @@ export default function QueryCustomerInfo() {
                     borderRadius: '8px',
                     border: '1px solid #f6e05e'
                   }}>
-                    <p style={{ fontSize: '14px', color: '#744210', marginBottom: '8px' }}>
-                      {balance.balanceTypeName}
-                    </p>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '8px' }}>
+                      <div>
+                        <p style={{ fontSize: '14px', color: '#744210', marginBottom: '4px' }}>
+                          {balance.balanceTypeName}
+                        </p>
+                        <p style={{ fontSize: '12px', color: '#975a16', margin: 0 }}>
+                          Type: {balance.balanceType}
+                        </p>
+                      </div>
+                      <div style={{ 
+                        padding: '4px 12px', 
+                        background: balance.depositFlag === 'Y' ? '#c6f6d5' : '#fed7d7',
+                        borderRadius: '12px',
+                        fontSize: '12px',
+                        fontWeight: '600',
+                        color: balance.depositFlag === 'Y' ? '#22543d' : '#742a2a'
+                      }}>
+                        {balance.depositFlag === 'Y' ? 'DEPOSIT' : 'NO DEPOSIT'}
+                      </div>
+                    </div>
                     <p style={{ fontSize: '36px', fontWeight: 'bold', color: '#1a202c', margin: '0 0 12px 0' }}>
                       {formatAmount(balance.totalAmount)} LAK
                     </p>
