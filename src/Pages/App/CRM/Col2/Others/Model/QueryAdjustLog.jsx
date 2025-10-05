@@ -103,10 +103,10 @@ const QueryAdjustLog = ({ open, cb }) => {
                 </IconButton>
             </DialogTitle>
 
-            <DialogContent sx={{ pt: 4 }}>
+            <DialogContent sx={{ p: 2 }}>
                 {/* Search Form */}
-                <Grid container spacing={2} sx={{ mb: 2 }} alignItems="center">
-                    <Grid item xs={3}>
+                <Grid spacing={2} sx={{ display: 'flex', mb: 3 }}>
+                    <Grid item xs={3} sx={{ p: 1 }}>
                         <TextField
                             label="Primary Identity"
                             value={primaryIdentity}
@@ -114,7 +114,7 @@ const QueryAdjustLog = ({ open, cb }) => {
                             InputProps={{ readOnly: true }}
                         />
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={3} sx={{ p: 1 }}>
                         <TextField
                             label="Start Time"
                             type="datetime-local"
@@ -124,7 +124,7 @@ const QueryAdjustLog = ({ open, cb }) => {
                             InputLabelProps={{ shrink: true }}
                         />
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={3} sx={{ p: 1 }}>
                         <TextField
                             label="End Time"
                             type="datetime-local"
@@ -134,7 +134,7 @@ const QueryAdjustLog = ({ open, cb }) => {
                             InputLabelProps={{ shrink: true }}
                         />
                     </Grid>
-                    <Grid item xs={2}>
+                    <Grid item xs={2} sx={{ p: 1 }}>
                         <FormControl fullWidth>
                             <InputLabel>Fetch Rows</InputLabel>
                             <Select
@@ -149,7 +149,7 @@ const QueryAdjustLog = ({ open, cb }) => {
                             </Select>
                         </FormControl>
                     </Grid>
-                    <Grid item xs={1}>
+                    <Grid item xs={1} sx={{ p: 1 }} alignContent={"center"}>
                         <Button
                             variant="contained"
                             color="primary"
@@ -176,7 +176,7 @@ const QueryAdjustLog = ({ open, cb }) => {
                                 <TableCell>ຈຳນວນເງິນ</TableCell>
                                 <TableCell>ເງິນຍັງເຫຼືອ</TableCell>
                                 <TableCell>ຖັງເງິນ</TableCell>
-                                
+
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -221,7 +221,7 @@ const QueryAdjustLog = ({ open, cb }) => {
                                                 {Number(r.balanceAdjustmentInfo?.curAmt || 0).toLocaleString()}
                                             </TableCell>
                                             <TableCell>{r.balanceAdjustmentInfo?.balanceType}</TableCell>
-                                            
+
                                         </TableRow>
                                     );
                                 })

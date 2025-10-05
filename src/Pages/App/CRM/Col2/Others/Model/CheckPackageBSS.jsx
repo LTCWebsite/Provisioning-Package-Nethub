@@ -83,10 +83,10 @@ const CheckPackageBSS = ({ open, cb }) => {
                 </IconButton>
             </DialogTitle>
 
-            <DialogContent sx={{ pt: 3 }}>
+            <DialogContent sx={{ p: 2 }}>
                 {/* Search Form */}
-                <Grid container spacing={2} sx={{ mb: 2 }} alignItems="center">
-                    <Grid item xs={4}>
+                <Grid spacing={2} sx={{ display: 'flex', mb: 3 }}>
+                    <Grid item xs={4} sx={{ p: 1 }}>
                         <TextField
                             label="MSISDN"
                             value={msisdn}
@@ -94,7 +94,7 @@ const CheckPackageBSS = ({ open, cb }) => {
                             InputProps={{ readOnly: true }}
                         />
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={3} sx={{ p: 1 }}>
                         <TextField
                             label="Start Date"
                             type="date"
@@ -104,7 +104,7 @@ const CheckPackageBSS = ({ open, cb }) => {
                             InputLabelProps={{ shrink: true }}
                         />
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={3} sx={{ p: 1 }}>
                         <TextField
                             label="End Date"
                             type="date"
@@ -114,7 +114,7 @@ const CheckPackageBSS = ({ open, cb }) => {
                             InputLabelProps={{ shrink: true }}
                         />
                     </Grid>
-                    <Grid item xs={2}>
+                    <Grid item xs={2} sx={{ p: 1 }} alignContent={"center"}>
                         <Button
                             variant="contained"
                             color="primary"
