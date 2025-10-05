@@ -8,8 +8,8 @@ import {
   Logout,
   PersonOutline,
   ScreenshotMonitor,
-  WifiCalling3,
   RedeemSharp,
+  Dashboard
 } from "@mui/icons-material";
 import React from "react";
 import logo from "../../Image/logo-2.png";
@@ -28,6 +28,7 @@ function SideBar({ height }) {
     card: true,
     user: true,
     ais: true,
+    cbs: true,
   });
   const ChangeRoute = (e) => {
     if (e === "/app") {
@@ -54,6 +55,12 @@ function SideBar({ height }) {
       setEffect({ ...effect, ais: false });
       setTimeout(() => {
         setEffect({ ...effect, ais: true });
+      }, 500);
+      history.push(e);
+    } else if (e === "/app/cbs/customerinfo") {
+      setEffect({ ...effect, cbs: false });
+      setTimeout(() => {
+        setEffect({ ...effect, cbs: true });
       }, 500);
       history.push(e);
     }
@@ -156,6 +163,21 @@ function SideBar({ height }) {
               <RedeemSharp color="primary" className="bar-icon" />
             )}
             <div>AIS Redeem</div>
+          </FadeIn>
+        </div>
+        <div
+          className={
+            location.pathname === "/app/cbs/customerinfo" ? "bar bar-active" : "bar"
+          }
+          onClick={() => ChangeRoute("/app/cbs/customerinfo")}
+        >
+          <FadeIn visible={effect.cbs}>
+            {effect.cbs && location.pathname === "/app/cbs/customerinfo" ? (
+              <Dashboard className="bar-icon" />
+            ) : (
+              <Dashboard color="primary" className="bar-icon" />
+            )}
+            <div>CBS</div>
           </FadeIn>
         </div>
         <div
