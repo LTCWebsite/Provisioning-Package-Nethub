@@ -5,6 +5,10 @@ export default function QueryCustomerInfo() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [offeringDetails, setOfferingDetails] = useState({});
+  const [loadingOffering, setLoadingOffering] = useState({});
+  const [selectedOffering, setSelectedOffering] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   const handleQuery = async () => {
     if (!msisdn.trim()) {
@@ -15,6 +19,7 @@ export default function QueryCustomerInfo() {
     setLoading(true);
     setError('');
     setData(null);
+    setOfferingDetails({});
 
     try {
       const response = await fetch(
@@ -32,6 +37,42 @@ export default function QueryCustomerInfo() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const fetchOfferingInfo = async (offeringID) => {
+    if (offeringDetails[offeringID]) {
+      setSelectedOffering(offeringDetails[offeringID]);
+      setShowModal(true);
+      return;
+    }
+
+    setLoadingOffering(prev => ({ ...prev, [offeringID]: true }));
+
+    try {
+      const response = await fetch(
+        `http://10.30.6.148:9999/api/QueryOfferingInfo?offeringID=${offeringID}`
+      );
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const result = await response.json();
+      if (result.resultCode === '0' && result.offeringInfo) {
+        setOfferingDetails(prev => ({ ...prev, [offeringID]: result.offeringInfo }));
+        setSelectedOffering(result.offeringInfo);
+        setShowModal(true);
+      }
+    } catch (err) {
+      console.error('Failed to fetch offering info:', err);
+    } finally {
+      setLoadingOffering(prev => ({ ...prev, [offeringID]: false }));
+    }
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setSelectedOffering(null);
   };
 
   const handleKeyPress = (e) => {
@@ -79,8 +120,8 @@ export default function QueryCustomerInfo() {
     return colorMap[statusCode] || '#718096';
   };
 
-  const isPrepaid = data?.primaryOffering === '3000001';
-  const isPostpaid = data?.primaryOffering === '2000002';
+  const isPrepaid = data?.paymentType === '0';
+  const isPostpaid = data?.paymentType === '1';
 
   // SVG Icons
   const SearchIcon = () => (
@@ -133,6 +174,13 @@ export default function QueryCustomerInfo() {
       <circle cx="12" cy="12" r="10"></circle>
       <line x1="12" y1="8" x2="12" y2="12"></line>
       <line x1="12" y1="16" x2="12.01" y2="16"></line>
+    </svg>
+  );
+
+  const CloseIcon = () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
     </svg>
   );
 
@@ -637,9 +685,33 @@ export default function QueryCustomerInfo() {
                     }}>
                       <div style={{ marginBottom: '12px' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                          <p style={{ fontWeight: '600', color: '#1a202c', margin: 0, fontSize: '18px' }}>
-                            Offering ID: {offering.offeringID}
-                          </p>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                            <p style={{ fontWeight: '600', color: '#1a202c', margin: 0, fontSize: '18px' }}>
+                              Offering ID: {offering.offeringID}
+                            </p>
+                            {offeringDetails[offering.offeringID] && (
+                              <p style={{ fontSize: '14px', color: '#6b46c1', margin: 0 }}>
+                                ({offeringDetails[offering.offeringID].offeringName})
+                              </p>
+                            )}
+                            <button
+                              onClick={() => fetchOfferingInfo(offering.offeringID)}
+                              disabled={loadingOffering[offering.offeringID]}
+                              style={{
+                                padding: '6px 12px',
+                                background: '#805ad5',
+                                color: 'white',
+                                border: 'none',
+                                borderRadius: '6px',
+                                fontSize: '12px',
+                                fontWeight: '500',
+                                cursor: loadingOffering[offering.offeringID] ? 'not-allowed' : 'pointer',
+                                opacity: loadingOffering[offering.offeringID] ? 0.6 : 1
+                              }}
+                            >
+                              {loadingOffering[offering.offeringID] ? 'Loading...' : 'View Details'}
+                            </button>
+                          </div>
                           <div style={{ 
                             padding: '4px 12px', 
                             background: offering.status === '2' ? '#c6f6d5' : '#fed7d7',
@@ -706,6 +778,158 @@ export default function QueryCustomerInfo() {
               </div>
             )}
           </div>
+        )}
+
+        {/* Modal for Offering Details */}
+        {showModal && selectedOffering && (
+          <>
+            <div 
+              style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                background: 'rgba(0, 0, 0, 0.5)',
+                zIndex: 999
+              }}
+              onClick={closeModal}
+            />
+            <div style={{
+              position: 'fixed',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              background: 'white',
+              borderRadius: '12px',
+              boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+              maxWidth: '800px',
+              width: '90%',
+              maxHeight: '80vh',
+              overflow: 'auto',
+              zIndex: 1000,
+              padding: '32px'
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+                <h2 style={{ fontSize: '24px', fontWeight: 'bold', color: '#1a202c', margin: 0 }}>
+                  Offering Details
+                </h2>
+                <button
+                  onClick={closeModal}
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: '4px',
+                    color: '#718096'
+                  }}
+                >
+                  <CloseIcon />
+                </button>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                {/* Basic Info */}
+                <div style={{ padding: '20px', background: '#faf5ff', borderRadius: '8px', border: '1px solid #d6bcfa' }}>
+                  <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#553c9a', margin: '0 0 16px 0' }}>
+                    Basic Information
+                  </h3>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px' }}>
+                    <div>
+                      <p style={{ fontSize: '12px', color: '#6b46c1', margin: '0 0 4px 0' }}>Offering ID</p>
+                      <p style={{ fontSize: '14px', fontWeight: '600', color: '#1a202c', margin: 0 }}>
+                        {selectedOffering.offeringID}
+                      </p>
+                    </div>
+                    <div>
+                      <p style={{ fontSize: '12px', color: '#6b46c1', margin: '0 0 4px 0' }}>Offering Name</p>
+                      <p style={{ fontSize: '14px', fontWeight: '600', color: '#1a202c', margin: 0 }}>
+                        {selectedOffering.offeringName}
+                      </p>
+                    </div>
+                    <div>
+                      <p style={{ fontSize: '12px', color: '#6b46c1', margin: '0 0 4px 0' }}>Offering Code</p>
+                      <p style={{ fontSize: '14px', fontWeight: '600', color: '#1a202c', margin: 0 }}>
+                        {selectedOffering.offeringCode}
+                      </p>
+                    </div>
+                    <div>
+                      <p style={{ fontSize: '12px', color: '#6b46c1', margin: '0 0 4px 0' }}>Primary Flag</p>
+                      <p style={{ fontSize: '14px', fontWeight: '600', color: '#1a202c', margin: 0 }}>
+                        {selectedOffering.primaryFlag}
+                      </p>
+                    </div>
+                    <div>
+                      <p style={{ fontSize: '12px', color: '#6b46c1', margin: '0 0 4px 0' }}>Bundle Flag</p>
+                      <p style={{ fontSize: '14px', fontWeight: '600', color: '#1a202c', margin: 0 }}>
+                        {selectedOffering.bundleFlag}
+                      </p>
+                    </div>
+                    <div>
+                      <p style={{ fontSize: '12px', color: '#6b46c1', margin: '0 0 4px 0' }}>Payment Mode</p>
+                      <p style={{ fontSize: '14px', fontWeight: '600', color: '#1a202c', margin: 0 }}>
+                        {selectedOffering.paymentMode === '0' ? 'Prepaid' : selectedOffering.paymentMode === '1' ? 'Postpaid' : selectedOffering.paymentMode}
+                      </p>
+                    </div>
+                    <div>
+                      <p style={{ fontSize: '12px', color: '#6b46c1', margin: '0 0 4px 0' }}>Effective Date</p>
+                      <p style={{ fontSize: '14px', fontWeight: '600', color: '#1a202c', margin: 0 }}>
+                        {formatDate(selectedOffering.effDate)}
+                      </p>
+                    </div>
+                    <div>
+                      <p style={{ fontSize: '12px', color: '#6b46c1', margin: '0 0 4px 0' }}>Expiration Date</p>
+                      <p style={{ fontSize: '14px', fontWeight: '600', color: '#1a202c', margin: 0 }}>
+                        {formatDate(selectedOffering.expDate)}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Products */}
+                {selectedOffering.products && selectedOffering.products.length > 0 && (
+                  <div style={{ padding: '20px', background: '#ebf4ff', borderRadius: '8px', border: '1px solid #90cdf4' }}>
+                    <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#2c5282', margin: '0 0 16px 0' }}>
+                      Products ({selectedOffering.products.length})
+                    </h3>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      {selectedOffering.products.map((product, idx) => (
+                        <div key={idx} style={{ padding: '12px', background: 'white', borderRadius: '6px' }}>
+                          <p style={{ fontWeight: '600', color: '#1a202c', margin: '0 0 4px 0' }}>
+                            {product.productName}
+                          </p>
+                          <p style={{ fontSize: '12px', color: '#4a5568', margin: 0 }}>
+                            Code: {product.productCode} | ID: {product.productId}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Price Plans */}
+                {selectedOffering.pricePlans && selectedOffering.pricePlans.length > 0 && (
+                  <div style={{ padding: '20px', background: '#fff5f7', borderRadius: '8px', border: '1px solid #feb2b2' }}>
+                    <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#742a2a', margin: '0 0 16px 0' }}>
+                      Price Plans ({selectedOffering.pricePlans.length})
+                    </h3>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      {selectedOffering.pricePlans.map((plan, idx) => (
+                        <div key={idx} style={{ padding: '12px', background: 'white', borderRadius: '6px' }}>
+                          <p style={{ fontWeight: '600', color: '#1a202c', margin: '0 0 4px 0' }}>
+                            {plan.name}
+                          </p>
+                          <p style={{ fontSize: '12px', color: '#4a5568', margin: 0 }}>
+                            Code: {plan.code} | ID: {plan.id}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </>
         )}
       </div>
     </div>
