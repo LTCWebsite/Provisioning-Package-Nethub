@@ -6,7 +6,7 @@ import CRM from './CRM/CRM'
 import User from './User/User'
 import Card from './Card/Card'
 import Redeem from './AIS/Redeem'
-import QueryCustomerInfo from './CBS/CustomerInfo'
+import QueryCustomerInfo from './CBS/QueryCustomerInfo'
 
 function Router() {
     return (
