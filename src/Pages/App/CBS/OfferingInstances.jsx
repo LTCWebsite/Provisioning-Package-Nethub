@@ -6,7 +6,7 @@ export default function OfferingInstances({
   loadingOffering, 
   getStatusName, 
   formatDate, 
-  fetchOfferingInfo 
+  onFetchOfferingInfo 
 }) {
   if (!offeringInsts || offeringInsts.length === 0) return null;
 
@@ -46,7 +46,7 @@ export default function OfferingInstances({
                     {getStatusName(offering.status)}
                   </div>
                   <button
-                    onClick={() => fetchOfferingInfo(offering.offeringID)}
+                    onClick={() => onFetchOfferingInfo(offering.offeringID)}
                     disabled={loadingOffering[offering.offeringID]}
                     style={{
                       padding: '4px 10px',

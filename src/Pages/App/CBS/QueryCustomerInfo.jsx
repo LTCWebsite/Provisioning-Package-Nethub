@@ -101,6 +101,10 @@ export default function QueryCustomerInfo() {
     }
   };
 
+  const handleFetchOffering = (offeringID) => {
+    fetchOfferingInfo(offeringID, false);
+  };
+
   const closeModal = () => {
     setShowModal(false);
     setSelectedOffering(null);
@@ -293,7 +297,7 @@ export default function QueryCustomerInfo() {
               loadingOffering={loadingOffering}
               getStatusName={getStatusName}
               formatDate={formatDate}
-              fetchOfferingInfo={fetchOfferingInfo}
+              onFetchOfferingInfo={handleFetchOffering}
             />
           </div>
         )}
