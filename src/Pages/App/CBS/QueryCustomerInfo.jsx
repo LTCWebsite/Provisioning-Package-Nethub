@@ -250,6 +250,7 @@ export default function QueryCustomerInfo() {
                   formatDate={formatDate}
                   isPrepaid={isPrepaid}
                   isPostpaid={isPostpaid}
+                  onFetchOfferingInfo={handleFetchOffering}
                 />
               </div>
 
