@@ -6,6 +6,7 @@ import OutstandingBills from './OutstandingBills';
 import CreditInformation from './CreditInformation';
 import FreeUnits from './FreeUnits';
 import OfferingInstances from './OfferingInstances';
+import SupplementaryOfferings from './SupplementaryOfferings';
 import OfferingModal from './OfferingModal';
 
 const SearchIcon = () => (
@@ -293,6 +294,16 @@ export default function QueryCustomerInfo() {
             {/* Full Width - Offering Instances */}
             <OfferingInstances 
               offeringInsts={data.accounts?.[0]?.offeringInsts}
+              offeringDetails={offeringDetails}
+              loadingOffering={loadingOffering}
+              getStatusName={getStatusName}
+              formatDate={formatDate}
+              onFetchOfferingInfo={handleFetchOffering}
+            />
+
+            {/* Full Width - Supplementary Offerings */}
+            <SupplementaryOfferings 
+              supplementaryOfferings={data.subscribers?.[0]?.supplementaryOfferings}
               offeringDetails={offeringDetails}
               loadingOffering={loadingOffering}
               getStatusName={getStatusName}
