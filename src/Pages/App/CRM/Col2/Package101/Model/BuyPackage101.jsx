@@ -1,4 +1,4 @@
-import { AllInbox, Close, Done } from '@mui/icons-material'
+import { AllInbox, ClassSharp, Close, Done } from '@mui/icons-material'
 import { Button, CircularProgress, Dialog, DialogTitle, Grid, IconButton, Slide } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { AxiosReq2 } from '../../../../../../Components/Axios'
@@ -13,20 +13,21 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 function BuyPackage101({ open, cb, done, ifdone, count }) {
     const [data, setData] = useState([])
     const [pkCode, setPkCode] = React.useState('')
-    // const [pkSrv, setPkSrv] = React.useState('')
+    const [pkBalance, setBalance] = React.useState(0)
+    const [pkCounterName, setCountername] = React.useState()
     const [isShowConfirm, setIsShowConfirm] = React.useState(false)
     const [isLoading, setIsLoading] = React.useState(false)
     const [bkData, setBkData] = React.useState({})
     const [isShowSuccess, setIsShowSuccess] = React.useState(false)
     // const [bssNetworkType, setBssNetworkType] = React.useState()
-    // const [productType, setProductType] = React.useState()
-   
+
+
 
     const columns = [
         { title: 'No', field: 'id_idx', maxWidth: 50, sorting: false },
         //{ title: 'ລະຫັດແພັກເກັດ', field: 'pK_CODE', minWidth: 100, sorting: false },
         { title: 'ຊື່ແພັກເກັດ', field: 'counterName', minWidth: 250 },
-        { title: 'ມື້', field: 'days' , minWidth: 100 },
+        { title: 'ມື້', field: 'days', minWidth: 100 },
         { title: 'ຈຳນວນດາຕ້າ', field: 'volumn', minWidth: 100, sorting: false },
         { title: 'ຈຳນວນເງີນ', field: 'balance', minWidth: 100, render: row => row?.balance?.toLocaleString() },
         { title: 'ຈັດການ', field: 'action', minWidth: 200, align: 'center' },
@@ -37,7 +38,7 @@ function BuyPackage101({ open, cb, done, ifdone, count }) {
         count(0)
         //let network = MyCrypt("de", localStorage.getItem("ONE_NETWORK"))
         //setBssNetworkType(network?.NETWORK_CODE)
-        AxiosReq2.get("Package101",{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
+        AxiosReq2.get("Package101", { headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200) {
                 var num = 0
                 var newUpdate = res.data.map(row => {
@@ -46,9 +47,9 @@ function BuyPackage101({ open, cb, done, ifdone, count }) {
                     row.action =
                         <Button variant="contained" color="error" className='btn-primary' fullWidth style={{ height: 39, marginTop: 5 }} onClick={() => {
                             setPkCode(row.ussdCode)
-                            //  console.log("Lorng bug bg :", row.ussdCode)
-                            //setPkSrv(row.srV_NAME)
-                            //setProductType(row.signonE_PK)
+                            setBalance(row.balance)
+                            setCountername(row.counterName)
+                            //console.log("Lorng bug bg :", row.counterName)
                             setIsShowConfirm(!isShowConfirm)
                         }}>
                             <a>ຊື້ແພັກເກັດ</a>
@@ -73,9 +74,11 @@ function BuyPackage101({ open, cb, done, ifdone, count }) {
             "msisdnSender": phone,
             "msisdnRecip": phone,
             "ussdCode": pkCode,
+            "balance": pkBalance,
+            "Countername": pkCounterName
         }
-        //console.log("Bg body pk :", datas)
-        AxiosReq2.post("Package101/buy", datas,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
+        console.log("Bg body pk :", datas)
+        AxiosReq2.post("Package101/buy", datas, { headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200 && res?.data?.code === "200") {
                 setBkData(res.data)
                 setIsShowSuccess(!isShowSuccess)
@@ -91,7 +94,7 @@ function BuyPackage101({ open, cb, done, ifdone, count }) {
             console.log({ err })
         })
     }
-    
+
     return (
         <>
             <Dialog
@@ -174,7 +177,7 @@ function BuyPackage101({ open, cb, done, ifdone, count }) {
                                     <Close />
                                 </IconButton>
                             </div>
-                        </Grid>  
+                        </Grid>
                     </Grid>
                 </Grid>
             </Dialog>
