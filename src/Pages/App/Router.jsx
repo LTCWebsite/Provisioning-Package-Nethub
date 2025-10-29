@@ -7,6 +7,7 @@ import User from './User/User'
 import Card from './Card/Card'
 import Redeem from './AIS/Redeem'
 import Resetpass from './Resetpassword/resetpass'
+import QueryCustomerInfo from './CBS/QueryCustomerInfo'
 
 function Router() {
     return (
@@ -18,6 +19,7 @@ function Router() {
                 <ProtectRoute path="/app/card" component={Card} exact />
                 <ProtectRoute path="/app/ais/redeem" component={Redeem} exact />
                 <ProtectRoute path="/app/resetpassword" component={Resetpass} exact />
+                <ProtectRoute path="/app/cbs/customerinfo" component={QueryCustomerInfo} exact />
             </Switch>
         </>
     )

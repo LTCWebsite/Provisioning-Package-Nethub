@@ -55,7 +55,11 @@ function Monomax({ open, cb, done }) {
         }
       })
       .catch((err) => {
-        toast_error({ text: "Failed to resend password! " + + err?.response?.data?.message || err.message });
+        toast_error({
+          text:
+            "Failed to resend password! " + +err?.response?.data?.message ||
+            err.message,
+        });
       })
       .finally(() => {
         setLoading(false);
@@ -76,12 +80,39 @@ function Monomax({ open, cb, done }) {
         }
       })
       .catch((err) => {
-        toast_error({ text: "Cancel package failed: " + err?.response?.data?.message || err.message});
+        toast_error({
+          text:
+            "Cancel package failed: " + err?.response?.data?.message ||
+            err.message,
+        });
       })
       .finally(() => {
         setLoading(false);
       });
   };
+
+  const _handleRenewPackage = async () => {
+    setLoading(true);
+    AxiosMonomax.post("resubscriptions", {
+      msisdn: localStorage.getItem("ONE_PHONE"),
+    })
+      .then(async (res) => {
+        if (res.status === 200) {
+          toast_success({ text: "Renew successful: "+ res?.data?.message });
+        }
+      })
+      .catch((err) => {
+        toast_error({
+          text:
+            "Cancel package failed: " + err?.response?.data?.message ||
+            err.message,
+        });
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
   return (
     <>
       <Dialog
@@ -116,7 +147,16 @@ function Monomax({ open, cb, done }) {
                   >
                     {loading ? "Loading..." : "Resend Password"}
                   </Button>
-                  <div style={{marginLeft:200}}></div>
+                  <div style={{ marginLeft: 20 }}></div>
+                  <Button
+                    disabled={loading}
+                    variant="contained"
+                    className="btn-success"
+                    onClick={_handleRenewPackage}
+                  >
+                    {loading ? "Loading..." : "Renew"}
+                  </Button>
+                  <div style={{ marginLeft: 20 }}></div>
                   <Button
                     disabled={loading}
                     variant="contained"
@@ -168,7 +208,7 @@ function Monomax({ open, cb, done }) {
                         <TableCell align="left">{row?.channel}</TableCell>
                         <TableCell align="left">{row?.package_id}</TableCell>
                         <TableCell align="left">
-                          {row?.price.toLocaleString()}
+                          {row?.price?.toLocaleString()}
                         </TableCell>
                         <TableCell align="left">
                           {moment(row?.start_date)
