@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { TextField } from '@mui/material';
+import { TextField, Typography } from '@mui/material';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import logo from '../../Image/logo-2.png'
@@ -16,6 +16,7 @@ import FadeIn from 'react-fade-in';
 import { AxiosAPI, AxiosReq } from '../../Components/Axios';
 import axios from 'axios';
 import { Checkbox, IconButton, InputAdornment } from '@material-ui/core';
+import { RemoveRedEye, RemoveRedEyeOutlined, Visibility, VisibilityOff } from '@mui/icons-material';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -71,6 +72,7 @@ export default function NewLogin() {
         if (count === 0) {
             setAlert({ ...alert, use: false })
             AxiosReq.post("Authenticate", data).then(res => {
+                console.log(res.data)
                 if (res.status === 200) {
                     console.log(res.data)
                     setdbtn(false)
@@ -91,7 +93,7 @@ export default function NewLogin() {
                             localStorage.setItem("PASSWORDEXPIRED", res.data.isExpired)
 
                             if (res.data.isExpired === 'isExpired') {
-                                history.push("/app/resetpassword");
+                                history.push("/requestOTP");
                             } else {
                                 history.push("/app");
                             }
@@ -182,7 +184,7 @@ export default function NewLogin() {
                                                         edge="end"
                                                         color={showpass ? "error" : "default"} // 👈 red when visible
                                                     >
-                                                        {showpass ? <Checkbox /> : <Checkbox />}
+                                                        {showpass ? <VisibilityOff /> :  <Visibility />}
                                                     </IconButton>
                                                 </InputAdornment>
                                             ),
@@ -202,6 +204,18 @@ export default function NewLogin() {
                                 >
                                     {dbtn ? <>ກໍາລັງກວດສອບ&nbsp;&nbsp;<CircularProgress /></> : "ເຂົ້າສູ່ລະບົບ"}
                                 </Button>
+                                <Typography
+                                    fontSize={14}
+                                    align='right'
+                                    color={'blue'}
+                                    mt={1}
+                                    sx={{ cursor: "pointer" }}
+                                    onClick={() => history.push('/requestOTP')}
+
+                                >
+
+                                    Forget Password ?
+                                </Typography>
                                 {alert.use && <Alert variant="outlined" style={{ marginTop: 20 }} severity="error">
                                     {alert.text}
                                 </Alert>}

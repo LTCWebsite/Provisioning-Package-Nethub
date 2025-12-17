@@ -11,6 +11,10 @@ import Defualt from './Pages/App/Defualt';
 
 import 'react-perfect-scrollbar/dist/css/styles.css';
 import NewLogin from './Pages/Login/NewLogin'
+import { RequestOTP } from './Pages/App/Resetpassword/requestOTP'
+import { VerifyOTP } from './Pages/App/Resetpassword/verifyOTP'
+
+import Newresetpass from './Pages/App/Resetpassword/oneresetpass'
 
 const theme = createTheme({
   overrides: {
@@ -33,6 +37,10 @@ function App() {
           <Switch>
             <Route path="/" exact component={NewLogin} />
             <Route path="/login" exact component={NewLogin} />
+            <Route path="/login2" exact component={RequestOTP} />
+            <Route path="/verifyOTP" exact component={VerifyOTP} />
+            <Route path="/requestOTP" exact component={RequestOTP} />
+            <Route path="/Newresetpassword" exact component={Newresetpass} />
             <ProtectRoute path="/app" component={Defualt} />
           </Switch>
         </Router>

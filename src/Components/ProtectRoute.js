@@ -25,7 +25,8 @@ export const ProtectRoute = ({
       render={props => {
         if (auth.isAuthenticated()) {
           return <Component {...props} />;
-        } else {
+        }
+        else {
           return (
             <Redirect
               to={{

@@ -1,9 +1,12 @@
 import React, { useState } from "react";
-import { Grid, TextField, Button, Paper, Typography, InputAdornment, IconButton } from "@mui/material";
+import { Grid, TextField, Button, Paper, Typography, InputAdornment, IconButton, Box } from "@mui/material";
 import { Grid3x3, Grid4x4, GridViewRounded, Visibility, VisibilityOff } from "@mui/icons-material";
 import axios from "axios";
 import { AlertError, AlertSuccess, toast_error } from "../../../Components/Toast";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import RemarkComponent from "../../../Components/Remark";
+import iso from '../../../Image/pngegg.png'
+
 
 const Resetpass = () => {
     const [showPassword, setShowpassword] = useState(false);
@@ -37,11 +40,37 @@ const Resetpass = () => {
         if (newpass != confirmpass) {
             return toast_error({ text: 'ຢືນຢັນລະຫັດຜ່ານບໍ່ຕົງກັນ' })
         }
-        if (newpass.length < 8 || !/[A-Z]/.test(newpass)) {
-        return toast_error({
-            text: 'ລະຫັດຜ່ານຕ້ອງຍາວຫຼາຍກວ່າ 8 ຕົວ ແລະ ມີຕົວພິມໃຫຍ່'
-        });
-    }
+
+        if (!/[0-9]/.test(newpass)) {
+            return toast_error({
+                text: 'ລະຫັດຜ່ານຕ້ອງມີໂຕເລກ 0-9'
+            });
+        }
+        if (newpass.length < 8) {
+            return toast_error({
+                text: 'ລະຫັດຜ່ານຕ້ອງຍາວຫຼາຍກວ່າ 8 ຕົວ'
+            });
+        }
+        if (!/[A-Z]/.test(newpass)
+        ) {
+            return toast_error({
+                text: 'ລະຫັດຜ່ານຕ້ອງມີຕົວພິມໃຫຍ່'
+            });
+        }
+        if (
+            !/[a-z]/.test(newpass)
+        ) {
+            return toast_error({
+                text: 'ລະຫັດຜ່ານຕ້ອງມີຕົວພິມນ້ອຍ'
+            });
+        }
+        if (!/[!@#$%^&*(),.?":{}|<>]/.test(newpass)
+        ) {
+            return toast_error({
+                text: 'ລະຫັດຜ່ານຕ້ອງມີເຄື່ອງໝາຍພິເສດ'
+            });
+        }
+
         try {
             const resetpass = await axios.patch(`http://172.28.14.49:3210/api/resetpasswordOnescreen`,
                 {
@@ -56,11 +85,13 @@ const Resetpass = () => {
                 history.push('/')
             }
         } catch (error) {
-            console.log(error)
+            if (error.response && error.response.status === 401) {
+                toast_error({ text: error.response.data.message })
+            }
             if (error.response && error.response.status === 400) {
-                toast_error({ text: "ລະຫັດຜ່ານເກົ່າບໍ່ຖືກຕ້ອງ" });
-                console.log("reset pass failed");
-            } else {
+                toast_error({ text: error.response.data.message });
+            }
+            else {
                 AlertError({ text: "Server error" });
                 console.error(error);
             }
@@ -68,17 +99,38 @@ const Resetpass = () => {
     }
 
     return (
-        <Grid container justifyContent="center" marginTop="10px" sx={{ px: { xs: 2, sm: 4, md: 8, lg: 12 } }}>
+        <Grid container
+            justifyContent={'center'}
+            display={'flex'}
+            alignItems={'center'}
+            flexDirection={'column'}
+            sx={{ height: '90vh', px: { xs: 2, sm: 2, md: 4, lg: 4 } }}>
             <Grid item xs={12} sm={10} md={8} lg={6} xl={4}>
                 <Paper elevation={4} sx={{ p: { xs: 3, sm: 5 }, borderRadius: 3 }}>
-                    <Typography
-                        variant="h5"
-                        gutterBottom
-                        align="center"
-                        sx={{ fontWeight: "bold", mb: 3 }}
-                    >
-                        ແກ້ໄຂລະຫັດຜ່ານ
-                    </Typography>
+                    <Box display='flex' justifyContent='space-between'>
+                        <Box width={'10vh'} />
+                        <Typography
+                            variant="h5"
+                            gutterBottom
+                            align="center"
+                            sx={{ fontWeight: "bold" }}
+                        >
+                            ແກ້ໄຂລະຫັດຜ່ານ
+
+                        </Typography>
+                        <Box
+                            color={'blue'}
+                            component='img'
+                            src={iso}
+                            height={45}
+                            sx={{
+                                objectFit: 'cover'
+                            }}>
+
+                        </Box>
+                    </Box>
+
+                    <RemarkComponent />
 
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
@@ -145,7 +197,7 @@ const Resetpass = () => {
                             <Button
                                 fullWidth
                                 variant="contained"
-                                color="success"
+                                color="error"
                                 sx={{ py: 1.5, fontSize: "16px", fontWeight: "bold" }}
                                 onClick={ResetPassword}
                             >

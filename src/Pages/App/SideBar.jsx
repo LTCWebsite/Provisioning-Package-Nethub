@@ -106,19 +106,19 @@ function SideBar({ height }) {
 
         {expired === 'is not Expired' && (
           <>
-          <div
-            className={location.pathname === "/app" ? "bar bar-active" : "bar"}
-            onClick={() => ChangeRoute("/app")}
-          >
-            <FadeIn visible={effect.home}>
-              {effect.home && location.pathname === "/app" ? (
-                <HomeWork className="bar-icon" />
-              ) : (
-                <Cottage color="primary" className="bar-icon" />
-              )}
-              <div>HOME</div>
-            </FadeIn>
-          </div>
+            <div
+              className={location.pathname === "/app" ? "bar bar-active" : "bar"}
+              onClick={() => ChangeRoute("/app")}
+            >
+              <FadeIn visible={effect.home}>
+                {effect.home && location.pathname === "/app" ? (
+                  <HomeWork className="bar-icon" />
+                ) : (
+                  <Cottage color="primary" className="bar-icon" />
+                )}
+                <div>HOME</div>
+              </FadeIn>
+            </div>
             <div
               className={
                 location.pathname === "/app/crm" ? "bar bar-active" : "bar"
@@ -179,38 +179,42 @@ function SideBar({ height }) {
                 <div>AIS Redeem</div>
               </FadeIn>
             </div>
+            <div
+              className={
+                location.pathname === "/app/cbs/customerinfo" ? "bar bar-active" : "bar"
+              }
+              onClick={() => ChangeRoute("/app/cbs/customerinfo")}
+            >
+              <FadeIn visible={effect.cbs}>
+                {effect.cbs && location.pathname === "/app/cbs/customerinfo" ? (
+                  <Dashboard className="bar-icon" />
+                ) : (
+                  <Dashboard color="primary" className="bar-icon" />
+                )}
+                <div>CBS</div>
+              </FadeIn>
+            </div>
+            <div
+              className={
+                location.pathname === "/app/resetpassword" ? "bar bar-active" : "bar"
+              }
+              onClick={() => ChangeRoute("/app/resetpassword")}
+            >
+              <FadeIn visible={effect.reset}>
+                {effect.reset && location.pathname === "/app/resetpassword" ? (
+                  <Key className="bar-icon" />
+                ) : (
+                  <Key color="primary" className="bar-icon" />
+                )}
+                <div>Reset Password</div>
+              </FadeIn>
+            </div>
+            {/* thar me tab mai hai yut sai nai ni der */}
           </>
         )}
-        <div
-          className={
-            location.pathname === "/app/resetpassword" ? "bar bar-active" : "bar"
-          }
-          onClick={() => ChangeRoute("/app/resetpassword")}
-        >
-          <FadeIn visible={effect.reset}>
-            {effect.reset && location.pathname === "/app/resetpassword" ? (
-              <Key className="bar-icon" />
-            ) : (
-              <Key color="primary" className="bar-icon" />
-            )}
-            <div>Reset Password</div>
-          </FadeIn>
-        </div>
-        <div
-          className={
-            location.pathname === "/app/cbs/customerinfo" ? "bar bar-active" : "bar"
-          }
-          onClick={() => ChangeRoute("/app/cbs/customerinfo")}
-        >
-          <FadeIn visible={effect.cbs}>
-            {effect.cbs && location.pathname === "/app/cbs/customerinfo" ? (
-              <Dashboard className="bar-icon" />
-            ) : (
-              <Dashboard color="primary" className="bar-icon" />
-            )}
-            <div>CBS</div>
-          </FadeIn>
-        </div>
+
+
+
         <div
           className={
             location.pathname === "/app/logout" ? "bar bar-active" : "bar"
