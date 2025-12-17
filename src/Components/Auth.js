@@ -20,7 +20,7 @@ class Auth {
   }
 
   logout(cb) {
-    localStorage.removeItem("login")
+    localStorage.clear()
     cookie.remove("ONE_TOKEN")
     this.authenticated = false;
     cb();

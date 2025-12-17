@@ -560,6 +560,20 @@ td {
   min-width: 600px;
 }
 
+.otp-container {
+  margin-top: 50px;
+  background-color: rgba(255, 255, 255, 0.7);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(5px);
+  padding: 50px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0px 1px 2px 0px grey;
+  min-width: 300px;
+  opacity: 0.9;
+
+}
+
 .login-icon {
   background-color: rgba(255, 255, 255, 0.7) !important;
   -webkit-backdrop-filter: blur(10px);
@@ -580,6 +594,21 @@ td {
   filter: blur(10px) grayscale(30%) brightness(70%);
   position: fixed;
   opacity: 0.9;
+}
+
+.resetpass-form {
+  margin-top: 50px;
+  background-color: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(5px);
+  padding: 50px;
+  border-radius: 12px;
+  text-align: center;
+  min-width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  color: white;
 }
 
 .left {
@@ -901,6 +930,7 @@ textarea {
   background-color: #26A65B;
   box-shadow: 0.1px .1px 0px .5px #888888;
 }
+
 .link-box-danger-click-hover {
   padding: 5px 10px 0px 10px;
   cursor: pointer;
@@ -908,6 +938,7 @@ textarea {
   background-color: #CD1E2B;
   box-shadow: 0.1px .1px 0px .5px #888888;
 }
+
 .link-box-danger-click-hover:hover {
   padding: 5px 10px 0px 10px;
   cursor: pointer;
@@ -915,7 +946,8 @@ textarea {
   background-color: #7e0d0d;
   box-shadow: 0.1px .1px 0px .5px #888888;
 }
-.bg-sr{
+
+.bg-sr {
   color: #CD1E2B;
 }
 
@@ -1125,23 +1157,26 @@ tr .css-1q1u3t4-MuiTableRow-root {
   color: #fff;
   border-radius: 3px;
 }
-.err{
-  text-align: left!important;
-  color: red!important;
-  margin-top: 5px!important;
+
+.err {
+  text-align: left !important;
+  color: red !important;
+  margin-top: 5px !important;
 }
-.bg1{
- 
+
+.bg1 {
+
   background-color: red;
-  
+
 }
-.bg2{
-  
+
+.bg2 {
+
   color: #fff;
   background-color: #26A65B;
 
 }
 
-.ant-picker-dropdown{
-  z-index: 1056!important;
+.ant-picker-dropdown {
+  z-index: 1056 !important;
 }

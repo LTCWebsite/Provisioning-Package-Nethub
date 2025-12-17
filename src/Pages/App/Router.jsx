@@ -1,12 +1,16 @@
 import React from 'react'
-import { Switch } from 'react-router-dom'
+import { Switch, BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ProtectRoute } from '../../Components/ProtectRoute'
 import Home from './Home/Home'
 import CRM from './CRM/CRM'
 import User from './User/User'
 import Card from './Card/Card'
 import Redeem from './AIS/Redeem'
+import Resetpass from './Resetpassword/resetpass'
 import QueryCustomerInfo from './CBS/QueryCustomerInfo'
+import { RequestOTP } from './Resetpassword/requestOTP'
+import { VerifyOTP } from './Resetpassword/verifyOTP'
+import Oneresetpass from './Resetpassword/oneresetpass'
 
 function Router() {
     return (
@@ -17,8 +21,18 @@ function Router() {
                 <ProtectRoute path="/app/user" component={User} exact />
                 <ProtectRoute path="/app/card" component={Card} exact />
                 <ProtectRoute path="/app/ais/redeem" component={Redeem} exact />
+
+                <ProtectRoute path="/app/resetpassword" component={Resetpass} exact />
+                {/* <ProtectRoute path="/app/Newresetpassword" component={Oneresetpass} exact /> */}
+
+
+                {/* <ProtectRoute path="/app/requestOTP" component={RequestOTP} exact /> */}
+                {/* <ProtectRoute path="/app/verifyOTP" component={VerifyOTP} exact /> */}
+
                 <ProtectRoute path="/app/cbs/customerinfo" component={QueryCustomerInfo} exact />
+
             </Switch>
+
         </>
     )
 }

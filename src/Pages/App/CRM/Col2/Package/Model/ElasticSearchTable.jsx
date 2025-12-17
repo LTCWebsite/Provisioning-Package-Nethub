@@ -13,6 +13,7 @@ import {
     Chip,
     Button,
 } from "@mui/material";
+import moment from "moment"
 
 export default function ElasticSearchTable() {
     const [rows, setRows] = useState([]);
@@ -117,7 +118,7 @@ export default function ElasticSearchTable() {
                                             </TableCell>
 
                                             <TableCell>
-                                                {new Date(hit._source.createdAt).toLocaleString()}
+                                                {moment(hit._source.createdAt).format('DD/MM/YYYY hh:mm:ss')}
                                             </TableCell>
                                             <TableCell>
                                                 <Chip label={status} color={color} size="small" />
