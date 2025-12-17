@@ -321,10 +321,12 @@ const BuyPackage2 = ({ open, cb, ifdone, done }) => {
           maxWidth="sm"
           fullWidth
         >
-          <DialogTitle>ສຳເລັດ!</DialogTitle>
+          <DialogTitle>
+            {bkData.code === "200" ? "ສຳເລັດ" : "ບໍ່ສຳເລັດ"}
+          </DialogTitle>
           <DialogContent>
             <Typography sx={{ mb: 1 }}>
-              {bkData.resultDesc || "ການຊື້ແພັກສຳເລັດແລ້ວ"}
+              {bkData.message || "ລະບົບມີບັນຫາ"}
             </Typography>
             {bkData.packageName && (
               <Typography>Package: {bkData.packageName}</Typography>
