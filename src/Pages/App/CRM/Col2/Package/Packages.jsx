@@ -20,9 +20,11 @@ import React, { useState, useEffect } from "react";
 import { AxiosElastic, AxiosReq } from "../../../../../Components/Axios";
 // import BuyPackage from "./Model/BuyPackage";
 import BuyPackage2 from "./Model/BuyPackage2";
+import RestoreIcon from "@mui/icons-material/Restore";
 import PackageHistory from "./Model/PackageHistory";
 import QueryPackage from "./Model/QueryPackage";
 import SpecialPackage from "./Model/SpecialPackage";
+import PhonelinkEraseIcon from "@mui/icons-material/PhonelinkErase";
 import cookie from "js-cookie";
 import PackageHistoryNew from "./Model/PackageHistoryNew";
 import axios from "axios";
@@ -304,7 +306,7 @@ function Packages() {
         onClick={() => setOpen(true)}
       >
         <Grid item xs={2}>
-          <Store />
+          <PhonelinkEraseIcon />
         </Grid>
         <Grid item xs={6}>
           ຍົກເລີກແພັກເກັດ
@@ -318,7 +320,7 @@ function Packages() {
         onClick={() => setOpenFormHistoryPackage(true)}
       >
         <Grid item xs={2}>
-          <Store />
+          <RestoreIcon />
         </Grid>
         <Grid item xs={6}>
           ປະຫວັດການຍົກເລີກແພັກເກັກ
@@ -348,73 +350,48 @@ function Packages() {
           sx={{
             flexDirection: "column",
             gap: 2,
-            p: 3,
-            alignItems: "stretch",
+            p: 2,
+            pr: 4,
+            alignItems: "baseline",
           }}
         >
-          <Button
-            onClick={() => setOpen(false)}
-            disabled={loading}
-            variant="outlined"
-            sx={{
-              minHeight: 56,
-              fontSize: 18,
-              fontWeight: 600,
-              borderWidth: 2,
-              borderColor: "#1976d2",
-              color: "#1976d2",
-              borderRadius: 2.5,
-              textTransform: "none",
-              transition: "all 0.3s ease",
-              "&:hover": {
-                borderWidth: 2,
-                borderColor: "#1565c0",
-                backgroundColor: "rgba(25, 118, 210, 0.08)",
-                transform: "translateY(-2px)",
-                boxShadow: "0 4px 12px rgba(25, 118, 210, 0.2)",
-              },
-              "&:active": {
-                transform: "translateY(0)",
-              },
-            }}
-          >
-            ຍົກເລີກ
-          </Button>
-
-          <Button
+          <button
             onClick={handleCancelPackage}
             disabled={loading}
-            variant="contained"
-            startIcon={
-              loading && <CircularProgress color="inherit" size={22} />
-            }
-            sx={{
-              minHeight: 56,
+            style={{
+              height: 56,
               fontSize: 18,
-              fontWeight: 600,
-              background: "linear-gradient(135deg, #f44336 0%, #d32f2f 100%)",
+              backgroundColor: "#2196f3",
               color: "#fff",
-              borderRadius: 2.5,
-              textTransform: "none",
-              boxShadow: "0 4px 14px rgba(211, 47, 47, 0.4)",
-              transition: "all 0.3s ease",
-              "&:hover": {
-                background: "linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%)",
-                transform: "translateY(-2px)",
-                boxShadow: "0 6px 20px rgba(211, 47, 47, 0.5)",
-              },
-              "&:active": {
-                transform: "translateY(0)",
-                boxShadow: "0 2px 8px rgba(211, 47, 47, 0.4)",
-              },
-              "&:disabled": {
-                background: "linear-gradient(135deg, #bdbdbd 0%, #9e9e9e 100%)",
-                color: "rgba(255, 255, 255, 0.7)",
-              },
+              border: "none",
+              borderRadius: 8,
+              cursor: loading ? "not-allowed" : "pointer",
+              fontWeight: 600,
+              width: "100%",
+              opacity: loading ? 0.6 : 1,
             }}
           >
             {loading ? "ກຳລັງຍົກເລີກ..." : "ຢືນຢັນ"}
-          </Button>
+          </button>
+
+          <button
+            onClick={() => setOpen(false)}
+            disabled={loading}
+            style={{
+              height: 56,
+              fontSize: 18,
+              backgroundColor: "#f44336",
+              color: "#fff",
+              border: "none",
+              borderRadius: 8,
+              cursor: loading ? "not-allowed" : "pointer",
+              fontWeight: 600,
+              width: "100%",
+              opacity: loading ? 0.6 : 1,
+            }}
+          >
+            ປິດ
+          </button>
         </DialogActions>
       </Dialog>
       <Dialog
