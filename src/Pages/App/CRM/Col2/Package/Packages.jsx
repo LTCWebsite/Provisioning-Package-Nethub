@@ -323,7 +323,7 @@ function Packages() {
           <RestoreIcon />
         </Grid>
         <Grid item xs={6}>
-          ປະຫວັດການຍົກເລີກແພັກເກັກ
+          ປະຫວັດການຍົກເລີກແພັກເກັດ
         </Grid>
       </Grid>
 
@@ -376,7 +376,6 @@ function Packages() {
 
           <button
             onClick={() => setOpen(false)}
-            disabled={loading}
             style={{
               height: 56,
               fontSize: 18,
@@ -384,10 +383,8 @@ function Packages() {
               color: "#fff",
               border: "none",
               borderRadius: 8,
-              cursor: loading ? "not-allowed" : "pointer",
               fontWeight: 600,
               width: "100%",
-              opacity: loading ? 0.6 : 1,
             }}
           >
             ປິດ
