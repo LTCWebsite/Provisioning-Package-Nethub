@@ -15,6 +15,7 @@ import {
   Button,
 } from "@mui/material";
 import axios from "axios";
+import moment from "moment";
 
 const HistoryCancelPackage = ({ open, onClose }) => {
   const [search, setSearch] = useState("");
@@ -35,6 +36,13 @@ const HistoryCancelPackage = ({ open, onClose }) => {
         const res = await axios.post(
           `http://172.28.26.97:9200/cancel-logs-*/_search`,
           {
+            sort: [
+              {
+                createdAt: {
+                  order: "desc",
+                },
+              },
+            ],
             query: {
               match: {
                 msisdn: `${phone}`,
@@ -42,6 +50,7 @@ const HistoryCancelPackage = ({ open, onClose }) => {
             },
           }
         );
+
         setDatas(res.data.hits.hits);
       } catch (err) {
         console.error(err);
@@ -55,7 +64,6 @@ const HistoryCancelPackage = ({ open, onClose }) => {
 
   const filtered = useMemo(() => {
     let result = datas.filter((clpk) => {
-      // Filter by search text
       const matchSearch =
         clpk._source?.counterName
           ?.toLowerCase()
@@ -63,12 +71,9 @@ const HistoryCancelPackage = ({ open, onClose }) => {
         clpk._source?.msisdn?.toString().includes(search) ||
         clpk._source?.resultCode?.toString().includes(search);
 
-      // Filter by date range
       const itemDate = new Date(clpk._source.createdAt);
       const matchStartDate = startDate ? itemDate >= new Date(startDate) : true;
-      const matchEndDate = endDate
-        ? itemDate <= new Date(endDate + "T23:59:59")
-        : true;
+      const matchEndDate = endDate ? itemDate <= new Date(endDate) : true;
 
       return matchSearch && matchStartDate && matchEndDate;
     });
@@ -105,7 +110,11 @@ const HistoryCancelPackage = ({ open, onClose }) => {
           <Typography variant="h5" fontWeight={700}>
             ປະຫວັດການຍົກເລີກແພັກເກັກ
           </Typography>
-          <Button onClick={onClose} variant="outlined" size="small">
+          <Button
+            onClick={() => (onClose(), setStartDate(""), setEndDate(""))}
+            variant="outlined"
+            size="small"
+          >
             ປິດ
           </Button>
         </Box>
@@ -169,6 +178,7 @@ const HistoryCancelPackage = ({ open, onClose }) => {
               }}
               sx={{ width: 160 }}
             >
+              <MenuItem value={1}>1 ຂໍ້ມູນ</MenuItem>
               <MenuItem value={6}>6 ຂໍ້ມູນ</MenuItem>
               <MenuItem value={9}>9 ຂໍ້ມູນ</MenuItem>
               <MenuItem value={12}>12 ຂໍ້ມູນ</MenuItem>
@@ -222,19 +232,36 @@ const HistoryCancelPackage = ({ open, onClose }) => {
                       color="text.secondary"
                       gutterBottom
                     >
-                      📅{" "}
-                      {new Date(ClPack._source.createdAt).toLocaleString(
-                        "lo-LA",
-                        {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        }
+                      Cancel date:
+                      {moment(ClPack?._source?.createdAt).format(
+                        "DD/MM/YYYY:HH:mm:ss"
                       )}
                     </Typography>
-
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      gutterBottom
+                    >
+                      CBS:
+                      {ClPack?._source?.expirationTimeCbs
+                        ? moment(
+                            ClPack?._source?.expirationTimeCbs,
+                            "YYYYMMDDHHmmss"
+                          ).format("DD/MM/YYYY:HH:mm:ss")
+                        : " None"}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      gutterBottom
+                    >
+                      SPNV :
+                      {ClPack?._source?.expiryTimeSpnv
+                        ? moment(ClPack?._source?.expiryTimeSpnv).format(
+                            "DD/MM/YYYY:HH:mm:ss"
+                          )
+                        : "None"}
+                    </Typography>
                     <Typography
                       variant="body2"
                       fontWeight={600}
@@ -267,7 +294,6 @@ const HistoryCancelPackage = ({ open, onClose }) => {
           )}
         </Grid>
 
-        {/* Pagination */}
         {!isLoading && paginatedData.length > 0 && (
           <>
             <Box display="flex" justifyContent="center" mt={4}>
