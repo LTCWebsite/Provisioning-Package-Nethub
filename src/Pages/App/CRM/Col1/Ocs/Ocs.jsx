@@ -165,7 +165,7 @@ function Ocs({ cus, load, st }) {
                                 <Can className={'link-icon-success'} style={{ paddingTop: 4 }} />}
                         </Grid>
                     </Grid> */}
-                    <Grid item container xs={12} className={cus?.status === '2' ? 'link-box-success-click-hover next' : 'link-box-error-click next'} onClick={() => setOpen(cus?.resultCode === "0" ? true : false)}>
+                    <Grid item container xs={12} className={cus?.status === '2' || data2.status === 'Active' ? 'link-box-success-click-hover next' : 'link-box-error-click next'} onClick={() => setOpen(cus?.resultCode === "0" ? true : false)}>
                         <Grid item xs={1}><Visibility style={{ paddingTop: 4 }} /></Grid>
                         <Grid item xs={5}><div style={{ paddingTop: 4 }}>&nbsp;CBS Status : </div></Grid>
                         <Grid item xs={5} className="text-right">
