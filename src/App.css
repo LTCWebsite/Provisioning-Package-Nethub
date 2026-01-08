@@ -909,6 +909,12 @@ textarea {
   color: #5A5C69;
   box-shadow: 0.1px .1px 0px .5px #888888;
 }
+.link-box-blue-click {
+  padding: 5px 10px 0px 10px;
+  color: #fff;
+  background-color: #5C5CFF;
+  box-shadow: 0.1px .1px 0px .5px #888888;
+}
 
 .link-box-success-click {
   padding: 5px 10px 0px 10px;

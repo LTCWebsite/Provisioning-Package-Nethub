@@ -1,5 +1,5 @@
 import { CheckCircle, Close, Loop, } from '@mui/icons-material'
-import { Button, Dialog, Grid, Skeleton, Slide } from '@mui/material'
+import { Box, Button, Dialog, Grid, Skeleton, Slide } from '@mui/material'
 import React from 'react'
 import { useState } from 'react'
 import { useEffect } from 'react'
@@ -9,9 +9,9 @@ import OCSTab from './OCSTab'
 import axios from 'axios'
 import { toast_success, toast_error } from '../../../../../Components/Toast'
 import { MyCrypt, MyCryptTry } from '../../../../../Components/MyCrypt'
-import { AxiosCBS, AxiosReq } from '../../../../../Components/Axios'
+import { AxiosCBS, AxiosFtth, AxiosReq } from '../../../../../Components/Axios'
 import Cookies from 'js-cookie'
-import moment from 'moment'
+
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -24,6 +24,7 @@ function Ocs({ cus, load, st }) {
     const [pass, setPass] = useState(false)
     const [useIdel, setuseIdel] = useState(false)
     const [data, setdata] = useState([])
+    const [data2, setdata2] = useState([])
     const [data1grab, setdata1grab] = useState({ name: 'None' })
     const [show2, setShow2] = useState(false)
     let type = MyCrypt("de", localStorage.getItem("ONE_NETWORK"))
@@ -45,31 +46,48 @@ function Ocs({ cus, load, st }) {
     }, [])
     useEffect(() => {
         if (type?.NETWORK_CODE === "F") {
-            loadFtth()
+            // loadFtth()
+            Ftth()
         }
     }, [type?.NETWORK_CODE])
-    const loadFtth = () => {
-        AxiosReq.get("Fiber?ftth=" + localStorage.getItem("ONE_PHONE"), { headers: { 'Authorization': 'Bearer ' + Cookies.get("ONE_TOKEN") } })
-        .then(res => {
+    const Ftth = () => {
+        AxiosFtth.post("api/ftth",
+            {
+                "msisdn": localStorage.getItem("ONE_PHONE"),
+                "bussinessCode": "onescreen",
+                "transactionId": "ftth1234",
+                "username": "APISUPERAPP",
+                "password": "sQQF82VgLz8YOqcDrQhrkteKEQdoPlzQAiYqmtbeChwYaF2eqTcdHw/0r+U+lXM4"
+            },
+        ).then(res => {
             if (res.status === 200) {
-                setftthData(res.data)
-                // console.log(res.data)
-                let phone = localStorage.getItem("ONE_PHONE")
-                let sendData2 = {
-                    msisdn: phone,
-                    product_type: "FTTH",
-                    package_price: parseInt(res.data?.ftthPrice)
-                }
-                AxiosCBS.post("query_balance", sendData2).then(res2 => {
-                    if (res2.status === 200) {
-                        setdata(res2.data)
-                        // console.log(res2.data)
-                        setShow2(true)
-                    }
-                })
+                setdata2(res.data.customer_info)
+                console.log(res.data.customer_info, '========')
             }
         })
     }
+    // const loadFtth = () => {
+    //     AxiosReq.get("Fiber?ftth=" + localStorage.getItem("ONE_PHONE"), { headers: { 'Authorization': 'Bearer ' + Cookies.get("ONE_TOKEN") } })
+    //     .then(res => {
+    //         if (res.status === 200) {
+    //             setftthData(res.data)
+    //             // console.log(res.data)
+    //             let phone = localStorage.getItem("ONE_PHONE")
+    //             let sendData2 = {
+    //                 msisdn: phone,
+    //                 product_type: "FTTH",
+    //                 package_price: parseInt(res.data?.ftthPrice)
+    //             }
+    //             AxiosCBS.post("query_balance", sendData2).then(res2 => {
+    //                 if (res2.status === 200) {
+    //                     setdata(res2.data)
+    //                     // console.log(res2.data)
+    //                     setShow2(true)
+    //                 }
+    //             })
+    //         }
+    //     })
+    // }
     const loadCBS_Balance = () => {
         let phone = localStorage.getItem("ONE_PHONE")
         let sendData = {
@@ -125,6 +143,7 @@ function Ocs({ cus, load, st }) {
             // setdata1grab({ name: 'None' });
         });
     }, []);
+    console.log(data2)
 
     return (
         <>
@@ -145,12 +164,12 @@ function Ocs({ cus, load, st }) {
                                 <Can className={'link-icon-success'} style={{ paddingTop: 4 }} />}
                         </Grid>
                     </Grid> */}
-                    <Grid item container xs={12} className={cus?.status === '2' ? 'link-box-success-click-hover next' : 'link-box-error-click next'} onClick={() => setOpen(cus?.resultCode === "0" ? true : false)}>
+                    <Grid item container xs={12} className={cus?.status === '2' || data2.status === 'Active' ? 'link-box-success-click-hover next' : 'link-box-error-click next'} onClick={() => setOpen(cus?.resultCode === "0" ? true : false)}>
                         <Grid item xs={1}><Visibility style={{ paddingTop: 4 }} /></Grid>
                         <Grid item xs={5}><div style={{ paddingTop: 4 }}>&nbsp;CBS Status : </div></Grid>
                         <Grid item xs={5} className="text-right">
                             {/* {console.log(cus)} */}
-                            <div>&nbsp;
+                            {type?.NETWORK_CODE !== "F" ? <div>&nbsp;
                                 {cus?.status === '1' && 'IDLE'}
                                 {cus?.status === '2' && 'ACTIVE'}
                                 {cus?.status === '3' && 'CALLBRARING/ SUSPEND'}
@@ -160,26 +179,37 @@ function Ocs({ cus, load, st }) {
                                 {cus?.status === '8' && 'POOL'}
                                 {cus?.status === undefined && 'NULL'}
                             </div>
+                                : <div>
+                                    {data2.status === 'Active' && 'ACTIVE'}
+                                </div>
+                            }
+
+
                         </Grid>
-                        <Grid item xs={1}>
+                        {type?.NETWORK_CODE !== "F" ? <Grid item xs={1}>
                             {cus?.status === '2' && <CheckCircle className={'link-icon-error'} style={{ paddingTop: 4 }} />}
 
                             {cus?.status !== '2' && <Can className={'link-icon-success'} style={{ paddingTop: 4 }} />}
-                        </Grid>
+                        </Grid> :
+                            <Grid item xs={1}>
+                                {data2.status === 'Active' && <CheckCircle className={'link-icon-error'} style={{ paddingTop: 4 }} />}
+
+                            </Grid>
+                        }
                     </Grid>
                     <Grid item container xs={12} className={'link-box-click-hover link-box'}>
                         <Grid item xs={6}><div>OfferingID : </div></Grid>
-                        <Grid item xs={6}><div className='text-right'>{cus?.primaryOffering}</div></Grid>
+                        <Grid item xs={6}><div className='text-right'>{type?.NETWORK_CODE === "F" ? data2.offeringid : cus?.primaryOffering}</div></Grid>
                     </Grid>
                     {type?.NETWORK_CODE === 'M' || type?.NETWORK_CODE === "H" || type?.NETWORK_CODE === 'W' ? null :
                         <Grid item container xs={12} className={'link-box-click-hover link-box'}>
                             <Grid item xs={6}><div>ຍອດໜີ້ : </div></Grid>
-                            <Grid item xs={6}><div className='text-right'>{parseInt(data?.Summary?.Total).toLocaleString()}</div></Grid>
+                            <Grid item xs={6}><div className='text-right'>{parseInt(type?.NETWORK_CODE === 'F' ? data2?.total_amount_all : data?.Summary?.Total).toLocaleString()}</div></Grid>
                         </Grid>}
 
 
                     <>
-                        { data1grab.name !== "None" && useIdel && cus?.status === '1' && !pass && (
+                        {useIdel && cus?.status === '1' && !pass && (
                             <Grid item container xs={12} className={'link-box-danger-click-hover'} onClick={() => setidel(true)}>
                                 <Grid item xs={1}><Loop style={{ paddingTop: 4 }} /></Grid>
                                 <Grid item xs={11}>
@@ -213,7 +243,9 @@ function Ocs({ cus, load, st }) {
                     <Grid item xs={12} container>
                         <Grid item container xs={12} className='link-box'>
                             <Grid item xs={6}><div>Balance Type : </div></Grid>
-                            <Grid item xs={6}><div className='text-right'>{data?.C_MAIN_BILLING_ACCOUNT?.BalanceType}</div></Grid>
+                            <Grid item xs={6}><div className='text-right'>{type?.NETWORK_CODE === "F" ? data2.balanceInfo?.
+                                BalanceType : data.C_MAIN_BILLING_ACCOUNT?.BalanceType
+                            }</div></Grid>
                         </Grid>
 
                         <Grid item xs={12} container>
@@ -223,11 +255,11 @@ function Ocs({ cus, load, st }) {
                             </Grid>
                             <Grid item container xs={12} className='link-box'>
                                 <Grid item xs={6}><div>Balance Type Name: </div></Grid>
-                                <Grid item xs={6}><div className='text-right'>{data?.C_MAIN_BILLING_ACCOUNT?.BalanceTypeName}</div></Grid>
+                                <Grid item xs={6}><div className='text-right'>{type?.NETWORK_CODE === "F" ? data2.balanceInfo?.BalanceTypeName : data.C_MAIN_BILLING_ACCOUNT?.BalanceTypeName}</div></Grid>
                             </Grid>
                             {type?.NETWORK_CODE !== 'M' && <Grid item container xs={12} className='link-box'>
                                 <Grid item xs={6}><div>TotalAmount: </div></Grid>
-                                <Grid item xs={6}><div className='text-right'>{parseInt(data?.C_MAIN_BILLING_ACCOUNT?.TotalAmount).toLocaleString()}</div></Grid>
+                                <Grid item xs={6}><div className='text-right'>{parseInt( type?.NETWORK_CODE === 'F' ?data2.balanceInfo?.TotalAmount : data?.C_MAIN_BILLING_ACCOUNT?.TotalAmount).toLocaleString()}</div></Grid>
                             </Grid>}
                         </Grid>
 
@@ -235,32 +267,58 @@ function Ocs({ cus, load, st }) {
                             <Grid item xs={12} container>
                                 <Grid item container xs={12} className='link-box'>
                                     <Grid item xs={6}><div>FTTH Package : </div></Grid>
-                                    <Grid item xs={6}><div className='text-right'>
-                                        {ftthData?.ftthPackage}
-                                    </div></Grid>
+                                    <Grid item xs={6}>
+                                        <Box textAlign="right">
+                                            {data2.offering_list?.map((item, index) => (
+                                                <Box key={index}>
+
+                                                    {/* offering name */}
+                                                    <Box py={0.5}>
+                                                        {item.offering_name}
+                                                    </Box>
+
+                                                    {/* เส้นคั่น */}
+                                                    {index < data2.offering_list.length - 1 && (
+                                                        <Box
+                                                            sx={{
+                                                                borderBottom: "1px solid",
+                                                                transform: "scaleY(0.5)",
+
+                                                                transformOrigin: "top",
+
+                                                                borderColor: "grey.300",
+
+                                                            }}
+                                                        />
+                                                    )}
+                                                </Box>
+                                            ))}
+                                        </Box>
+                                    </Grid>
+
                                 </Grid>
                                 <Grid item container xs={12} className='link-box'>
                                     <Grid item xs={6}><div>Expire Date : </div></Grid>
                                     <Grid item xs={6}><div className='text-right'>
-                                        {moment(data?.ExpireDate).format("DD/MM/YYYY HH:mm:ss")}
+                                        {data2.expiration_date}
                                     </div></Grid>
                                 </Grid>
                                 <Grid item container xs={12} className='link-box'>
                                     <Grid item xs={6}><div>Remaining Date : </div></Grid>
                                     <Grid item xs={6}><div className='text-right'>
-                                        {parseInt(data?.RemainingDate).toLocaleString()} Days
+                                        {parseInt(data2.remain_date).toLocaleString()} Days
                                     </div></Grid>
                                 </Grid>
                                 <Grid item container xs={12} className='link-box'>
                                     <Grid item xs={6}><div>ຍອດຍັງເຫຼືອ : </div></Grid>
                                     <Grid item xs={6}><div className='text-right'>
-                                        {parseFloat(data?.TotalRemainAmount).toLocaleString()}
+                                        {parseFloat(data2.total_remain_amount).toLocaleString()}
                                     </div></Grid>
                                 </Grid>
                                 <Grid item container xs={12} className='link-box'>
                                     <Grid item xs={6}><div>ຍອດນຳໃຊ້ : </div></Grid>
                                     <Grid item xs={6}><div className='text-right'>
-                                        {parseFloat(data?.TotalUsageAmount).toLocaleString()}
+                                        {parseFloat(data2.total_usage_amount).toLocaleString()}
                                     </div></Grid>
                                 </Grid>
                             </Grid>

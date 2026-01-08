@@ -8,6 +8,9 @@ export const AxiosAPI = axios.create({
     password: "#Ltc1qaz2wsx@isd",
   },
 });
+export const AxiosFtth = axios.create({
+  baseURL: "http://172.28.14.151:3001/"
+})
 
 export const AxiosReq = axios.create({
   //baseURL: "http://10.30.6.148:5678/",
