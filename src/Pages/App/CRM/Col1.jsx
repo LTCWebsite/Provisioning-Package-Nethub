@@ -17,6 +17,7 @@ import Ocs from './Col1/Ocs/Ocs'
 import cookie from 'js-cookie'
 import { MyCrypt } from "../../../Components/MyCrypt"
 import ResetPassCBS from './Col1/Ocs/ResetPassCBS'
+import CusFtthInfo from './Col1/Ocs/cusftthInfo'
 
 function Col1() {
     const phone = localStorage.getItem("ONE_PHONE")
@@ -32,7 +33,7 @@ function Col1() {
 
     useEffect(() => {
         let phone = localStorage.getItem("ONE_PHONE")
-        AxiosReq.get("QueryHLRInfo?msisdn=" + phone,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
+        AxiosReq.get("QueryHLRInfo?msisdn=" + phone, { headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200) {
                 // console.log(res.data)
                 setCheck({
@@ -52,7 +53,7 @@ function Col1() {
 
     useEffect(() => {
         let phone = localStorage.getItem("ONE_PHONE")
-        AxiosReq.get("api/Network5g?Msisdn=" + phone,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
+        AxiosReq.get("api/Network5g?Msisdn=" + phone, { headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200) {
                 // console.log(res.data)
                 setIs5G(res?.data?.is5G)
@@ -64,52 +65,59 @@ function Col1() {
 
     return (
         <>
-            <Grid container>
-                <Grid item xs={12} md={12} lg={6} className="box-crm">
-                    <Grid item xs={12}><h2 className='blue'>Info</h2></Grid>
-                    
-                    <Register3Grab />
+            <Grid container
+            >
+                <Grid item xs={12} md={12} lg={`${type?.NETWORK_CODE === 'F' ? 12 : 6}`} className={`box-crm`}>
+                    <Grid item xs={12} md={12} lg={`${type?.NETWORK_CODE === 'F' ? 12 : 12}`}>
+                        <Grid item xs={12}><h2 className='blue'>Info</h2></Grid>
+                        {type?.NETWORK_CODE === 'F' ?
+                            <CusFtthInfo /> :
+                            <Register3Grab />}
 
-                    <BssRegister cb={(e) => setBSS(e)} />
+                        {/* <BssRegister cb={(e) => setBSS(e)} /> */}
 
-                    <Grid item container xs={12} className='link-box'>
-                        <Grid item xs={4}><PhoneIphone /></Grid>
-                        <Grid item xs={8}><div className='text-right'>{phone}</div></Grid>
+                        {/* <Grid item container xs={12} className='link-box'>
+                            <Grid item xs={4}><PhoneIphone /></Grid>
+                            <Grid item xs={8}><div className='text-right'>{phone}</div></Grid>
+                        </Grid>
+                        <Grid item container xs={12} className='link-box'>
+                            <Grid item xs={4}><PersonOutline /></Grid>
+                            <Grid item xs={8}><div className='text-right'>{bss?.name !== "" ? bss.name : "---"}</div></Grid>
+                        </Grid> */}
+                        <Network />
+                        {type?.NETWORK_CODE === 'G' || type?.NETWORK_CODE === 'A' || type?.NETWORK_CODE === 'P' || type?.NETWORK_CODE === 'F' || type?.NETWORK_CODE === 'WP' || type?.NETWORK_CODE === 'L' || type?.NETWORK_CODE === 'DR' ? <Debit /> : null}
                     </Grid>
-                    <Grid item container xs={12} className='link-box'>
-                        <Grid item xs={4}><PersonOutline /></Grid>
-                        <Grid item xs={8}><div className='text-right'>{bss?.name !== "" ? bss.name : "---"}</div></Grid>
-                    </Grid>
-                    <Network />
-                    {type?.NETWORK_CODE === 'G' || type?.NETWORK_CODE === 'A' || type?.NETWORK_CODE === 'P' || type?.NETWORK_CODE === 'F'  || type?.NETWORK_CODE === 'WP'  || type?.NETWORK_CODE === 'L'  || type?.NETWORK_CODE === 'DR' ? <Debit /> : null}
-                    
-                    <Ocs load={load} st={backlist?.currentStatus} cus={cus} />
-                    {type?.NETWORK_CODE === 'M' || type?.NETWORK_CODE === 'H' || type?.NETWORK_CODE === 'W' ? <Balance /> : null}
-                    
 
-                    <BlackList data={backlist} load={load} />
-                    {/* <Grid item container xs={12} className='link-box'>
+                    <Grid item xs={12} md={12} lg={`${type?.NETWORK_CODE === 'F' ? 12 : 12}`}>
+                        <Ocs load={load} st={backlist?.currentStatus} cus={cus} />
+
+                        {type?.NETWORK_CODE === 'M' || type?.NETWORK_CODE === 'H' || type?.NETWORK_CODE === 'W' ? <Balance /> : null}
+
+
+                        <BlackList data={backlist} load={load} />
+                        {/* <Grid item container xs={12} className='link-box'>
                         <Grid item xs={4}><p>ResetPasswordCBS</p></Grid>
 
                     </Grid> */}
-                    <ResetPassCBS />
+                        <ResetPassCBS />
 
-                    <h2 className='blue'>Value Add Service ປິດໄວ້ຊົ່ວຄາວ</h2>
-                    {/* <VAS /> */}
-                   
-                   
+                        <h2 className='blue'>Value Add Service ປິດໄວ້ຊົ່ວຄາວ</h2>
+                        {/* <VAS /> */}
+                    </Grid>
+
+
                 </Grid>
 
-                <Grid item xs={12} md={12} lg={6} className="box-crm">
+                {type?.NETWORK_CODE !== 'F' && (<Grid item xs={12} md={12} lg={6} className="box-crm">
                     <h2 className='blue'>Life Cycle</h2>
                     <LifeCycle cb={(e) => setBacklist(e)} load={(e) => setLoad(e)} cbCus={(e) => setCus(e)} />
                     <h2 className='blue'>Mobile Service Data</h2>
-                    <MobileService check={check} is5G={is5G} cb={(e) => setCheck(e)} cbis5G={(e)=>{setIs5G(e)}} />
+                    <MobileService check={check} is5G={is5G} cb={(e) => setCheck(e)} cbis5G={(e) => { setIs5G(e) }} />
 
                     <h2 className='blue'>Application</h2>
                     <Application />
 
-                </Grid>
+                </Grid>)}
 
             </Grid>
         </>

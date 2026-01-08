@@ -11,7 +11,7 @@ import OCS_invoice from './Col2/PaymentHistory/OCS_invoice'
 import FtthBundle from './Col2/FtthBundle/FTTHBundleTap'
 import { AxiosReq3 } from '../../../Components/Axios'
 import { useEffect } from 'react'
-import  cookie from 'js-cookie'
+import cookie from 'js-cookie'
 
 function Col2() {
 
@@ -21,7 +21,7 @@ function Col2() {
   const username = localStorage.getItem("USERNAME")
 
   useEffect(() => {
-    AxiosReq3.get("CheckUserName101/CheckUserName101?username=" + username,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } })
+    AxiosReq3.get("CheckUserName101/CheckUserName101?username=" + username, { headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } })
       .then(res => {
         if (res.success !== true) {
           setData(res?.data)
@@ -54,18 +54,23 @@ function Col2() {
 
           </Grid>
         </Grid>
+
         <Grid container item xs={12} md={12} lg={6} className="box-crm">
           <Grid item xs={12}>
-            <h2 className='blue'>ດາຕ້າແພັກເກັດ</h2>
-            <Packages />
-            <>
-              {data?.success === true && (
+            {type?.NETWORK_CODE !== 'F' &&
+              <>
+                <h2 className='blue'>ດາຕ້າແພັກເກັດ</h2>
+                <Packages />
                 <>
-                  <h2 className="blue">ດາຕ້າແພັກເກັດ 101</h2>
-                  <Packages101 />
+                  {data?.success === true && (
+                    <>
+                      <h2 className="blue">ດາຕ້າແພັກເກັດ 101</h2>
+                      <Packages101 />
+                    </>
+                  )}
                 </>
-              )}
-            </>
+
+              </>}
             <h2 className='blue'>Banking</h2>
             <Banking />
 
@@ -73,16 +78,19 @@ function Col2() {
             <FtthBundle />
           </Grid>
         </Grid>
-        <Grid container item xs={12} md={12} lg={6} className="box-crm">
-          <Grid item xs={12}>
+        {type?.NETWORK_CODE !== 'F' &&
+          <>
+            <Grid container item xs={12} md={12} lg={6} className="box-crm">
+              <Grid item xs={12}>
 
-            <h2 className='blue'>ເກມ</h2>
-            <Game />
-            <h2 className='blue'>ອື່ນໆ</h2>
-            <Others />
+                <h2 className='blue'>ເກມ</h2>
+                <Game />
+                <h2 className='blue'>ອື່ນໆ</h2>
+                <Others />
 
-          </Grid>
-        </Grid>
+              </Grid>
+            </Grid>
+          </>}
 
       </Grid>
     </>

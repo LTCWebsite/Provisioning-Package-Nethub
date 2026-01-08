@@ -93,10 +93,10 @@ function Register3Grab() {
                     <Grid item container xs={12} className={data.name !== "None" && data.status === "Approved" ? 'link-box-success-click' : 'link-box-error-click'}>
                         <Grid item xs={6}><div>ລົງທະບຽນ 3 ແກັບ : </div></Grid>
                         <Grid item xs={5} className="text-right">
-                            <div>{data.name !== "None" ? 'ສໍາເລັດ' : 'ບໍ່ສໍາເລັດ'}</div>
+                            <div>{data.name !== "None" && data.status === "Approved" ? 'ສໍາເລັດ' : 'ບໍ່ສໍາເລັດ'}</div>
                         </Grid>
                         <Grid item xs={1}>
-                            {data.name !== "None" ?
+                            {data.name !== "None" && data.status === "Approved" ?
                                 <CheckCircle className={'link-icon-error'} /> :
                                 <Can className={'link-icon-success'} style={{ paddingTop: 4 }} />}
                         </Grid>
@@ -111,9 +111,9 @@ function Register3Grab() {
                             <Grid item xs={7}><div className='text-right'>{moment(data.autoDate).format("YYYY-MM-DD HH:mm:ss")}</div></Grid>
                             <Grid item xs={5}><div>ສະຖານະເບີ : </div></Grid>
                             <Grid item xs={7}><div className='text-right'>{data.status}</div></Grid>
-                            <Button variant="contained" color="error" className='btn-primary' fullWidth style={{ height: 25, marginTop: 5 }} onClick={_onOrderchange}>
+                            {/* <Button variant="contained" color="error" className='btn-primary' fullWidth style={{ height: 25, marginTop: 5 }} onClick={_onOrderchange}>
                                 <a>Rerun 1Grab</a>
-                            </Button>
+                            </Button> */}
                         </Grid>
                     }
                 </>}
