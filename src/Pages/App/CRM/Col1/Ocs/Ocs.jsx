@@ -11,8 +11,7 @@ import { toast_success, toast_error } from '../../../../../Components/Toast'
 import { MyCrypt, MyCryptTry } from '../../../../../Components/MyCrypt'
 import { AxiosCBS, AxiosFtth, AxiosReq } from '../../../../../Components/Axios'
 import Cookies from 'js-cookie'
-import moment from 'moment'
-import { Divider } from 'antd'
+
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
