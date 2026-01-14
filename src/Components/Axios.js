@@ -65,3 +65,7 @@ export const AxiosSpecialRedeem = axios.create({
 export const AxiosSubscriber = axios.create({
   baseURL: "http://10.30.6.148:5678",
 });
+
+export const AxiosRerunFtth = axios.create({
+  baseURL: "http://172.28.14.151:3002/",
+});

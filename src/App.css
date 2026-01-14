@@ -1186,3 +1186,14 @@ tr .css-1q1u3t4-MuiTableRow-root {
 .ant-picker-dropdown {
   z-index: 1056 !important;
 }
+
+@keyframes flashing {
+  0% { background-color: #ff0000; color: white; }
+  33% { background-color: #ffff00; color: black; }
+  66% { background-color: #008000; color: white; }
+  100% { background-color: #ff0000; color: white; }
+}
+
+.flashing-button {
+  animation: flashing 1s infinite;
+}
