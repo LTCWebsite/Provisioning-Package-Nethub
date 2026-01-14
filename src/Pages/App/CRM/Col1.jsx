@@ -19,6 +19,7 @@ import { MyCrypt } from "../../../Components/MyCrypt"
 import ResetPassCBS from './Col1/Ocs/ResetPassCBS'
 import CusFtthInfo from './Col1/Ocs/cusftthInfo'
 
+
 function Col1() {
     const phone = localStorage.getItem("ONE_PHONE")
     let type = MyCrypt("de", localStorage.getItem("ONE_NETWORK"))
@@ -92,8 +93,6 @@ function Col1() {
                         <Ocs load={load} st={backlist?.currentStatus} cus={cus} />
 
                         {type?.NETWORK_CODE === 'M' || type?.NETWORK_CODE === 'H' || type?.NETWORK_CODE === 'W' ? <Balance /> : null}
-
-
                         <BlackList data={backlist} load={load} />
                         {/* <Grid item container xs={12} className='link-box'>
                         <Grid item xs={4}><p>ResetPasswordCBS</p></Grid>
@@ -105,7 +104,6 @@ function Col1() {
                         {/* <VAS /> */}
                     </Grid>
 
-
                 </Grid>
 
                 {type?.NETWORK_CODE !== 'F' && (<Grid item xs={12} md={12} lg={6} className="box-crm">
@@ -113,10 +111,8 @@ function Col1() {
                     <LifeCycle cb={(e) => setBacklist(e)} load={(e) => setLoad(e)} cbCus={(e) => setCus(e)} />
                     <h2 className='blue'>Mobile Service Data</h2>
                     <MobileService check={check} is5G={is5G} cb={(e) => setCheck(e)} cbis5G={(e) => { setIs5G(e) }} />
-
                     <h2 className='blue'>Application</h2>
                     <Application />
-
                 </Grid>)}
 
             </Grid>

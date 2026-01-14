@@ -10,6 +10,7 @@ import { MyCrypt } from '../../../Components/MyCrypt'
 import OCS_invoice from './Col2/PaymentHistory/OCS_invoice'
 import FtthBundle from './Col2/FtthBundle/FTTHBundleTap'
 import { AxiosReq3 } from '../../../Components/Axios'
+import PopupTable from './Col2/PopupTable/PopupTable'
 import { useEffect } from 'react'
 import cookie from 'js-cookie'
 
@@ -19,7 +20,7 @@ function Col2() {
 
   let type = MyCrypt("de", localStorage.getItem("ONE_NETWORK"))
   const username = localStorage.getItem("USERNAME")
-
+  const [openPopup, setOpenPopup] = useState(false)
   useEffect(() => {
     AxiosReq3.get("CheckUserName101/CheckUserName101?username=" + username, { headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } })
       .then(res => {
@@ -76,6 +77,27 @@ function Col2() {
 
             <h2 className='blue'>FTTH Bundle</h2>
             <FtthBundle />
+            {type?.NETWORK_CODE === 'F' && (
+              <>
+                <br />
+                <button
+                  style={{
+                    backgroundColor: '#dce775',
+                    color: 'black',
+                    padding: '10px 20px',
+                    border: 'none',
+                    borderRadius: '5px',
+                    cursor: 'pointer',
+                    width: '100%',
+                    marginTop: '10px'
+                  }}
+                  onClick={() => setOpenPopup(true)}
+                >
+                  ກົດປຸ່ມ Rerun Package FTTH Bundle
+                </button>
+                <PopupTable open={openPopup} onClose={() => setOpenPopup(false)} />
+              </>
+            )}
           </Grid>
         </Grid>
         {type?.NETWORK_CODE !== 'F' &&
