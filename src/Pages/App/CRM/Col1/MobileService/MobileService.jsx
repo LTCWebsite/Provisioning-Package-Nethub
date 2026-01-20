@@ -239,7 +239,7 @@ function MobileService({ check, is5G, cb, cbis5G }) {
       .then((res) => {
         if (res.status === 200) {
           // console.log("first",res?.data)
-          setDataPk(res?.data?.Data && res?.data?.Data[0] );
+          setDataPk(res?.data?.Data && res?.data?.Data[0]);
           //   setDataPk(prev=>prev.status = false)
         }
 
@@ -297,7 +297,7 @@ function MobileService({ check, is5G, cb, cbis5G }) {
                   CFDialog({
                     st: "5G",
                     message: is5G ? (
-                      <p className="center-cf">ຕ້ອງການ ປິດ 5G ?</p>
+                      <p className="center-cf">ຕ້ອງການ  5G ?</p>
                     ) : (
                       <p className="center-cf">ຕ້ອງການ ເປີດ 5G ?</p>
                     ),
@@ -517,7 +517,7 @@ function MobileService({ check, is5G, cb, cbis5G }) {
                 size="small"
                 disabled
                 checked={smsST}
-                disabled
+
                 onChange={() => {
                   CFDialog({
                     st: "SMS",

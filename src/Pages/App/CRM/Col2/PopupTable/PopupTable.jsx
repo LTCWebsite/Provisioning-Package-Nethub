@@ -15,13 +15,60 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import DialogActions from '@mui/material/DialogActions';
 import CloseIcon from '@mui/icons-material/Close';
 import CircularProgress from '@mui/material/CircularProgress';
+import Button from '@mui/material/Button';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import TextField from '@mui/material/TextField';
 import { AxiosRerunFtth } from '../../../../../Components/Axios';
 
 function Row(props) {
-    const { row } = props;
+    const { row, allMsisdns } = props;
     const [open, setOpen] = useState(false);
+    const [rerunDialogOpen, setRerunDialogOpen] = useState(false);
+    const [selectedMsisdn, setSelectedMsisdn] = useState('');
+    const [selectedPackageName, setSelectedPackageName] = useState('');
+    const [selectedLogId, setSelectedLogId] = useState('');
+
+    const handleRerunClick = (historyRow) => {
+        setSelectedMsisdn(historyRow.Msisdn || '');
+        setSelectedPackageName(historyRow.PackageName || '');
+        setSelectedLogId(historyRow.ID);
+        setRerunDialogOpen(true);
+    };
+
+    const handleRerunConfirm = async () => {
+        try {
+            const responseRerun = await AxiosRerunFtth.post(`/api/ftth-rerun`, {
+                logId: selectedLogId
+            });
+
+            const { success, isdnMcare } = responseRerun.data;
+
+            if (success === true) {
+                alert(isdnMcare + " Rerun ສຳເລັດ");
+                setRerunDialogOpen(false);
+            } else {
+                alert(isdnMcare + " Rerun ບໍ່ສຳເລັດ");
+            }
+
+        } catch (error) {
+            console.error("API Error:", error);
+            alert(error?.response?.data?.message || "Unknown error");
+        }
+    };
+
+
+    const handleRerunCancel = () => {
+        setRerunDialogOpen(false);
+        setSelectedMsisdn('');
+        setSelectedPackageName('');
+        setSelectedLogId('');
+    };
 
     return (
         <React.Fragment>
@@ -80,10 +127,7 @@ function Row(props) {
                                                         cursor: 'pointer',
                                                         fontSize: '12px'
                                                     }}
-                                                    onClick={() => {
-                                                        console.log("Rerun clicked for:", historyRow);
-                                                        //Add rerun API call here
-                                                    }}
+                                                    onClick={() => handleRerunClick(historyRow)}
                                                 >
                                                     Rerun
                                                 </button>
@@ -96,7 +140,57 @@ function Row(props) {
                     </Collapse>
                 </TableCell>
             </TableRow>
-        </React.Fragment>
+
+            {/* Rerun Confirmation Dialog */}
+            <Dialog open={rerunDialogOpen} onClose={handleRerunCancel} maxWidth="sm" fullWidth>
+                <DialogTitle>
+                    <Box display="flex" justifyContent="space-between" alignItems="center">
+                        Confirm Rerun
+                        <IconButton onClick={handleRerunCancel} size="small">
+                            <CloseIcon />
+                        </IconButton>
+                    </Box>
+                </DialogTitle>
+                <DialogContent dividers>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, py: 1 }}>
+                        <TextField
+                            fullWidth
+                            label="MSISDN"
+                            value={selectedMsisdn}
+                            InputProps={{
+                                readOnly: true,
+                            }}
+                            variant="outlined"
+                        />
+                        <TextField
+                            fullWidth
+                            label="Package Name"
+                            value={selectedPackageName}
+                            InputProps={{
+                                readOnly: true,
+                            }}
+                            variant="outlined"
+                        />
+                    </Box>
+                </DialogContent>
+                <DialogActions sx={{ px: 3, py: 2 }}>
+                    <Button
+                        variant="outlined"
+                        color="inherit"
+                        onClick={handleRerunCancel}
+                    >
+                        Cancel
+                    </Button>
+                    <Button
+                        variant="contained"
+                        color="success"
+                        onClick={handleRerunConfirm}
+                    >
+                        Confirm
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </React.Fragment >
     );
 }
 
@@ -122,8 +216,11 @@ export default function PopupTable({ open, onClose }) {
                 setLoading(false);
                 return;
             }
-            const response = await AxiosRerunFtth.get(`/api/ftth-rerun-list/${phone}`);
-            let data = response.data;
+            const responseInfo = await AxiosRerunFtth.post(`/api/ftth-rerun-list`, {
+                ftth: phone,
+                roles: ["Administrator", "User", "Guest"]
+            });
+            let data = responseInfo.data;
             if (data && Array.isArray(data)) {
                 setRows(data);
             } else if (data && data.data && Array.isArray(data.data)) {
@@ -139,6 +236,23 @@ export default function PopupTable({ open, onClose }) {
             setLoading(false);
         }
     };
+
+    // Collect all unique Msisdn values from all rows
+    const getAllMsisdns = () => {
+        const msisdnSet = new Set();
+        rows.forEach(row => {
+            if (row.Tbllogs && Array.isArray(row.Tbllogs)) {
+                row.Tbllogs.forEach(log => {
+                    if (log.Msisdn) {
+                        msisdnSet.add(log.Msisdn);
+                    }
+                });
+            }
+        });
+        return Array.from(msisdnSet);
+    };
+
+    const allMsisdns = getAllMsisdns();
 
     return (
         <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
@@ -175,7 +289,7 @@ export default function PopupTable({ open, onClose }) {
                             </TableHead>
                             <TableBody>
                                 {rows.map((row, index) => (
-                                    <Row key={index} row={row} />
+                                    <Row key={index} row={row} allMsisdns={allMsisdns} />
                                 ))}
                             </TableBody>
                         </Table>

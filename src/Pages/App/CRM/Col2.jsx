@@ -104,12 +104,10 @@ function Col2() {
           <>
             <Grid container item xs={12} md={12} lg={6} className="box-crm">
               <Grid item xs={12}>
-
                 <h2 className='blue'>ເກມ</h2>
                 <Game />
                 <h2 className='blue'>ອື່ນໆ</h2>
                 <Others />
-
               </Grid>
             </Grid>
           </>}
