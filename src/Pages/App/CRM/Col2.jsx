@@ -77,27 +77,6 @@ function Col2() {
 
             <h2 className='blue'>FTTH Bundle</h2>
             <FtthBundle />
-            {type?.NETWORK_CODE === 'F' && (
-              <>
-                <br />
-                <button
-                  style={{
-                    backgroundColor: '#dce775',
-                    color: 'black',
-                    padding: '10px 20px',
-                    border: 'none',
-                    borderRadius: '5px',
-                    cursor: 'pointer',
-                    width: '100%',
-                    marginTop: '10px'
-                  }}
-                  onClick={() => setOpenPopup(true)}
-                >
-                  ກົດປຸ່ມ Rerun Package FTTH Bundle
-                </button>
-                <PopupTable open={openPopup} onClose={() => setOpenPopup(false)} />
-              </>
-            )}
           </Grid>
         </Grid>
         {type?.NETWORK_CODE !== 'F' &&
