@@ -123,15 +123,16 @@ function Row(props) {
                                             <TableCell>
                                                 <button
                                                     style={{
-                                                        backgroundColor: '#4CAF50',
-                                                        color: 'white',
+                                                        backgroundColor: historyRow.RerunStatus === false ? '#ccc' : '#4CAF50',
+                                                        color: historyRow.RerunStatus === false ? '#666' : 'white',
                                                         padding: '5px 15px',
                                                         border: 'none',
                                                         borderRadius: '4px',
-                                                        cursor: 'pointer',
+                                                        cursor: historyRow.RerunStatus === false ? 'not-allowed' : 'pointer',
                                                         fontSize: '12px'
                                                     }}
                                                     onClick={() => handleRerunClick(historyRow)}
+                                                    disabled={historyRow.RerunStatus === false}
                                                 >
                                                     Rerun
                                                 </button>
