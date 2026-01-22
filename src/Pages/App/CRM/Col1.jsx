@@ -21,6 +21,7 @@ import ResetPassCBS from './Col1/Ocs/ResetPassCBS'
 import CusFtthInfo from './Col1/Ocs/cusftthInfo'
 import FtthBundleMsisdn from './Col1/Bundle/FtthBundle'
 import PopupTable from './Col2/PopupTable/PopupTable'
+import PopupFtthFreeMsisdn from './Col2/PopupTable/PopupFtthFreeMsisdn'
 
 
 function Col1() {
@@ -34,7 +35,7 @@ function Col1() {
     const [cus, setCus] = useState()
     const [ocs, setOcs] = useState('')
     const [ocsSt, setOcsSt] = useState('')
-    const { ftthData, ftthShow, rerunRows, rerunLoading, rerunError, fetchRerunList } = useFtthInfo(type?.NETWORK_CODE)
+    const { ftthData, ftthShow, ftthFreeMsisdn, ftthFreeMsisdnShow, ftthBookingList, ftthBookingShow, rerunRows, rerunLoading, rerunError, fetchRerunList, fetchFtthBookingList, fetchFtthData } = useFtthInfo(type?.NETWORK_CODE)
 
     useEffect(() => {
         let phone = localStorage.getItem("ONE_PHONE")
@@ -127,14 +128,16 @@ function Col1() {
                         rows={rerunRows} 
                         loading={rerunLoading} 
                         error={rerunError} 
-                        fetchData={fetchRerunList} 
+                        fetchData={fetchRerunList}
+                        onRefreshFtth={fetchFtthData}
                     />
                     <h2 className='blue'>FTTH Free Number</h2>
-                    <PopupTable 
-                        rows={rerunRows} 
-                        loading={rerunLoading} 
-                        error={rerunError} 
-                        fetchData={fetchRerunList} 
+                    <PopupFtthFreeMsisdn 
+                        rows={ftthFreeMsisdn || []} 
+                        loading={!ftthFreeMsisdnShow} 
+                        bookingRows={ftthBookingList || []}
+                        bookingLoading={!ftthBookingShow}
+                        fetchBookingData={fetchFtthBookingList}
                     />
                 </Grid>)}
 

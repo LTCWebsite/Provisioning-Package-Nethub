@@ -10,19 +10,43 @@ const useFtthInfo = (networkCode) => {
     const [rerunLoading, setRerunLoading] = useState(false);
     const [rerunError, setRerunError] = useState(null);
 
+    const [ftthFreeMsisdn, setFtthFreeMsisdn] = useState(null);
+    const [ftthFreeMsisdnShow, setFtthFreeMsisdnShow] = useState(false);
+    const [ftthBookingList, setFtthBookingList] = useState(null);
+    const [ftthBookingShow, setFtthBookingShow] = useState(false);
+
+    const fetchFtthData = useCallback(async () => {
+        if (networkCode !== 'F') {
+            return;
+        }
+        setFtthShow(false);
+        await AxiosFtth.post("api/ftth", {
+            "msisdn": localStorage.getItem("ONE_PHONE"),
+            "bussinessCode": "onescreen",
+            "transactionId": "ftth1234",
+            "username": "APISUPERAPP",
+            "password": "sQQF82VgLz8YOqcDrQhrkteKEQdoPlzQAiYqmtbeChwYaF2eqTcdHw/0r+U+lXM4"
+        }).then(res => {
+            if (res.status === 200) {
+                setFtthData(res.data.customer_info);
+                setFtthShow(true);
+            }
+        }).catch(er => {
+            console.log(er);
+        });
+    }, [networkCode]);
+
+    useEffect(() => {
+        fetchFtthData();
+    }, [fetchFtthData]);
+
     useEffect(() => {
         if (networkCode === 'F') {
             setFtthShow(false);
-            AxiosFtth.post("api/ftth", {
-                "msisdn": localStorage.getItem("ONE_PHONE"),
-                "bussinessCode": "onescreen",
-                "transactionId": "ftth1234",
-                "username": "APISUPERAPP",
-                "password": "sQQF82VgLz8YOqcDrQhrkteKEQdoPlzQAiYqmtbeChwYaF2eqTcdHw/0r+U+lXM4"
-            }).then(res => {
+            AxiosFtth.get("api/ftth-free-msisdn").then(res => {
                 if (res.status === 200) {
-                    setFtthData(res.data.customer_info);
-                    setFtthShow(true);
+                    setFtthFreeMsisdn(res.data.data);
+                    setFtthFreeMsisdnShow(true);
                 }
             }).catch(er => {
                 console.log(er);
@@ -65,7 +89,21 @@ const useFtthInfo = (networkCode) => {
         }
     }, [networkCode]);
 
-    return { ftthData, ftthShow, rerunRows, rerunLoading, rerunError, fetchRerunList };
+    const fetchFtthBookingList = useCallback(async () => {
+        if (networkCode !== 'F') {
+            return;
+        }
+        await AxiosFtth.get("api/ftth-book/" + localStorage.getItem("ONE_PHONE")).then(res => {
+            if (res.status === 200) {
+                setFtthBookingList(res.data.data);
+                setFtthBookingShow(true);
+            }
+        }).catch(er => {
+            console.log(er);
+        });
+    }, [networkCode]);
+
+    return { ftthData, ftthShow, ftthFreeMsisdn, ftthFreeMsisdnShow, ftthBookingList, ftthBookingShow, rerunRows, rerunLoading, rerunError, fetchRerunList, fetchFtthBookingList, fetchFtthData };
 };
 
 export default useFtthInfo;

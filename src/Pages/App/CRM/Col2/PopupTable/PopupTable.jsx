@@ -31,7 +31,7 @@ import AutorenewIcon from '@mui/icons-material/Autorenew';
 
 
 function Row(props) {
-    const { row, allMsisdns } = props;
+    const { row, allMsisdns, onRefreshFtth } = props;
     const [open, setOpen] = useState(false);
     const [rerunDialogOpen, setRerunDialogOpen] = useState(false);
     const [selectedMsisdn, setSelectedMsisdn] = useState('');
@@ -56,6 +56,9 @@ function Row(props) {
             if (success === true) {
                 alert(isdnMcare + " Rerun ສຳເລັດ");
                 setRerunDialogOpen(false);
+                if (onRefreshFtth) {
+                    onRefreshFtth();
+                }
             } else {
                 alert(isdnMcare + " Rerun ບໍ່ສຳເລັດ");
             }
@@ -199,7 +202,7 @@ function Row(props) {
     );
 }
 
-export default function PopupTable({ rows = [], loading = false, error = null, fetchData }) {
+export default function PopupTable({ rows = [], loading = false, error = null, fetchData, onRefreshFtth }) {
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
@@ -290,7 +293,7 @@ export default function PopupTable({ rows = [], loading = false, error = null, f
                             </TableHead>
                             <TableBody>
                                 {rows.map((row, index) => (
-                                    <Row key={index} row={row} allMsisdns={allMsisdns} />
+                                    <Row key={index} row={row} allMsisdns={allMsisdns} onRefreshFtth={onRefreshFtth} />
                                 ))}
                             </TableBody>
                         </Table>
