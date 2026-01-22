@@ -143,7 +143,15 @@ export default function PopupFtthFreeMsisdn({ rows = [], loading = false, error 
             </Dialog>
 
             {/* MSISDN Selection Dialog */}
-            <Dialog open={confirmDialogOpen} onClose={handleConfirmClose} maxWidth="lg" fullWidth>
+            <Dialog 
+                open={confirmDialogOpen} 
+                onClose={handleConfirmClose} 
+                maxWidth="lg" 
+                fullWidth
+                PaperProps={{
+                    sx: { minHeight: '60vh' }
+                }}
+            >
                 <DialogTitle>
                     <Box display="flex" justifyContent="space-between" alignItems="center">
                         ເລືອກເບີ MSISDN
@@ -158,7 +166,7 @@ export default function PopupFtthFreeMsisdn({ rows = [], loading = false, error 
                             <Typography>ບໍ່ມີເບີໃຫ້ເລືອກ</Typography>
                         </Box>
                     ) : (
-                        <Box sx={{ maxHeight: 300, overflowY: 'auto' }}>
+                        <Box sx={{ maxHeight: '50vh', overflowY: 'auto' }}>
                             <Grid container spacing={1}>
                                 {rows.filter(item => item.Msisdn && item.Msisdn.trim() !== '').map((msisdn, index) => (
                                     <Grid item xs={6} sm={4} md={3} lg={2.4} xl={2} key={msisdn.ID || index}>
@@ -169,7 +177,7 @@ export default function PopupFtthFreeMsisdn({ rows = [], loading = false, error 
                                                 alignItems: 'center',
                                                 justifyContent: 'center',
                                                 px: 1.5,
-                                                py: 2,
+                                                py: 3,
                                                 border: '1px solid #e0e0e0',
                                                 borderRadius: 1,
                                                 cursor: 'pointer',
