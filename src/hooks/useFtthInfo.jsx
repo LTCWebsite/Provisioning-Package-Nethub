@@ -43,9 +43,10 @@ const useFtthInfo = (networkCode) => {
                 setRerunLoading(false);
                 return;
             }
+            const roles = JSON.parse(localStorage.getItem("ONE_ROLES") || "[]");
             const responseInfo = await AxiosRerunFtth.post(`/api/ftth-rerun-list`, {
                 ftth: phone,
-                roles: ["Administrator", "User", "Guest"]
+                roles: roles
             });
             let data = responseInfo.data;
             if (data && Array.isArray(data)) {
