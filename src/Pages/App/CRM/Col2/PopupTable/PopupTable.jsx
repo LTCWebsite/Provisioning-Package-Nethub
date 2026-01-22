@@ -115,8 +115,8 @@ function Row(props) {
                                     {row.Tbllogs && row.Tbllogs.map((historyRow, index) => (
                                         <TableRow key={index}>
                                             <TableCell>{historyRow.Msisdn}</TableCell>
-                                            <TableCell>{historyRow.PackageAmount}</TableCell>
-                                            <TableCell>{historyRow.PaymentAmount}</TableCell>
+                                            <TableCell>{historyRow.PackageAmount?.toLocaleString()}</TableCell>
+                                            <TableCell>{historyRow.PaymentAmount?.toLocaleString()}</TableCell>
                                             <TableCell>{historyRow.PackageName}</TableCell>
                                             <TableCell>{historyRow.ResultDesc}</TableCell>
                                             <TableCell>{historyRow.StartDate}</TableCell>
