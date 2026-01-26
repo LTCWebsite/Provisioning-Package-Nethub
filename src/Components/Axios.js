@@ -9,7 +9,7 @@ export const AxiosAPI = axios.create({
   },
 });
 export const AxiosFtth = axios.create({
-  baseURL: "http://172.28.14.151:3001/"
+  baseURL: "http://172.28.14.151:3002/"
 })
 
 export const AxiosReq = axios.create({

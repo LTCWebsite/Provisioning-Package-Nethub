@@ -25,9 +25,13 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 import { AxiosRerunFtth } from '../../../../../Components/Axios';
+// Note: AxiosRerunFtth is still used for the rerun action in Row component
+import { Grid, Skeleton } from '@mui/material';
+import AutorenewIcon from '@mui/icons-material/Autorenew';
+
 
 function Row(props) {
-    const { row, allMsisdns } = props;
+    const { row, allMsisdns, onRefreshFtth } = props;
     const [open, setOpen] = useState(false);
     const [rerunDialogOpen, setRerunDialogOpen] = useState(false);
     const [selectedMsisdn, setSelectedMsisdn] = useState('');
@@ -52,6 +56,9 @@ function Row(props) {
             if (success === true) {
                 alert(isdnMcare + " Rerun ສຳເລັດ");
                 setRerunDialogOpen(false);
+                if (onRefreshFtth) {
+                    onRefreshFtth();
+                }
             } else {
                 alert(isdnMcare + " Rerun ບໍ່ສຳເລັດ");
             }
@@ -111,23 +118,24 @@ function Row(props) {
                                     {row.Tbllogs && row.Tbllogs.map((historyRow, index) => (
                                         <TableRow key={index}>
                                             <TableCell>{historyRow.Msisdn}</TableCell>
-                                            <TableCell>{historyRow.PackageAmount}</TableCell>
-                                            <TableCell>{historyRow.PaymentAmount}</TableCell>
+                                            <TableCell>{historyRow.PackageAmount?.toLocaleString()}</TableCell>
+                                            <TableCell>{historyRow.PaymentAmount?.toLocaleString()}</TableCell>
                                             <TableCell>{historyRow.PackageName}</TableCell>
                                             <TableCell>{historyRow.ResultDesc}</TableCell>
                                             <TableCell>{historyRow.StartDate}</TableCell>
                                             <TableCell>
                                                 <button
                                                     style={{
-                                                        backgroundColor: '#4CAF50',
-                                                        color: 'white',
+                                                        backgroundColor: historyRow.RerunStatus === false ? '#ccc' : '#4CAF50',
+                                                        color: historyRow.RerunStatus === false ? '#666' : 'white',
                                                         padding: '5px 15px',
                                                         border: 'none',
                                                         borderRadius: '4px',
-                                                        cursor: 'pointer',
+                                                        cursor: historyRow.RerunStatus === false ? 'not-allowed' : 'pointer',
                                                         fontSize: '12px'
                                                     }}
                                                     onClick={() => handleRerunClick(historyRow)}
+                                                    disabled={historyRow.RerunStatus === false}
                                                 >
                                                     Rerun
                                                 </button>
@@ -194,48 +202,19 @@ function Row(props) {
     );
 }
 
-export default function PopupTable({ open, onClose }) {
-    const [rows, setRows] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+export default function PopupTable({ rows = [], loading = false, error = null, fetchData, onRefreshFtth }) {
+    const [open, setOpen] = useState(false);
 
     useEffect(() => {
-        if (open) {
+        if (fetchData) {
             fetchData();
         }
-    }, [open]);
+    }, [fetchData]);
 
-    const fetchData = async () => {
-        setLoading(true);
-        setError(null);
-        try {
-            const phone = localStorage.getItem("ONE_PHONE");
-            console.log("Fetching data for phone:", phone);
-            if (!phone) {
-                setError("Cannot find phone number");
-                setLoading(false);
-                return;
-            }
-            const responseInfo = await AxiosRerunFtth.post(`/api/ftth-rerun-list`, {
-                ftth: phone,
-                roles: ["Administrator", "User", "Guest"]
-            });
-            let data = responseInfo.data;
-            if (data && Array.isArray(data)) {
-                setRows(data);
-            } else if (data && data.data && Array.isArray(data.data)) {
-                setRows(data.data);
-            } else if (data && typeof data === 'object' && !Array.isArray(data)) {
-                setRows([data]);
-            } else {
-                setRows([]);
-            }
-        } catch (err) {
-            setError("Error cannot fetch data " + (err.message || "Unknown error"));
-        } finally {
-            setLoading(false);
-        }
+    const handleOpen = () => {
+        setOpen(true);
     };
+    const handleClose = () => setOpen(false);
 
     // Collect all unique Msisdn values from all rows
     const getAllMsisdns = () => {
@@ -255,15 +234,40 @@ export default function PopupTable({ open, onClose }) {
     const allMsisdns = getAllMsisdns();
 
     return (
-        <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
-            <DialogTitle>
-                <Box display="flex" justifyContent="space-between" alignItems="center">
-                    Rerun Package FTTH Bundle
-                    <IconButton onClick={onClose}>
-                        <CloseIcon />
-                    </IconButton>
-                </Box>
-            </DialogTitle>
+        <>
+            {/* <button
+                style={{
+                    backgroundColor: '#dce775',
+                    color: 'black',
+                    padding: '10px 20px',
+                    border: 'none',
+                    borderRadius: '5px',
+                    cursor: 'pointer',
+                    width: '100%',
+                    marginTop: '10px'
+                }}
+                onClick={handleOpen}
+            >
+                ກົດປຸ່ມ Rerun Package FTTH Bundle
+            </button> */}
+            <Grid container>
+                <Grid item xs={12} container className='link-box-pointer' onClick={handleOpen}>
+                    <Grid item xs={2}><AutorenewIcon /></Grid>
+                    <Grid item xs={6}>ລາຍການ Rerun </Grid>
+                    <Grid item xs={4}>
+                        {loading ? <Skeleton animation="wave" /> : <div className={rows.length > 0 ? 'text-right bage-success' : 'text-right bage-error'}><u>{rows.length}</u></div>}
+                    </Grid>
+                </Grid>
+            </Grid>
+            <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
+                <DialogTitle>
+                    <Box display="flex" justifyContent="space-between" alignItems="center">
+                        Rerun Package FTTH Bundle
+                        <IconButton onClick={handleClose}>
+                            <CloseIcon />
+                        </IconButton>
+                    </Box>
+                </DialogTitle>
             <DialogContent dividers>
                 {loading ? (
                     <Box display="flex" justifyContent="center" alignItems="center" py={4}>
@@ -289,7 +293,7 @@ export default function PopupTable({ open, onClose }) {
                             </TableHead>
                             <TableBody>
                                 {rows.map((row, index) => (
-                                    <Row key={index} row={row} allMsisdns={allMsisdns} />
+                                    <Row key={index} row={row} allMsisdns={allMsisdns} onRefreshFtth={onRefreshFtth} />
                                 ))}
                             </TableBody>
                         </Table>
@@ -297,5 +301,6 @@ export default function PopupTable({ open, onClose }) {
                 )}
             </DialogContent>
         </Dialog>
+        </>
     );
 }

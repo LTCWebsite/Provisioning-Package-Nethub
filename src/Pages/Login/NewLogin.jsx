@@ -79,6 +79,12 @@ export default function NewLogin() {
                     let user_detail = res.data
                     console.log("user detail", user_detail)
 
+                    // Extract roles from user array
+                    const userRoles = res.data?.user
+                        ?.filter(item => item.type?.includes('role'))
+                        ?.map(item => item.value) || [];
+                    console.log("User roles:", userRoles);
+
                     let token = res.data?.token
                     let sendData = {
                         staff_id: data.username,
@@ -89,6 +95,7 @@ export default function NewLogin() {
                             Cookies.set("ONE_TOKEN", token, { expires: 2 / 24 })
                             localStorage.setItem("ONE_DETAIL", Crypt({ Type: "crypt", Value: JSON.stringify(user_detail) }))
                             localStorage.setItem("ONE_USER_ROLE", Crypt({ Type: "crypt", Value: JSON.stringify(user_role) }))
+                            localStorage.setItem("ONE_ROLES", JSON.stringify(userRoles))
                             localStorage.setItem("USERNAME", res?.data?.username)
                             localStorage.setItem("PASSWORDEXPIRED", res.data.isExpired)
 
