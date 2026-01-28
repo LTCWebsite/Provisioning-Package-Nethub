@@ -49,7 +49,7 @@ export default function PopupFtthFreeMsisdn({ rows = [], loading = false, error 
             console.log("Selected booking row:", selectedRow);
             console.log("Chosen MSISDN:", msisdn);
 
-            // Call API with Id and msisdn
+
             const response = await AxiosRerunFtth.post('/api/ftth-book', {
                 bookId: selectedRow?.Id,
                 freeMsisdn: msisdn.Msisdn
