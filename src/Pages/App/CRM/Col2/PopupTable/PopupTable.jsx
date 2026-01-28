@@ -24,6 +24,7 @@ import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
+import { toast_success, toast_error } from "../../../../../Components/Toast";
 import { AxiosRerunFtth } from '../../../../../Components/Axios';
 // Note: AxiosRerunFtth is still used for the rerun action in Row component
 import { Grid, Skeleton } from '@mui/material';
@@ -54,21 +55,20 @@ function Row(props) {
             const { success, isdnMcare } = responseRerun.data;
 
             if (success === true) {
-                alert(isdnMcare + " Rerun ສຳເລັດ");
+                toast_success(isdnMcare + " Rerun ສຳເລັດ");
                 setRerunDialogOpen(false);
                 if (onRefreshFtth) {
                     onRefreshFtth();
                 }
             } else {
-                alert(isdnMcare + " Rerun ບໍ່ສຳເລັດ");
+                toast_error(isdnMcare + " Rerun ບໍ່ສຳເລັດ");
             }
 
         } catch (error) {
             console.error("API Error:", error);
-            alert(error?.response?.data?.message || "Unknown error");
+            toast_error(error?.response?.data?.message || "Unknown error");
         }
     };
-
 
     const handleRerunCancel = () => {
         setRerunDialogOpen(false);
@@ -268,39 +268,39 @@ export default function PopupTable({ rows = [], loading = false, error = null, f
                         </IconButton>
                     </Box>
                 </DialogTitle>
-            <DialogContent dividers>
-                {loading ? (
-                    <Box display="flex" justifyContent="center" alignItems="center" py={4}>
-                        <CircularProgress />
-                    </Box>
-                ) : error ? (
-                    <Box display="flex" justifyContent="center" alignItems="center" py={4}>
-                        <Typography color="error">{error}</Typography>
-                    </Box>
-                ) : rows.length === 0 ? (
-                    <Box display="flex" justifyContent="center" alignItems="center" py={4}>
-                        <Typography>No Data</Typography>
-                    </Box>
-                ) : (
-                    <TableContainer component={Paper}>
-                        <Table aria-label="collapsible table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell />
-                                    <TableCell>PHONE</TableCell>
-                                    <TableCell>DATE</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {rows.map((row, index) => (
-                                    <Row key={index} row={row} allMsisdns={allMsisdns} onRefreshFtth={onRefreshFtth} />
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                )}
-            </DialogContent>
-        </Dialog>
+                <DialogContent dividers>
+                    {loading ? (
+                        <Box display="flex" justifyContent="center" alignItems="center" py={4}>
+                            <CircularProgress />
+                        </Box>
+                    ) : error ? (
+                        <Box display="flex" justifyContent="center" alignItems="center" py={4}>
+                            <Typography color="error">{error}</Typography>
+                        </Box>
+                    ) : rows.length === 0 ? (
+                        <Box display="flex" justifyContent="center" alignItems="center" py={4}>
+                            <Typography>No Data</Typography>
+                        </Box>
+                    ) : (
+                        <TableContainer component={Paper}>
+                            <Table aria-label="collapsible table">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell />
+                                        <TableCell>PHONE</TableCell>
+                                        <TableCell>DATE</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {rows.map((row, index) => (
+                                        <Row key={index} row={row} allMsisdns={allMsisdns} onRefreshFtth={onRefreshFtth} />
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    )}
+                </DialogContent>
+            </Dialog>
         </>
     );
 }

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { AxiosRerunFtth } from '../../../../../Components/Axios';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Table from '@mui/material/Table';
@@ -43,13 +44,25 @@ export default function PopupFtthFreeMsisdn({ rows = [], loading = false, error 
         setSelectedRow(null);
     };
 
-    const handleChooseMsisdn = (msisdn) => {
-        // TODO: Add API call here to confirm the selection
-        console.log("Selected booking row:", selectedRow);
-        console.log("Chosen MSISDN:", msisdn);
-        alert("ເລືອກເບີ: " + msisdn.Msisdn + " ສຳເລັດ");
-        setConfirmDialogOpen(false);
-        setSelectedRow(null);
+    const handleChooseMsisdn = async (msisdn) => {
+        try {
+            console.log("Selected booking row:", selectedRow);
+            console.log("Chosen MSISDN:", msisdn);
+
+            // Call API with Id and msisdn
+            const response = await AxiosRerunFtth.post('/api/ftth-book', {
+                bookId: selectedRow?.Id,
+                freeMsisdn: msisdn.Msisdn
+            });
+
+            console.log("API Response:", response.data);
+            alert("ເລືອກເບີ: " + msisdn.Msisdn + " ສຳເລັດ");
+            setConfirmDialogOpen(false);
+            setSelectedRow(null);
+        } catch (error) {
+            console.error("API Error:", error);
+            alert("ເກີດຂໍ້ຜິດພາດ: " + (error.response?.data?.message || error.message));
+        }
     };
 
     const formatDate = (dateString) => {
@@ -143,10 +156,10 @@ export default function PopupFtthFreeMsisdn({ rows = [], loading = false, error 
             </Dialog>
 
             {/* MSISDN Selection Dialog */}
-            <Dialog 
-                open={confirmDialogOpen} 
-                onClose={handleConfirmClose} 
-                maxWidth="lg" 
+            <Dialog
+                open={confirmDialogOpen}
+                onClose={handleConfirmClose}
+                maxWidth="lg"
                 fullWidth
                 PaperProps={{
                     sx: { minHeight: '60vh' }
@@ -154,7 +167,7 @@ export default function PopupFtthFreeMsisdn({ rows = [], loading = false, error 
             >
                 <DialogTitle>
                     <Box display="flex" justifyContent="space-between" alignItems="center">
-                        ເລືອກເບີ MSISDN
+                        ເລືອກເບີ MSISDN {selectedRow?.Id ? `(ID: ${selectedRow.Id})` : ''}
                         <IconButton onClick={handleConfirmClose} size="small">
                             <CloseIcon />
                         </IconButton>

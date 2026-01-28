@@ -45,7 +45,7 @@ export const AlertError = (text) => {
   })
 }
 
-export const toast_success = ({ text }) => {
+export const toast_success = (text) => {
   toast.success(text, {
     position: "top-right",
     autoClose: 5000,
@@ -55,8 +55,8 @@ export const toast_success = ({ text }) => {
     draggable: true,
     progress: undefined,
   })
-} 
-export const toast_error = ({ text }) => {
+}
+export const toast_error = (text) => {
   toast.error(text, {
     position: "top-right",
     autoClose: 5000,
