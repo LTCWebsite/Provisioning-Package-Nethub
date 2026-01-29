@@ -20,6 +20,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { Grid, Skeleton } from '@mui/material';
 import SimCardIcon from '@mui/icons-material/SimCard';
+import { toast_success, toast_error } from "../../../../../Components/Toast";
 
 export default function PopupFtthFreeMsisdn({ rows = [], loading = false, error = null, bookingRows = [], bookingLoading = false, fetchBookingData }) {
     const [open, setOpen] = useState(false);
@@ -56,12 +57,12 @@ export default function PopupFtthFreeMsisdn({ rows = [], loading = false, error 
             });
 
             console.log("API Response:", response.data);
-            alert("ເລືອກເບີ: " + msisdn.Msisdn + " ສຳເລັດ");
+            toast_success("ເລືອກເບີ: " + msisdn.Msisdn + " ສຳເລັດ");
             setConfirmDialogOpen(false);
             setSelectedRow(null);
         } catch (error) {
             console.error("API Error:", error);
-            alert("ເກີດຂໍ້ຜິດພາດ: " + (error.response?.data?.message || error.message));
+            toast_error("ເກີດຂໍ້ຜິດພາດ: " + (error.response?.data?.message || error.message));
         }
     };
 
