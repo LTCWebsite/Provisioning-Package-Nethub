@@ -15,13 +15,67 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import DialogActions from '@mui/material/DialogActions';
 import CloseIcon from '@mui/icons-material/Close';
 import CircularProgress from '@mui/material/CircularProgress';
+import Button from '@mui/material/Button';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import TextField from '@mui/material/TextField';
+import { toast_success, toast_error } from "../../../../../Components/Toast";
 import { AxiosRerunFtth } from '../../../../../Components/Axios';
+// Note: AxiosRerunFtth is still used for the rerun action in Row component
+import { Grid, Skeleton } from '@mui/material';
+import AutorenewIcon from '@mui/icons-material/Autorenew';
+
 
 function Row(props) {
-    const { row } = props;
+    const { row, allMsisdns, onRefreshFtth } = props;
     const [open, setOpen] = useState(false);
+    const [rerunDialogOpen, setRerunDialogOpen] = useState(false);
+    const [selectedMsisdn, setSelectedMsisdn] = useState('');
+    const [selectedPackageName, setSelectedPackageName] = useState('');
+    const [selectedLogId, setSelectedLogId] = useState('');
+
+    const handleRerunClick = (historyRow) => {
+        setSelectedMsisdn(historyRow.Msisdn || '');
+        setSelectedPackageName(historyRow.PackageName || '');
+        setSelectedLogId(historyRow.ID);
+        setRerunDialogOpen(true);
+    };
+
+    const handleRerunConfirm = async () => {
+        try {
+            const responseRerun = await AxiosRerunFtth.post(`/api/ftth-rerun`, {
+                logId: selectedLogId
+            });
+
+            const { success, isdnMcare } = responseRerun.data;
+
+            if (success === true) {
+                toast_success(isdnMcare + " Rerun ສຳເລັດ");
+                setRerunDialogOpen(false);
+                if (onRefreshFtth) {
+                    onRefreshFtth();
+                }
+            } else {
+                toast_error(isdnMcare + " Rerun ບໍ່ສຳເລັດ");
+            }
+
+        } catch (error) {
+            console.error("API Error:", error);
+            toast_error(error?.response?.data?.message || "Unknown error");
+        }
+    };
+
+    const handleRerunCancel = () => {
+        setRerunDialogOpen(false);
+        setSelectedMsisdn('');
+        setSelectedPackageName('');
+        setSelectedLogId('');
+    };
 
     return (
         <React.Fragment>
@@ -64,26 +118,24 @@ function Row(props) {
                                     {row.Tbllogs && row.Tbllogs.map((historyRow, index) => (
                                         <TableRow key={index}>
                                             <TableCell>{historyRow.Msisdn}</TableCell>
-                                            <TableCell>{historyRow.PackageAmount}</TableCell>
-                                            <TableCell>{historyRow.PaymentAmount}</TableCell>
+                                            <TableCell>{historyRow.PackageAmount?.toLocaleString()}</TableCell>
+                                            <TableCell>{historyRow.PaymentAmount?.toLocaleString()}</TableCell>
                                             <TableCell>{historyRow.PackageName}</TableCell>
                                             <TableCell>{historyRow.ResultDesc}</TableCell>
                                             <TableCell>{historyRow.StartDate}</TableCell>
                                             <TableCell>
                                                 <button
                                                     style={{
-                                                        backgroundColor: '#4CAF50',
-                                                        color: 'white',
+                                                        backgroundColor: historyRow.RerunStatus === false ? '#ccc' : '#4CAF50',
+                                                        color: historyRow.RerunStatus === false ? '#666' : 'white',
                                                         padding: '5px 15px',
                                                         border: 'none',
                                                         borderRadius: '4px',
-                                                        cursor: 'pointer',
+                                                        cursor: historyRow.RerunStatus === false ? 'not-allowed' : 'pointer',
                                                         fontSize: '12px'
                                                     }}
-                                                    onClick={() => {
-                                                        console.log("Rerun clicked for:", historyRow);
-                                                        //Add rerun API call here
-                                                    }}
+                                                    onClick={() => handleRerunClick(historyRow)}
+                                                    disabled={historyRow.RerunStatus === false}
                                                 >
                                                     Rerun
                                                 </button>
@@ -96,92 +148,159 @@ function Row(props) {
                     </Collapse>
                 </TableCell>
             </TableRow>
-        </React.Fragment>
+
+            {/* Rerun Confirmation Dialog */}
+            <Dialog open={rerunDialogOpen} onClose={handleRerunCancel} maxWidth="sm" fullWidth>
+                <DialogTitle>
+                    <Box display="flex" justifyContent="space-between" alignItems="center">
+                        Confirm Rerun
+                        <IconButton onClick={handleRerunCancel} size="small">
+                            <CloseIcon />
+                        </IconButton>
+                    </Box>
+                </DialogTitle>
+                <DialogContent dividers>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, py: 1 }}>
+                        <TextField
+                            fullWidth
+                            label="MSISDN"
+                            value={selectedMsisdn}
+                            InputProps={{
+                                readOnly: true,
+                            }}
+                            variant="outlined"
+                        />
+                        <TextField
+                            fullWidth
+                            label="Package Name"
+                            value={selectedPackageName}
+                            InputProps={{
+                                readOnly: true,
+                            }}
+                            variant="outlined"
+                        />
+                    </Box>
+                </DialogContent>
+                <DialogActions sx={{ px: 3, py: 2 }}>
+                    <Button
+                        variant="outlined"
+                        color="inherit"
+                        onClick={handleRerunCancel}
+                    >
+                        Cancel
+                    </Button>
+                    <Button
+                        variant="contained"
+                        color="success"
+                        onClick={handleRerunConfirm}
+                    >
+                        Confirm
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </React.Fragment >
     );
 }
 
-export default function PopupTable({ open, onClose }) {
-    const [rows, setRows] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+export default function PopupTable({ rows = [], loading = false, error = null, fetchData, onRefreshFtth }) {
+    const [open, setOpen] = useState(false);
 
     useEffect(() => {
-        if (open) {
+        if (fetchData) {
             fetchData();
         }
-    }, [open]);
+    }, [fetchData]);
 
-    const fetchData = async () => {
-        setLoading(true);
-        setError(null);
-        try {
-            const phone = localStorage.getItem("ONE_PHONE");
-            console.log("Fetching data for phone:", phone);
-            if (!phone) {
-                setError("Cannot find phone number");
-                setLoading(false);
-                return;
+    const handleOpen = () => {
+        setOpen(true);
+    };
+    const handleClose = () => setOpen(false);
+
+    // Collect all unique Msisdn values from all rows
+    const getAllMsisdns = () => {
+        const msisdnSet = new Set();
+        rows.forEach(row => {
+            if (row.Tbllogs && Array.isArray(row.Tbllogs)) {
+                row.Tbllogs.forEach(log => {
+                    if (log.Msisdn) {
+                        msisdnSet.add(log.Msisdn);
+                    }
+                });
             }
-            const response = await AxiosRerunFtth.get(`/api/ftth-rerun-list/${phone}`);
-            let data = response.data;
-            if (data && Array.isArray(data)) {
-                setRows(data);
-            } else if (data && data.data && Array.isArray(data.data)) {
-                setRows(data.data);
-            } else if (data && typeof data === 'object' && !Array.isArray(data)) {
-                setRows([data]);
-            } else {
-                setRows([]);
-            }
-        } catch (err) {
-            setError("Error cannot fetch data " + (err.message || "Unknown error"));
-        } finally {
-            setLoading(false);
-        }
+        });
+        return Array.from(msisdnSet);
     };
 
+    const allMsisdns = getAllMsisdns();
+
     return (
-        <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
-            <DialogTitle>
-                <Box display="flex" justifyContent="space-between" alignItems="center">
-                    Rerun Package FTTH Bundle
-                    <IconButton onClick={onClose}>
-                        <CloseIcon />
-                    </IconButton>
-                </Box>
-            </DialogTitle>
-            <DialogContent dividers>
-                {loading ? (
-                    <Box display="flex" justifyContent="center" alignItems="center" py={4}>
-                        <CircularProgress />
+        <>
+            {/* <button
+                style={{
+                    backgroundColor: '#dce775',
+                    color: 'black',
+                    padding: '10px 20px',
+                    border: 'none',
+                    borderRadius: '5px',
+                    cursor: 'pointer',
+                    width: '100%',
+                    marginTop: '10px'
+                }}
+                onClick={handleOpen}
+            >
+                ກົດປຸ່ມ Rerun Package FTTH Bundle
+            </button> */}
+            <Grid container>
+                <Grid item xs={12} container className='link-box-pointer' onClick={handleOpen}>
+                    <Grid item xs={2}><AutorenewIcon /></Grid>
+                    <Grid item xs={6}>ລາຍການ Rerun </Grid>
+                    <Grid item xs={4}>
+                        {loading ? <Skeleton animation="wave" /> : <div className={rows.length > 0 ? 'text-right bage-success' : 'text-right bage-error'}><u>{rows.length}</u></div>}
+                    </Grid>
+                </Grid>
+            </Grid>
+            <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
+                <DialogTitle>
+                    <Box display="flex" justifyContent="space-between" alignItems="center">
+                        Rerun Package FTTH Bundle
+                        <IconButton onClick={handleClose}>
+                            <CloseIcon />
+                        </IconButton>
                     </Box>
-                ) : error ? (
-                    <Box display="flex" justifyContent="center" alignItems="center" py={4}>
-                        <Typography color="error">{error}</Typography>
-                    </Box>
-                ) : rows.length === 0 ? (
-                    <Box display="flex" justifyContent="center" alignItems="center" py={4}>
-                        <Typography>No Data</Typography>
-                    </Box>
-                ) : (
-                    <TableContainer component={Paper}>
-                        <Table aria-label="collapsible table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell />
-                                    <TableCell>PHONE</TableCell>
-                                    <TableCell>DATE</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {rows.map((row, index) => (
-                                    <Row key={index} row={row} />
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                )}
-            </DialogContent>
-        </Dialog>
+                </DialogTitle>
+                <DialogContent dividers>
+                    {loading ? (
+                        <Box display="flex" justifyContent="center" alignItems="center" py={4}>
+                            <CircularProgress />
+                        </Box>
+                    ) : error ? (
+                        <Box display="flex" justifyContent="center" alignItems="center" py={4}>
+                            <Typography color="error">{error}</Typography>
+                        </Box>
+                    ) : rows.length === 0 ? (
+                        <Box display="flex" justifyContent="center" alignItems="center" py={4}>
+                            <Typography>No Data</Typography>
+                        </Box>
+                    ) : (
+                        <TableContainer component={Paper}>
+                            <Table aria-label="collapsible table">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell />
+                                        <TableCell>PHONE</TableCell>
+                                        <TableCell>DATE</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {rows.map((row, index) => (
+                                        <Row key={index} row={row} allMsisdns={allMsisdns} onRefreshFtth={onRefreshFtth} />
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    )}
+                </DialogContent>
+            </Dialog>
+        </>
     );
 }

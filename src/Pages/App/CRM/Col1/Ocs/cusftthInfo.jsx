@@ -1,38 +1,10 @@
-import { Button, Dialog, Grid, IconButton, Slide, isShowSuccess, setIsShowSuccess } from '@mui/material'
-import { AllInbox, Close, Done } from '@mui/icons-material'
-import { CheckCircle, } from '@mui/icons-material'
+import { Grid } from '@mui/material'
 import { Skeleton } from '@mui/material'
-import React, { useEffect, useState } from 'react'
-import { AxiosFtth, AxiosReq } from '../../../../../Components/Axios'
-import moment from 'moment'
+import React from 'react'
 import 'react-toastify/dist/ReactToastify.css';
 
 
-function CusFtthInfo() {
-
-    const [data, setData] = useState([])
-    const [show, setShow] = useState(false);
-
-    useEffect(() => {
-        setShow(false)
-        AxiosFtth.post("api/ftth",
-            {
-                "msisdn": localStorage.getItem("ONE_PHONE"),
-                "bussinessCode": "onescreen",
-                "transactionId": "ftth1234",
-                "username": "APISUPERAPP",
-                "password": "sQQF82VgLz8YOqcDrQhrkteKEQdoPlzQAiYqmtbeChwYaF2eqTcdHw/0r+U+lXM4"
-            },
-        ).then(res => {
-            if (res.status === 200) {
-                setData(res.data.customer_info)
-                setShow(true)
-            }
-        })
-
-    }, [])
-
-
+function CusFtthInfo({ data, show }) {
     return (
         <>
             {!show ?

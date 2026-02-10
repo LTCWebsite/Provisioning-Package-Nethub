@@ -11,6 +11,7 @@ import LifeCycle from './Col1/LifeCycle'
 import MobileService from './Col1/MobileService/MobileService'
 import Network from './Col1/Network'
 import { AxiosReq } from '../../../Components/Axios'
+import useFtthInfo from '../../../hooks/useFtthInfo'
 import VAS from './Col1/VAS/VAS'
 import Application from './Col1/Application/Application'
 import Ocs from './Col1/Ocs/Ocs'
@@ -18,6 +19,9 @@ import cookie from 'js-cookie'
 import { MyCrypt } from "../../../Components/MyCrypt"
 import ResetPassCBS from './Col1/Ocs/ResetPassCBS'
 import CusFtthInfo from './Col1/Ocs/cusftthInfo'
+import FtthBundleMsisdn from './Col1/Bundle/FtthBundle'
+import PopupTable from './Col2/PopupTable/PopupTable'
+import PopupFtthFreeMsisdn from './Col2/PopupTable/PopupFtthFreeMsisdn'
 
 
 function Col1() {
@@ -31,6 +35,7 @@ function Col1() {
     const [cus, setCus] = useState()
     const [ocs, setOcs] = useState('')
     const [ocsSt, setOcsSt] = useState('')
+    const { ftthData, ftthShow, ftthFreeMsisdn, ftthFreeMsisdnShow, ftthBookingList, ftthBookingShow, rerunRows, rerunLoading, rerunError, fetchRerunList, fetchFtthBookingList, fetchFtthData } = useFtthInfo(type?.NETWORK_CODE)
 
     useEffect(() => {
         let phone = localStorage.getItem("ONE_PHONE")
@@ -68,11 +73,11 @@ function Col1() {
         <>
             <Grid container
             >
-                <Grid item xs={12} md={12} lg={`${type?.NETWORK_CODE === 'F' ? 12 : 6}`} className={`box-crm`}>
+                <Grid item xs={12} md={12} lg={`${type?.NETWORK_CODE === 'F' ? 6 : 6}`} className={`box-crm`}>
                     <Grid item xs={12} md={12} lg={`${type?.NETWORK_CODE === 'F' ? 12 : 12}`}>
                         <Grid item xs={12}><h2 className='blue'>Info</h2></Grid>
                         {type?.NETWORK_CODE === 'F' ?
-                            <CusFtthInfo /> :
+                            <CusFtthInfo data={ftthData} show={ftthShow} /> :
                             <Register3Grab />}
 
                         {/* <BssRegister cb={(e) => setBSS(e)} /> */}
@@ -113,6 +118,27 @@ function Col1() {
                     <MobileService check={check} is5G={is5G} cb={(e) => setCheck(e)} cbis5G={(e) => { setIs5G(e) }} />
                     <h2 className='blue'>Application</h2>
                     <Application />
+                </Grid>)}
+
+                {type?.NETWORK_CODE === 'F' && (<Grid item xs={12} md={12} lg={6} className="box-crm">
+                    <h2 className='blue'>FTTH Bundle (MCare)</h2>
+                    <FtthBundleMsisdn data={ftthData} show={ftthShow} />
+                    <h2 className='blue'>FTTH Rerun</h2>
+                    <PopupTable 
+                        rows={rerunRows} 
+                        loading={rerunLoading} 
+                        error={rerunError} 
+                        fetchData={fetchRerunList}
+                        onRefreshFtth={fetchFtthData}
+                    />
+                    <h2 className='blue'>FTTH Free Number</h2>
+                    <PopupFtthFreeMsisdn 
+                        rows={ftthFreeMsisdn || []} 
+                        loading={!ftthFreeMsisdnShow} 
+                        bookingRows={ftthBookingList || []}
+                        bookingLoading={!ftthBookingShow}
+                        fetchBookingData={fetchFtthBookingList}
+                    />
                 </Grid>)}
 
             </Grid>
