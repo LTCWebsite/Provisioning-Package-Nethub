@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { AxiosRerunFtth } from "../../../../../Components/Axios";
+import { AxiosFtth } from "../../../../../Components/Axios";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Table from "@mui/material/Table";
@@ -80,21 +80,22 @@ export default function PopupFtthFreeMsisdn({
       console.log("Selected booking row:", selectedRow);
       console.log("Chosen MSISDN:", msisdn);
 
-      const response = await AxiosRerunFtth.post("/api/ftth-book", {
+      const response = await AxiosFtth.post("/api/ftth-book", {
         bookId: selectedRow?.Id,
         freeMsisdn: msisdn.Msisdn,
       });
 
       console.log("API Response:", response.data);
-      toast_success("ເລືອກເບີ: " + msisdn.Msisdn + " ສຳເລັດ");
+      toast_success({ text: "ເລືອກເບີ: " + msisdn.Msisdn + " ສຳເລັດ" });
       setConfirmDialogOpen(false);
       setSelectedRow(null);
       fetchBookingData?.();
     } catch (error) {
       console.error("API Error:", error);
-      toast_error(
-        "ເກີດຂໍ້ຜິດພາດ: " + (error.response?.data?.message || error.message),
-      );
+      toast_error({
+        text:
+          "ເກີດຂໍ້ຜິດພາດ: " + (error.response?.data?.message || error.message),
+      });
     }
   };
 
@@ -103,15 +104,15 @@ export default function PopupFtthFreeMsisdn({
     try {
       const result = await unbookFtth(String(row.Id));
       if (result?.success) {
-        toast_success(result.description || "ປົດເບີສຳເລັດ");
+        toast_success({ text: result.description || "ປົດເບີສຳເລັດ" });
         fetchBookingData?.();
       } else {
-        toast_error(result?.description || "ປົດເບີບໍ່ສຳເລັດ");
+        toast_error({ text: result?.description || "ປົດເບີບໍ່ສຳເລັດ" });
       }
     } catch (err) {
-      toast_error(
-        "ເກີດຂໍ້ຜິດພາດ: " + (err.response?.data?.message || err.message),
-      );
+      toast_error({
+        text: "ເກີດຂໍ້ຜິດພາດ: " + (err.response?.data?.message || err.message),
+      });
     }
   };
 

@@ -25,7 +25,7 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import { toast_success, toast_error } from "../../../../../Components/Toast";
-import { AxiosRerunFtth } from "../../../../../Components/Axios";
+import { AxiosFtth } from "../../../../../Components/Axios";
 // Note: AxiosRerunFtth is still used for the rerun action in Row component
 import { Grid, Skeleton } from "@mui/material";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
@@ -47,7 +47,7 @@ function Row(props) {
 
   const handleRerunConfirm = async () => {
     try {
-      const responseRerun = await AxiosRerunFtth.post(`/api/ftth-rerun`, {
+      const responseRerun = await AxiosFtth.post(`/api/ftth-rerun`, {
         logId: selectedLogId,
         username: localStorage.getItem("USERNAME"),
       });
@@ -55,17 +55,17 @@ function Row(props) {
       const { success, isdnMcare } = responseRerun.data;
 
       if (success === true) {
-        toast_success(isdnMcare + " Rerun ສຳເລັດ");
+        toast_success({ text: isdnMcare + " Rerun ສຳເລັດ" });
         setRerunDialogOpen(false);
         if (onRefreshFtth) {
           onRefreshFtth();
         }
       } else {
-        toast_error(isdnMcare + " Rerun ບໍ່ສຳເລັດ");
+        toast_error({ text: isdnMcare + " Rerun ບໍ່ສຳເລັດ" });
       }
     } catch (error) {
       console.error("API Error:", error);
-      toast_error(error?.response?.data?.message || "Unknown error");
+      toast_error({ text: error?.response?.data?.message || "Unknown error" });
     }
   };
 

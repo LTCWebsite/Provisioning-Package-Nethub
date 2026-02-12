@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { AxiosFtth, AxiosRerunFtth } from "../Components/Axios";
+import { AxiosFtth } from "../Components/Axios";
 
 const useFtthInfo = (networkCode) => {
   const [ftthData, setFtthData] = useState(null);
@@ -73,7 +73,7 @@ const useFtthInfo = (networkCode) => {
         return;
       }
       const roles = JSON.parse(localStorage.getItem("ONE_ROLES") || "[]");
-      const responseInfo = await AxiosRerunFtth.post(`/api/ftth-rerun-list`, {
+      const responseInfo = await AxiosFtth.post(`/api/ftth-rerun-list`, {
         ftth: phone,
         roles: roles,
       });
