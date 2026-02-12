@@ -11,7 +11,7 @@ export const AlertSuccess = ({ text }) => {
     progress: undefined,
   })
 }
-export const AlertInfo = (text) => {
+export const AlertInfo = ({text}) => {
   toast.info(text, {
     position: "top-right",
     autoClose: 5000,
@@ -22,7 +22,7 @@ export const AlertInfo = (text) => {
     progress: undefined,
   })
 }
-export const AlertWarning = (text) => {
+export const AlertWarning = ({text}) => {
   toast.warning(text, {
     position: "top-right",
     autoClose: 5000,
@@ -33,7 +33,7 @@ export const AlertWarning = (text) => {
     progress: undefined,
   })
 }
-export const AlertError = (text) => {
+export const AlertError = ({text}) => {
   toast.error(text, {
     position: "top-right",
     autoClose: 5000,
@@ -45,7 +45,7 @@ export const AlertError = (text) => {
   })
 }
 
-export const toast_success = (text) => {
+export const toast_success = ({text}) => {
   toast.success(text, {
     position: "top-right",
     autoClose: 5000,
@@ -56,7 +56,7 @@ export const toast_success = (text) => {
     progress: undefined,
   })
 }
-export const toast_error = (text) => {
+export const toast_error = ({text}) => {
   toast.error(text, {
     position: "top-right",
     autoClose: 5000,
