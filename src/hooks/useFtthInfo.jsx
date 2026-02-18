@@ -117,6 +117,7 @@ const useFtthInfo = (networkCode) => {
       roles ?? JSON.parse(localStorage.getItem("ONE_ROLES") || "[]");
     const res = await AxiosFtth.post("api/ftth-unbook", {
       bookId: String(bookId),
+      username: localStorage.getItem("USERNAME"),
       roles: rolesToSend,
     });
     return res.data;
