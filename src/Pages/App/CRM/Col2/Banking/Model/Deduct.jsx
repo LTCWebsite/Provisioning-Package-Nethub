@@ -10,7 +10,7 @@ function Deduct() {
     const [data, setData] = React.useState([])
     React.useEffect(() => {
         var phone = localStorage.getItem("ONE_PHONE")
-        AxiosReq.get("DeductfadaoAndKalsym?msisdn_=" + phone,{ headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
+        AxiosReq.get("DeductfadaoAndKalsym?msisdn_=" + phone, { headers: { 'Authorization': 'Bearer ' + cookie.get("ONE_TOKEN") } }).then(res => {
             if (res.status === 200) {
                 var num = 0
                 var update = res.data.map(row => {
@@ -35,9 +35,9 @@ function Deduct() {
         { title: 'MSISDN', field: 'msisdn' },
         { title: 'ເວລາ', field: 'date', minWidth: 200 },
         { title: 'UserID', field: 'userId' },
-        { title: 'ປະເພດ', field: 'srvType', minWidth: 150},
-        { title: 'ມູນຄ່າ', field: 'amount', type: 'numeric', render: row => row.amount > 0 ? row.amount.toLocaleString() : row.amount},
-        { title: 'ລາຍລະອຽດ', field: 'resultDesc'},
+        { title: 'ປະເພດ', field: 'srvType', minWidth: 150 },
+        { title: 'ມູນຄ່າ', field: 'amount', type: 'numeric', render: row => row.amount > 0 ? row.amount.toLocaleString() : row.amount },
+        { title: 'ລາຍລະອຽດ', field: 'resultDesc' },
     ]
     function ShowData() {
         return (
