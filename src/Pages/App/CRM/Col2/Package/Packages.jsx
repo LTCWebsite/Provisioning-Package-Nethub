@@ -123,6 +123,7 @@ function Packages() {
             row.idx = idx + 1;
             return row;
           });
+          console.log("row", res.data);
           setPk({
             ...pk,
             load: false,

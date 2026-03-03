@@ -1,4 +1,4 @@
-import { Block, ClearAll, Info, SentimentSatisfiedAlt, SettingsBackupRestore, SignalWifi3Bar, SimCardAlert, Subject, Textsms, CurrencyExchange, AddCard } from '@mui/icons-material'
+import { Block, ClearAll, Info, SentimentSatisfiedAlt, SettingsBackupRestore, SignalWifi3Bar, SimCardAlert, Subject, Textsms, CurrencyExchange, AddCard, SimCardAlertTwoTone } from '@mui/icons-material'
 import { Grid, Skeleton } from '@mui/material'
 import React, { useState } from 'react'
 import HappyCall from './Model/HappyCall'
@@ -12,11 +12,12 @@ import OrderChange from './Model/OrderChage'
 import UserBlacklist from './Model/UserBlacklist'
 import QueryAdjustLog from './Model/QueryAdjustLog'
 import CheckPackageBSS from './Model/CheckPackageBSS'
+import Deposit from './Model/Deposit'
 // import QueryUnbar from './Model/QueryUnbar'
 // import { MyCrypt } from '../../../../../Components/MyCrypt'
 
 function Others() {
-    const [open, setOpen] = useState({ reset: false, sms_ticket: false, happyCall: false, mastersim: false, info178: false, wifi: false, hlr: false, orderChange: false, user_blacklist: false, queryunbar: false, adjustment_log: false, package_bss: false})
+    const [open, setOpen] = useState({ reset: false, sms_ticket: false, happyCall: false, mastersim: false, info178: false, wifi: false, hlr: false, orderChange: false, user_blacklist: false, queryunbar: false, adjustment_log: false, package_bss: false, deposit_phonenumber: false })
     const [hlr, setHlr] = useState(false)
     const [countSms, setCountSms] = useState(0)
     const [countHC, setCountHC] = useState(0)
@@ -89,6 +90,10 @@ function Others() {
                     <Grid item xs={2}><AddCard /></Grid>
                     <Grid item xs={10}>Package log (BSS)</Grid>
                 </Grid>
+                <Grid item xs={12} container className='link-box-pointer' onClick={() => setOpen({ ...open, deposit_phonenumber: true })}>
+                    <Grid item xs={2}><SimCardAlertTwoTone /></Grid>
+                    <Grid item xs={10}>ບໍລິການຝາກເບີ</Grid>
+                </Grid>
                 {/* {type?.NETWORK_CODE === 'F' && <Grid item xs={12} container className='link-box-pointer' onClick={() => setOpen({ ...open, queryunbar: true })}>
                     <Grid item xs={2}><RemoveCircleOutline /></Grid>
                     <Grid item xs={10}>Query Unbar</Grid>
@@ -116,6 +121,10 @@ function Others() {
             <CheckPackageBSS
                 open={open.package_bss}
                 cb={(e) => setOpen({ ...open, package_bss: e })}
+            />
+            <Deposit
+                open={open.deposit_phonenumber}
+                cb={(e) => setOpen({ ...open, deposit_phonenumber: e })}
             />
             {/* <QueryUnbar
                 open={open.queryunbar}
