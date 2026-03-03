@@ -9,8 +9,8 @@ export const AxiosAPI = axios.create({
   },
 });
 export const AxiosFtth = axios.create({
-  baseURL: "http://172.28.14.151:3002/"
-})
+  baseURL: "http://172.28.14.151:3001/",
+});
 
 export const AxiosReq = axios.create({
   //baseURL: "http://10.30.6.148:5678/",
@@ -19,7 +19,7 @@ export const AxiosReq = axios.create({
 });
 
 export const AxiosElastic = axios.create({
-  baseURL: "http://172.28.26.97:9200/"
+  baseURL: "http://172.28.26.97:9200/",
 });
 
 export const AxiosMonomax = axios.create({
@@ -64,8 +64,4 @@ export const AxiosSpecialRedeem = axios.create({
 
 export const AxiosSubscriber = axios.create({
   baseURL: "http://10.30.6.148:5678",
-});
-
-export const AxiosRerunFtth = axios.create({
-  baseURL: "http://172.28.14.151:3002/",
 });
