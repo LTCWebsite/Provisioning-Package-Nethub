@@ -14,6 +14,8 @@ const useFtthInfo = (networkCode) => {
   const [ftthFreeMsisdnShow, setFtthFreeMsisdnShow] = useState(false);
   const [ftthBookingList, setFtthBookingList] = useState(null);
   const [ftthBookingShow, setFtthBookingShow] = useState(false);
+  const [ftthPaymentList, setFtthPaymentList] = useState(null);
+  const [ftthPaymentShow, setFtthPaymentShow] = useState(false);
 
   const fetchFtthData = useCallback(async () => {
     if (networkCode !== "F") {
@@ -112,6 +114,22 @@ const useFtthInfo = (networkCode) => {
       });
   }, [networkCode]);
 
+  const fetchFtthPaymentList = useCallback(async () => {
+    if (networkCode !== "F") {
+      return;
+    }
+    await AxiosFtth.get("api/ftth-payment/" + localStorage.getItem("ONE_PHONE"))
+      .then((res) => {
+        if (res.status === 200) {
+          setFtthPaymentList(res.data?.data);
+          setFtthPaymentShow(true);
+        }
+      })
+      .catch((er) => {
+        console.log(er);
+      });
+  }, [networkCode]);
+
   const unbookFtth = useCallback(async (bookId, roles) => {
     const rolesToSend =
       roles ?? JSON.parse(localStorage.getItem("ONE_ROLES") || "[]");
@@ -130,11 +148,14 @@ const useFtthInfo = (networkCode) => {
     ftthFreeMsisdnShow,
     ftthBookingList,
     ftthBookingShow,
+    ftthPaymentList,
+    ftthPaymentShow,
     rerunRows,
     rerunLoading,
     rerunError,
     fetchRerunList,
     fetchFtthBookingList,
+    fetchFtthPaymentList,
     fetchFtthData,
     unbookFtth,
   };

@@ -22,6 +22,7 @@ import CusFtthInfo from "./Col1/Ocs/cusftthInfo";
 import FtthBundleMsisdn from "./Col1/Bundle/FtthBundle";
 import PopupTable from "./Col2/PopupTable/PopupTable";
 import PopupFtthFreeMsisdn from "./Col2/PopupTable/PopupFtthFreeMsisdn";
+import PopupFtthMcarePayment from "./Col2/PopupTable/PopupFtthMcarePayment";
 
 function Col1() {
   const phone = localStorage.getItem("ONE_PHONE");
@@ -48,11 +49,14 @@ function Col1() {
     ftthFreeMsisdnShow,
     ftthBookingList,
     ftthBookingShow,
+    ftthPaymentList,
+    ftthPaymentShow,
     rerunRows,
     rerunLoading,
     rerunError,
     fetchRerunList,
     fetchFtthBookingList,
+    fetchFtthPaymentList,
     fetchFtthData,
     unbookFtth,
   } = useFtthInfo(type?.NETWORK_CODE);
@@ -213,6 +217,12 @@ function Col1() {
               bookingLoading={!ftthBookingShow}
               fetchBookingData={fetchFtthBookingList}
               unbookFtth={unbookFtth}
+            />
+            <h2 className="blue">FTTH Mcare Payment</h2>
+            <PopupFtthMcarePayment
+              paymentRows={ftthPaymentList || []}
+              paymentLoading={!ftthPaymentShow}
+              fetchPaymentData={fetchFtthPaymentList}
             />
           </Grid>
         )}
