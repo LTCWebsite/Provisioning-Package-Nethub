@@ -9,6 +9,7 @@ import { toast_error, toast_success } from '../../../../Components/Toast';
 import { Close as CloseIcon } from '@mui/icons-material';
 
 export default function AdditionalFormDialog({ open, onClose, onSuccess }) {
+  const username = localStorage.getItem('USERNAME');
   const initialState = {
     packageId: '',
     counterName: '',
@@ -23,9 +24,9 @@ export default function AdditionalFormDialog({ open, onClose, onSuccess }) {
       hour12: false
     }).slice(0, 16).replace(' ', 'T'),
     createdAt: new Date().toISOString().slice(0, 16),
-    createdBy: '',
+    createdBy: username || '',
     updatedAt: new Date().toISOString().slice(0, 16),
-    updatedBy: ''
+    updatedBy: username || ''
   };
 
   const [formData, setFormData] = useState(initialState);

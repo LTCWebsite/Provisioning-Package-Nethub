@@ -39,7 +39,7 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
 };
 
-export default function CrudTable({ title, endpoint, columns, idField = "id", axiosInstance = AxiosReq3  }) {
+export default function CrudTable({ title, endpoint, columns, idField = "id", axiosInstance = AxiosReq3, refresh }) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -69,7 +69,7 @@ export default function CrudTable({ title, endpoint, columns, idField = "id", ax
 
   useEffect(() => {
     fetchData();
-  }, [endpoint]);
+  }, [endpoint, refresh]);
 
   const handleCreate = async (newData) => {
     try {

@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Dialog, DialogContent, Button, Grid, TextField,
-  Typography, Box, Divider, IconButton
+  Typography, Box, Divider, IconButton, MenuItem, Select, FormControl
 } from '@mui/material';
-import { AxiosReq } from '../../../../Components/Axios';
+import { AxiosReq3 } from '../../../../Components/Axios';
 import cookie from 'js-cookie';
 import { toast_error, toast_success } from '../../../../Components/Toast';
 import { CloudUpload as CloudUploadIcon, Close as CloseIcon } from '@mui/icons-material';
@@ -29,10 +29,39 @@ export default function WhitelistFormDialog({ open, onClose, onSuccess }) {
   const [formData, setFormData] = useState(initialState);
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState(null);
+  const [packages, setPackages] = useState([]);
+
+  useEffect(() => {
+    if (open) {
+      fetchPackages();
+    }
+  }, [open]);
+
+  const fetchPackages = async () => {
+    try {
+      const res = await AxiosReq3.get('/WhiteListNethub/packages', {
+        headers: { Authorization: "Bearer " + cookie.get("ONE_TOKEN") },
+      });
+      if (res.data.data) {
+        setPackages(res.data.data);
+      }
+    } catch (error) {
+      console.error('Error fetching packages:', error);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    if (name === 'packageCodes') {
+      const selectedPkg = packages.find(pkg => pkg.code === value);
+      setFormData(prev => ({
+        ...prev,
+        packageCodes: value,
+        packageId: selectedPkg ? selectedPkg.id : prev.packageId
+      }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleFileChange = (e) => {
@@ -45,28 +74,60 @@ export default function WhitelistFormDialog({ open, onClose, onSuccess }) {
     setLoading(true);
     try {
       let res;
+
       if (file) {
+        // ── Upload CSV ──────────────────────────────────────
         const uploadFormData = new FormData();
         uploadFormData.append('file', file);
-        // Assuming there's a bulk upload endpoint
-        res = await AxiosReq.post('/PackageNethub/Whitelist/Upload', uploadFormData, {
+        res = await AxiosReq3.post('/WhiteListNethub/upload', uploadFormData, {
           headers: {
             Authorization: "Bearer " + cookie.get("ONE_TOKEN"),
-            'Content-Type': 'multipart/form-data'
+            'Content-Type': 'multipart/form-data',
           },
         });
       } else {
-        res = await AxiosReq.post('/PackageNethub/Whitelist', formData, {
+        // ── Insert ດ້ວຍ Form ─────────────────────────────────
+        if (!formData.msisdn || !formData.packageCodes) {
+          toast_error({ text: "ກະລຸນາປ້ອນ ເບີໂທ ແລະ Package Code" });
+          setLoading(false);
+          return;
+        }
+
+        const formatDate = (val) => {
+          if (!val) return null;
+          let dateStr = val.includes('T') ? val : val.replace(' ', 'T');
+          if (dateStr.length === 16) dateStr += ':00';
+          return dateStr;
+        };
+
+        const payload = {
+          msisdn: formData.msisdn,
+          packageId: formData.packageId ? parseInt(formData.packageId, 10) : 0,
+          packageCodes: formData.packageCodes,
+          startTime: formatDate(formData.startTime),
+          endTime: formatDate(formData.endTime),
+          createdAt: new Date().toISOString(),
+          createdBy: formData.createdBy,
+          updatedAt: new Date().toISOString(),
+          updatedBy: formData.updatedBy,
+        };
+
+        console.log("Whitelist Payload:", payload);
+        res = await AxiosReq3.post('/WhiteListNethub', payload, {
           headers: { Authorization: "Bearer " + cookie.get("ONE_TOKEN") },
         });
+        console.log("Whitelist Response:", res.data);
       }
 
-      if (res.status === 200 || res.status === 201) {
+      // ✅ ຍ້າຍ success check ອອກມານອກ if/else — ໃຊ້ໄດ້ທັງ 2 case
+      if (res && (res.status === 200 || res.status === 201)) {
         toast_success({ text: "ບັນທຶກຂໍ້ມູນສຳເລັດ (Saved Successfully)" });
         onSuccess();
         handleClose();
       }
+
     } catch (error) {
+      console.error("Submit error:", error);
       toast_error({ text: "ເກີດຂໍ້ຜິດພາດ: " + (error.response?.data?.message || error.message) });
     } finally {
       setLoading(false);
@@ -81,8 +142,8 @@ export default function WhitelistFormDialog({ open, onClose, onSuccess }) {
 
   const formFields = [
     { name: 'msisdn', label: 'ເບີໂທລະສັບ (msisdn)', type: 'text' },
-    { name: 'packageId', label: 'Package ID', type: 'text' },
     { name: 'packageCodes', label: 'Package Codes', type: 'text' },
+    { name: 'packageId', label: 'Package ID', type: 'text' },
     { name: 'startTime', label: 'Start Time', type: 'datetime-local' },
     { name: 'endTime', label: 'End Time', type: 'datetime-local' }
   ];
@@ -104,16 +165,41 @@ export default function WhitelistFormDialog({ open, onClose, onSuccess }) {
                 <Typography variant="body2" sx={{ fontWeight: 500, color: '#333', mb: 1 }}>
                   {field.label}
                 </Typography>
-                <TextField
-                  fullWidth
-                  size="small"
-                  name={field.name}
-                  type={field.type}
-                  value={formData[field.name]}
-                  onChange={handleChange}
-                  InputLabelProps={{ shrink: true }}
-                  sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#ffffff' } }}
-                />
+                {field.name === 'packageCodes' ? (
+                  <FormControl fullWidth size="small">
+                    <Select
+                      name="packageCodes"
+                      value={formData.packageCodes}
+                      onChange={handleChange}
+                      displayEmpty
+                      sx={{ bgcolor: '#ffffff' }}
+                      renderValue={(selected) => {
+                        if (!selected) {
+                          return <Typography sx={{ color: '#999' }}>ເລືອກ Package Code</Typography>;
+                        }
+                        return selected;
+                      }}
+                    >
+                      <MenuItem value="" disabled>ເລືອກ Package Code</MenuItem>
+                      {packages.map((pkg, pIdx) => (
+                        <MenuItem key={pIdx} value={pkg.code}>
+                          {pkg.code} ||
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                ) : (
+                  <TextField
+                    fullWidth
+                    size="small"
+                    name={field.name}
+                    type={field.type}
+                    value={formData[field.name]}
+                    onChange={handleChange}
+                    InputLabelProps={{ shrink: true }}
+                    sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#ffffff' } }}
+                  />
+                )}
               </Box>
             </Grid>
           ))}

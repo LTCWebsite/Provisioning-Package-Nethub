@@ -9,13 +9,14 @@ import { toast_error, toast_success } from '../../../../Components/Toast';
 import { Close as CloseIcon } from '@mui/icons-material';
 
 export default function PackageExcludedFormDialog({ open, onClose, onSuccess }) {
+  const username = localStorage.getItem('USERNAME');
   const initialState = {
     packageId: '',
     counterName: '',
     createdAt: new Date().toISOString().slice(0, 16),
-    createdBy: '',
+    createdBy: username || '',
     updatedAt: new Date().toISOString().slice(0, 16),
-    updatedBy: '',
+    updatedBy: username || '',
     errorMessage: '',
     minData: 0,
     requireExpiryCheck: false
@@ -114,6 +115,12 @@ export default function PackageExcludedFormDialog({ open, onClose, onSuccess }) 
                   onChange={handleChange}
                   displayEmpty
                   sx={{ bgcolor: '#ffffff' }}
+                  renderValue={(selected) => {
+                    if (selected.length === 0) {
+                      return <Typography sx={{ color: '#999' }}>ເລືອກ Package</Typography>;
+                    }
+                    return selected;
+                  }}
                 >
                   <MenuItem value="" disabled>ເລືອກ Package</MenuItem>
                   {packages.map((pkg) => (
@@ -139,6 +146,12 @@ export default function PackageExcludedFormDialog({ open, onClose, onSuccess }) 
                   onChange={handleChange}
                   displayEmpty
                   sx={{ bgcolor: '#ffffff' }}
+                  renderValue={(selected) => {
+                    if (selected.length === 0) {
+                      return <Typography sx={{ color: '#999' }}>ເລືອກ Counter Name</Typography>;
+                    }
+                    return selected;
+                  }}
                 >
                   <MenuItem value="" disabled>ເລືອກ Counter Name</MenuItem>
                   {[...new Set(packages.map(pkg => pkg.counterName))].filter(Boolean).map((name) => (

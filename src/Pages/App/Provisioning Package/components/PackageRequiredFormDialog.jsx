@@ -3,19 +3,20 @@ import {
   Dialog, DialogContent, Button, Grid, TextField,
   Typography, Box, Divider, IconButton, MenuItem, Select, FormControl
 } from '@mui/material';
-import { AxiosReq } from '../../../../Components/Axios';
+import { AxiosReq3 } from '../../../../Components/Axios';
 import cookie from 'js-cookie';
 import { toast_error, toast_success } from '../../../../Components/Toast';
 import { Close as CloseIcon } from '@mui/icons-material';
 
 export default function PackageRequiredFormDialog({ open, onClose, onSuccess }) {
+  const username = localStorage.getItem('USERNAME');
   const initialState = {
     packageId: '',
     counterName: '',
     createdAt: new Date().toISOString().slice(0, 16),
-    createdBy: '',
+    createdBy: username || '',
     updatedAt: new Date().toISOString().slice(0, 16),
-    updatedBy: '',
+    updatedBy: username || '',
     errorMessage: ''
   };
 
@@ -31,11 +32,11 @@ export default function PackageRequiredFormDialog({ open, onClose, onSuccess }) 
 
   const fetchPackages = async () => {
     try {
-      const res = await AxiosReq.get('/PackageNethub/Package', {
+      const res = await AxiosReq3.get('/PackageRequiredNethub/packages', {
         headers: { Authorization: "Bearer " + cookie.get("ONE_TOKEN") },
       });
-      if (res.data) {
-        setPackages(res.data);
+      if (res.data.data) {
+        setPackages(res.data.data);
       }
     } catch (error) {
       console.error('Error fetching packages:', error);
@@ -50,7 +51,7 @@ export default function PackageRequiredFormDialog({ open, onClose, onSuccess }) 
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const res = await AxiosReq.post('/PackageNethub/PackageRequired', formData, {
+      const res = await AxiosReq3.post('/PackageRequiredNethub', formData, {
         headers: { Authorization: "Bearer " + cookie.get("ONE_TOKEN") },
       });
 
@@ -86,9 +87,9 @@ export default function PackageRequiredFormDialog({ open, onClose, onSuccess }) 
           <Grid item xs={12} sm={6}>
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
               <Typography variant="body2" sx={{ fontWeight: 500, color: '#333', mb: 1 }}>
-                Package ID
+                Package ID (Dropdown)
               </Typography>
-              <TextField
+              {/* <TextField
                 fullWidth
                 size="small"
                 type="number"
@@ -96,7 +97,29 @@ export default function PackageRequiredFormDialog({ open, onClose, onSuccess }) 
                 value={formData.packageId}
                 onChange={handleChange}
                 sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#ffffff' } }}
-              />
+              /> */}
+              <FormControl fullWidth size="small">
+                <Select
+                  name="packageId"
+                  value={formData.packageId}
+                  onChange={handleChange}
+                  displayEmpty
+                  sx={{ bgcolor: '#ffffff' }}
+                  renderValue={(selected) => {
+                    if (selected.length === 0) {
+                      return <Typography sx={{ color: '#999' }}>ເລືອກ Package ID</Typography>;
+                    }
+                    return selected;
+                  }}
+                >
+                  <MenuItem value="" disabled>ເລືອກ Package ID</MenuItem>
+                  {packages.map((pkg, idx) => (
+                    <MenuItem key={idx} value={pkg.id}>
+                      {pkg.id} ||
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </Box>
           </Grid>
 
@@ -113,11 +136,17 @@ export default function PackageRequiredFormDialog({ open, onClose, onSuccess }) 
                   onChange={handleChange}
                   displayEmpty
                   sx={{ bgcolor: '#ffffff' }}
+                  renderValue={(selected) => {
+                    if (selected.length === 0) {
+                      return <Typography sx={{ color: '#999' }}>ເລືອກ Counter Name</Typography>;
+                    }
+                    return selected;
+                  }}
                 >
                   <MenuItem value="" disabled>ເລືອກ Counter Name</MenuItem>
                   {packages.map((pkg, idx) => (
                     <MenuItem key={idx} value={pkg.counterName}>
-                      {pkg.counterName} ({pkg.code})
+                      {pkg.counterName} ||
                     </MenuItem>
                   ))}
                 </Select>
