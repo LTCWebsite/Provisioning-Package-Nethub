@@ -10,7 +10,8 @@ import {
   ScreenshotMonitor,
   RedeemSharp,
   Key,
-  Dashboard
+  Dashboard,
+  Newspaper
 } from "@mui/icons-material";
 import React from "react";
 import logo from "../../Image/logo-2.png";
@@ -31,6 +32,7 @@ function SideBar({ height }) {
     ais: true,
     reset: true,
     cbs: true,
+    provision: true,
   });
   const ChangeRoute = (e) => {
     if (e === "/app") {
@@ -63,6 +65,12 @@ function SideBar({ height }) {
       setEffect({ ...effect, cbs: false });
       setTimeout(() => {
         setEffect({ ...effect, cbs: true });
+      }, 500);
+      history.push(e);
+    } else if (e === "/app/provisioning-package") {
+      setEffect({ ...effect, provision: false });
+      setTimeout(() => {
+        setEffect({ ...effect, provision: true });
       }, 500);
       history.push(e);
     }
@@ -119,7 +127,7 @@ function SideBar({ height }) {
                 <div>HOME</div>
               </FadeIn>
             </div>
-            <div
+            {/* <div
               className={
                 location.pathname === "/app/crm" ? "bar bar-active" : "bar"
               }
@@ -193,8 +201,24 @@ function SideBar({ height }) {
                 )}
                 <div>CBS</div>
               </FadeIn>
-            </div>
+            </div> */}
             <div
+              className={
+                location.pathname === "/app/provisioning-package" ? "bar bar-active" : "bar"
+              }
+              onClick={() => ChangeRoute("/app/provisioning-package")}
+            >
+              <FadeIn visible={effect.provision}>
+                {effect.provision && location.pathname === "/app/provisioning-package" ? (
+                  <Newspaper className="bar-icon" />
+                ) : (
+                  <Newspaper color="primary" className="bar-icon" />
+                )}
+                <div>Provisioning Package</div>
+              </FadeIn>
+            </div>
+
+            {/* <div
               className={
                 location.pathname === "/app/resetpassword" ? "bar bar-active" : "bar"
               }
@@ -208,12 +232,10 @@ function SideBar({ height }) {
                 )}
                 <div>Reset Password</div>
               </FadeIn>
-            </div>
+            </div> */}
             {/* thar me tab mai hai yut sai nai ni der */}
           </>
         )}
-
-
 
         <div
           className={

@@ -19,7 +19,7 @@ function BuyPackage101({ open, cb, done, ifdone, count }) {
     const [isLoading, setIsLoading] = React.useState(false)
     const [bkData, setBkData] = React.useState({})
     const [isShowSuccess, setIsShowSuccess] = React.useState(false)
-    // const [bssNetworkType, setBssNetworkType] = React.useState()
+    //const [bssNetworkType, setBssNetworkType] = React.useState()
 
 
 

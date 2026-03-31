@@ -10,7 +10,7 @@ function Body({ height }) {
         <>
             <div style={{ width: '100%', marginLeft: 3, backgroundColor: '#fff', overflowY: 'hidden' }}>
                 <div style={{ paddingLeft: 5 }}>
-                    {location.pathname === "/app" ? <SearchCRM /> : location.pathname === "/app/crm" ? <SearchCRM /> : null}
+                    {/* {location.pathname === "/app" ? <SearchCRM /> : location.pathname === "/app/crm" ? <SearchCRM /> : null} */}
                     <Scrollbars style={{ height: (height - 40) }}>
                         <Router />
                     </Scrollbars>

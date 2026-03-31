@@ -43,6 +43,7 @@ const BuyPackage2 = ({ open, cb, ifdone, done }) => {
   const [selectedPackage, setSelectedPackage] = useState(null);
   const [bkData, setBkData] = useState({});
   let phone = localStorage.getItem("ONE_PHONE");
+  let userId = localStorage.getItem("USERNAME");
 
   // fetch packages
   useEffect(() => {
@@ -115,8 +116,9 @@ const BuyPackage2 = ({ open, cb, ifdone, done }) => {
     const datas = {
       msisdn: phone,
       packageCode: selectedPackage.code,
+      userId: userId
     };
-
+    console.log({ datas });
     axios
       .post(`http://10.30.6.148:9999/NetHub`, datas, {
         headers: { Authorization: "Bearer " + cookie.get("ONE_TOKEN") },
@@ -241,8 +243,8 @@ const BuyPackage2 = ({ open, cb, ifdone, done }) => {
                       {pk.topping
                         ? "Topping"
                         : pk.days > 365
-                        ? "Recurring"
-                        : `${pk.days} ມື້`}
+                          ? "Recurring"
+                          : `${pk.days} ມື້`}
                     </Typography>
                     <Typography
                       color="text.secondary"

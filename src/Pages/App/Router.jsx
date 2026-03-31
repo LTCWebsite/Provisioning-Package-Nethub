@@ -11,6 +11,7 @@ import QueryCustomerInfo from './CBS/QueryCustomerInfo'
 import { RequestOTP } from './Resetpassword/requestOTP'
 import { VerifyOTP } from './Resetpassword/verifyOTP'
 import Oneresetpass from './Resetpassword/oneresetpass'
+import PackageNethub from './Provisioning Package/PackageNethub'
 
 function Router() {
     return (
@@ -30,6 +31,7 @@ function Router() {
                 {/* <ProtectRoute path="/app/verifyOTP" component={VerifyOTP} exact /> */}
 
                 <ProtectRoute path="/app/cbs/customerinfo" component={QueryCustomerInfo} exact />
+                <ProtectRoute path="/app/provisioning-package" component={PackageNethub} exact />
 
             </Switch>
 
