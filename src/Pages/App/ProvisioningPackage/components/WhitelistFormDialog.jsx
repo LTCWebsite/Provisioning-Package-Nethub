@@ -79,7 +79,7 @@ export default function WhitelistFormDialog({ open, onClose, onSuccess }) {
         // ── Upload CSV ──────────────────────────────────────
         const uploadFormData = new FormData();
         uploadFormData.append('file', file);
-        res = await AxiosReq3.post('/WhiteListNethub/upload', uploadFormData, {
+        res = await AxiosReq3.post('/WhiteListNethub/import-csv', uploadFormData, {
           headers: {
             Authorization: "Bearer " + cookie.get("ONE_TOKEN"),
             'Content-Type': 'multipart/form-data',
@@ -119,7 +119,6 @@ export default function WhitelistFormDialog({ open, onClose, onSuccess }) {
         console.log("Whitelist Response:", res.data);
       }
 
-      // ✅ ຍ້າຍ success check ອອກມານອກ if/else — ໃຊ້ໄດ້ທັງ 2 case
       if (res && (res.status === 200 || res.status === 201)) {
         toast_success({ text: "ບັນທຶກຂໍ້ມູນສຳເລັດ (Saved Successfully)" });
         onSuccess();

@@ -11,7 +11,7 @@ import QueryCustomerInfo from './CBS/QueryCustomerInfo'
 import { RequestOTP } from './Resetpassword/requestOTP'
 import { VerifyOTP } from './Resetpassword/verifyOTP'
 import Oneresetpass from './Resetpassword/oneresetpass'
-import PackageNethub from './Provisioning Package/PackageNethub'
+import PackageNethub from './ProvisioningPackage/PackageNethub'
 
 function Router() {
     return (
