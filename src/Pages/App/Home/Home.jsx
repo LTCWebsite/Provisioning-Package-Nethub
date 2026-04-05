@@ -11,7 +11,7 @@ function Home() {
                     <div className="center">
                         <img src={logo} width={600} alt="logo" style={{ paddingTop: 100 }} />
                         {/* <h1 className="grey">ກະລຸນາປ້ອນເບີໂທ ເພື່ອຄົ້ນຫາ !!</h1> */}
-                        <h1 className="grey">Welcome to Provisioning Package NetHub</h1>
+                        <h1 className="grey">Welcome to Provisioning Package (NetHub)</h1>
                     </div>
                 </Grid>
             </Grid>

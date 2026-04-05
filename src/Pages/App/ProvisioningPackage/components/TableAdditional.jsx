@@ -1,11 +1,18 @@
 import React, { useState } from 'react';
 import { Box, Button } from '@mui/material';
+import Visibility from '@material-ui/icons/Visibility';
+import Edit from '@material-ui/icons/Edit';
 import CrudTable from './CrudTable';
 import AdditionalFormDialog from './AdditionalFormDialog';
+import AdditionalViewDialog from './AdditionalViewDialog';
+import AdditionalEditDialog from './AdditionalEditDialog';
 import { AxiosReq3 } from '../../../../Components/Axios';
 
 export default function TableAdditional() {
   const [openForm, setOpenForm] = useState(false);
+  const [openView, setOpenView] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
   const [refreshKey, setRefreshKey] = useState(0);
 
   const columns = [
@@ -21,6 +28,16 @@ export default function TableAdditional() {
 
   const handleSuccess = () => {
     setRefreshKey(prev => prev + 1);
+  };
+
+  const handleView = (event, rowData) => {
+    setSelectedRow(rowData);
+    setOpenView(true);
+  };
+
+  const handleEdit = (event, rowData) => {
+    setSelectedRow(rowData);
+    setOpenEdit(true);
   };
 
   return (
@@ -52,11 +69,35 @@ export default function TableAdditional() {
         columns={columns}
         idField="id"
         axiosInstance={AxiosReq3}
+        disableInlineEdit={true}
+        actions={[
+          {
+            icon: () => <Edit style={{ color: '#f57c00' }} />,
+            tooltip: 'ແກ້ໄຂ (Edit)',
+            onClick: handleEdit,
+          },
+          {
+            icon: () => <Visibility style={{ color: '#388e3c' }} />,
+            tooltip: 'ເບິ່ງລາຍລະອຽດ (View Detail)',
+            onClick: handleView,
+          }
+        ]}
       />
       <AdditionalFormDialog
         open={openForm}
         onClose={() => setOpenForm(false)}
         onSuccess={handleSuccess}
+      />
+      <AdditionalViewDialog
+        open={openView}
+        onClose={() => setOpenView(false)}
+        data={selectedRow}
+      />
+      <AdditionalEditDialog
+        open={openEdit}
+        onClose={() => setOpenEdit(false)}
+        onSuccess={handleSuccess}
+        data={selectedRow}
       />
     </Box>
   );

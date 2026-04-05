@@ -1,68 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Dialog, DialogContent, Button, Grid, TextField,
-  FormControlLabel, Checkbox, Typography, Box
+  FormControlLabel, Checkbox, Typography, Box, IconButton, Divider
 } from '@mui/material';
-import { AxiosReq, AxiosReq3 } from '../../../../Components/Axios';
+import { AxiosReq3 } from '../../../../Components/Axios';
 import cookie from 'js-cookie';
 import { toast_error, toast_success } from '../../../../Components/Toast';
+import { Close as CloseIcon } from '@mui/icons-material';
 
-export default function PackageFormDialog({ open, onClose, onSuccess }) {
+export default function PackageEditDialog({ open, onClose, onSuccess, data }) {
   const username = localStorage.getItem("USERNAME") || '';
-  const initialState = {
-    id: 0,
-    code: '',
-    counterName: '',
-    refillStopDay: 0,
-    startTime: new Date().toLocaleString('sv-SE', {
-      timeZone: 'Asia/Bangkok',
-      hour12: false
-    }).slice(0, 16).replace(' ', 'T'),
-    endTime: new Date().toLocaleString('sv-SE', {
-      timeZone: 'Asia/Bangkok',
-      hour12: false
-    }).slice(0, 16).replace(' ', 'T'),
-    offeringId: '',
-    serviceCode: '',
-    validityDay: 0,
-    mainPoint: 0,
-    isIR: false,
-    price: 0,
-    is5G: false,
-    remark: '',
-    requiredCounterName: '',
-    excludedCounterName: '',
-    sms: '',
-    whitelist: false,
-    extra: 0,
-    isTopping: false,
-    smsLa: '',
-    expiryLastDayOfMonth: 0,
-    isSupporting5G: false,
-    subCos: '',
-    isCbsCharge: false,
-    isAdditional: false,
-    cancelable: false,
-    isLmm: false,
-    isWhitelistAdditional: false,
-    isFtthBundle: false,
-    isLocation: false,
-    needsOffering: false,
-    channels: '',
-    createdBy: username,
-    updatedBy: username,
-    createdAt: new Date().toLocaleString('sv-SE', {
-      timeZone: 'Asia/Bangkok',
-      hour12: false
-    }).slice(0, 16),
-    updatedAt: new Date().toLocaleString('sv-SE', {
-      timeZone: 'Asia/Bangkok',
-      hour12: false
-    }).slice(0, 16)
-  };
-
-  const [formData, setFormData] = useState(initialState);
+  const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (data && open) {
+      setFormData({
+        ...data,
+        refillStopDay: data.refillStopDay || 0,
+        startTime: data.startTime ? data.startTime.slice(0, 16).replace(' ', 'T') : '',
+        endTime: data.endTime ? data.endTime.slice(0, 16).replace(' ', 'T') : '',
+        validityDay: data.validityDay || 0,
+        mainPoint: data.mainPoint || 0,
+        price: data.price || 0,
+        isIR: !!data.isIr,
+        is5G: !!data.is5G,
+        requiredCounterName: !!data.requiredCounterName,
+        excludedCounterName: !!data.excludedCounterName,
+        whitelist: !!data.whitelist,
+        extra: !!data.extra,
+        isTopping: !!data.isTopping,
+        expiryLastDayOfMonth: !!data.expiryLastDayOfMonth,
+        isSupporting5G: !!data.isSupporting5G,
+        isCbsCharge: !!data.isCbsCharge,
+        isAdditional: !!data.isAdditional,
+        cancelable: !!data.cancelable,
+        isLmm: !!data.isLmm,
+        isWhitelistAdditional: !!data.isWhitelistAdditional,
+        isFtthBundle: !!data.isFtthBundle,
+        isLocation: !!data.isLocation,
+        needsOffering: !!data.needsOffering,
+      });
+    }
+  }, [data, open]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -77,9 +57,6 @@ export default function PackageFormDialog({ open, onClose, onSuccess }) {
   const handleSubmit = async () => {
     setLoading(true);
 
-    //const currentUser = cookie.get("ONE_USER") || "admin";
-    const username = localStorage.getItem("USERNAME") || '';
-    // Format datetime fields - keep ISO 8601 'T' separator for C# System.Text.Json
     const formatDate = (val) => {
       if (!val) return null;
       let dateStr = val.includes('T') ? val : val.replace(' ', 'T');
@@ -87,8 +64,8 @@ export default function PackageFormDialog({ open, onClose, onSuccess }) {
       return dateStr;
     };
 
-    // Build payload matching backend PackageInsertRequest exactly
     const payload = {
+      id: formData.id,
       code: formData.code || '',
       counterName: formData.counterName || '',
       refillStopDay: Number(formData.refillStopDay) || 0,
@@ -121,35 +98,27 @@ export default function PackageFormDialog({ open, onClose, onSuccess }) {
       isLocation: !!formData.isLocation,
       needsOffering: !!formData.needsOffering,
       channels: formData.channels || '',
-      createdBy: username,
+      updatedBy: username,
+      updatedAt: new Date().toISOString()
     };
 
-    console.log("Submitting Payload:", payload);
     try {
-      const res = await AxiosReq3.post('/PackageNethub', payload, {
+      const res = await AxiosReq3.put(`/PackageNethub/${formData.id}`, payload, {
         headers: {
           Authorization: "Bearer " + cookie.get("ONE_TOKEN"),
           'Content-Type': 'application/json'
         },
       });
-      console.log("API Response:", res);
       if (res.status === 200 || res.status === 201) {
-        toast_success({ text: "ສ້າງແພັກເກັດສຳເລັດ (Created Successfully)" });
+        toast_success({ text: "ແກ້ໄຂແພັດເກັດສຳເລັດ (Edited Successfully)" });
         onSuccess();
-        handleClose();
+        onClose();
       }
     } catch (error) {
-      console.error("API Error Object:", error);
-      console.error("API Error Response Data:", error.response?.data);
       toast_error({ text: "ເກີດຂໍ້ຜິດພາດ: " + (error.response?.data?.message || error.message) });
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleClose = () => {
-    setFormData(initialState);
-    onClose();
   };
 
   const formFields = [
@@ -188,7 +157,14 @@ export default function PackageFormDialog({ open, onClose, onSuccess }) {
   ];
 
   return (
-    <Dialog open={open} onClose={handleClose} maxWidth="xl" fullWidth PaperProps={{ sx: { bgcolor: '#f9fafb' } }}>
+    <Dialog open={open} onClose={onClose} maxWidth="xl" fullWidth PaperProps={{ sx: { bgcolor: '#f9fafb' } }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2, bgcolor: '#f5f5f5' }}>
+        <Typography variant="h6" sx={{ fontWeight: 'bold' }}>ແກ້ໄຂ Package</Typography>
+        <IconButton onClick={onClose} size="small">
+          <CloseIcon />
+        </IconButton>
+      </Box>
+      <Divider />
       <DialogContent sx={{ p: 4, pt: 5 }}>
         <Grid container spacing={4} sx={{ mb: 2 }}>
           {formFields.map((field, idx) => (
@@ -202,14 +178,14 @@ export default function PackageFormDialog({ open, onClose, onSuccess }) {
                     control={
                       <Checkbox
                         size="small"
-                        checked={formData[field.name]}
+                        checked={!!formData[field.name]}
                         onChange={handleChecked}
                         name={field.name}
                         color="primary"
                         sx={{ py: 0 }}
                       />
                     }
-                    label={<Typography variant="body2" color="textSecondary">{field.checkboxLabel}</Typography>}
+                    label={<Typography variant="body2" color="textSecondary">{field.label}</Typography>}
                     sx={{ m: 0 }}
                   />
                 ) : (
@@ -218,8 +194,7 @@ export default function PackageFormDialog({ open, onClose, onSuccess }) {
                     size="small"
                     name={field.name}
                     type={field.type}
-                    placeholder={field.placeholder}
-                    value={formData[field.name]}
+                    value={formData[field.name] || ''}
                     onChange={handleChange}
                     InputLabelProps={{ shrink: true }}
                     sx={{

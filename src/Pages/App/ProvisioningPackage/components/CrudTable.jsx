@@ -39,7 +39,7 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
 };
 
-export default function CrudTable({ title, endpoint, columns, idField = "id", axiosInstance = AxiosReq3, refresh }) {
+export default function CrudTable({ title, endpoint, columns, idField = "id", axiosInstance = AxiosReq3, refresh, actions = [], disableInlineEdit = false }) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -52,11 +52,11 @@ export default function CrudTable({ title, endpoint, columns, idField = "id", ax
       if (res.status === 200) {
         // Handle cases where response is directly an array or inside a data property
         if (Array.isArray(res.data)) {
-            setData(res.data);
+          setData(res.data);
         } else if (res.data && Array.isArray(res.data.data)) {
-            setData(res.data.data);
+          setData(res.data.data);
         } else {
-            setData([]);
+          setData([]);
         }
       }
     } catch (er) {
@@ -105,7 +105,7 @@ export default function CrudTable({ title, endpoint, columns, idField = "id", ax
     try {
       const id = oldData[idField];
       const deleteEndpoint = id ? `${endpoint}/${id}` : `${endpoint}`;
-      
+
       const res = await axiosInstance.delete(deleteEndpoint, {
         headers: { Authorization: "Bearer " + cookie.get("ONE_TOKEN") },
         data: oldData // In case API expects body for delete
@@ -133,9 +133,10 @@ export default function CrudTable({ title, endpoint, columns, idField = "id", ax
         pageSizeOptions: [10, 20, 50],
         actionsColumnIndex: -1
       }}
+      actions={actions}
       editable={{
         onRowAdd: (newData) => handleCreate(newData),
-        onRowUpdate: (newData, oldData) => handleUpdate(newData, oldData),
+        ...(disableInlineEdit ? {} : { onRowUpdate: (newData, oldData) => handleUpdate(newData, oldData) }),
         onRowDelete: (oldData) => handleDelete(oldData),
       }}
     />

@@ -1,11 +1,18 @@
 import React, { useState } from 'react';
 import { Button, Box } from '@mui/material';
+import Visibility from '@material-ui/icons/Visibility';
+import Edit from '@material-ui/icons/Edit';
 import CrudTable from './CrudTable';
 import PackageFormDialog from './PackageFormDialog';
+import PackageViewDialog from './PackageViewDialog';
+import PackageEditDialog from './PackageEditDialog';
 import { AxiosReq3 } from '../../../../Components/Axios';
 
 export default function TablePackage() {
   const [openForm, setOpenForm] = useState(false);
+  const [openView, setOpenView] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
   const [refreshKey, setRefreshKey] = useState(0);
 
   const columns = [
@@ -48,6 +55,16 @@ export default function TablePackage() {
     //{ title: 'Updated By', field: 'updatedBy' },
   ];
 
+  const handleView = (event, rowData) => {
+    setSelectedRow(rowData);
+    setOpenView(true);
+  };
+
+  const handleEdit = (event, rowData) => {
+    setSelectedRow(rowData);
+    setOpenEdit(true);
+  };
+
   return (
     <Box>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
@@ -77,11 +94,35 @@ export default function TablePackage() {
         columns={columns}
         idField="id"
         axiosInstance={AxiosReq3}
+        disableInlineEdit={true}
+        actions={[
+          {
+            icon: () => <Edit style={{ color: '#f57c00' }} />,
+            tooltip: 'ແກ້ໄຂ (Edit)',
+            onClick: handleEdit,
+          },
+          {
+            icon: () => <Visibility style={{ color: '#1a237e' }} />,
+            tooltip: 'ເບິ່ງລາຍລະອຽດ (View Detail)',
+            onClick: handleView,
+          }
+        ]}
       />
       <PackageFormDialog
         open={openForm}
         onClose={() => setOpenForm(false)}
         onSuccess={() => setRefreshKey(prev => prev + 1)}
+      />
+      <PackageViewDialog
+        open={openView}
+        onClose={() => setOpenView(false)}
+        data={selectedRow}
+      />
+      <PackageEditDialog
+        open={openEdit}
+        onClose={() => setOpenEdit(false)}
+        onSuccess={() => setRefreshKey(prev => prev + 1)}
+        data={selectedRow}
       />
     </Box>
   );
