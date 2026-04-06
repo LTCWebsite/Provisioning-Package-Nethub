@@ -190,7 +190,7 @@ export default function PackageViewDialog({ open, onClose, data }) {
         </Grid>
 
         {/* Boolean Flags */}
-        <SectionTitle>⚙️ ການຕັ້ງຄ່າ (Settings)</SectionTitle>
+        {/* <SectionTitle>⚙️ ການຕັ້ງຄ່າ (Settings)</SectionTitle> */}
         <Box
           sx={{
             display: 'flex',

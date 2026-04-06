@@ -1,68 +1,118 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Dialog, DialogContent, Button, Grid, TextField,
-  FormControlLabel, Checkbox, Typography, Box
+  FormControlLabel, Checkbox, Typography, Box,
+  Select, MenuItem, OutlinedInput, Chip, CircularProgress
 } from '@mui/material';
-import { AxiosReq, AxiosReq3 } from '../../../../Components/Axios';
+import { AxiosReq3 } from '../../../../Components/Axios';
 import cookie from 'js-cookie';
 import { toast_error, toast_success } from '../../../../Components/Toast';
 
-export default function PackageFormDialog({ open, onClose, onSuccess }) {
-  const username = localStorage.getItem("USERNAME") || '';
-  const initialState = {
-    id: 0,
-    code: '',
-    counterName: '',
-    refillStopDay: 0,
-    startTime: new Date().toLocaleString('sv-SE', {
-      timeZone: 'Asia/Bangkok',
-      hour12: false
-    }).slice(0, 16).replace(' ', 'T'),
-    endTime: new Date().toLocaleString('sv-SE', {
-      timeZone: 'Asia/Bangkok',
-      hour12: false
-    }).slice(0, 16).replace(' ', 'T'),
-    offeringId: '',
-    serviceCode: '',
-    validityDay: 0,
-    mainPoint: 0,
-    isIR: false,
-    price: 0,
-    is5G: false,
-    remark: '',
-    requiredCounterName: '',
-    excludedCounterName: '',
-    sms: '',
-    whitelist: false,
-    extra: 0,
-    isTopping: false,
-    smsLa: '',
-    expiryLastDayOfMonth: 0,
-    isSupporting5G: false,
-    subCos: '',
-    isCbsCharge: false,
-    isAdditional: false,
-    cancelable: false,
-    isLmm: false,
-    isWhitelistAdditional: false,
-    isFtthBundle: false,
-    isLocation: false,
-    needsOffering: false,
-    channels: '',
-    createdBy: username,
-    updatedBy: username,
-    createdAt: new Date().toLocaleString('sv-SE', {
-      timeZone: 'Asia/Bangkok',
-      hour12: false
-    }).slice(0, 16),
-    updatedAt: new Date().toLocaleString('sv-SE', {
-      timeZone: 'Asia/Bangkok',
-      hour12: false
-    }).slice(0, 16)
-  };
+// ✅ initialState ຕ້ອງຢູ່ນອກ component ຫຼື ກ່ອນ useState
+const username = localStorage.getItem("USERNAME") || '';
 
+const initialState = {
+  id: 0,
+  code: '',
+  counterName: '',
+  refillStopDay: 0,
+  startTime: new Date().toLocaleString('sv-SE', {
+    timeZone: 'Asia/Bangkok', hour12: false
+  }).slice(0, 16).replace(' ', 'T'),
+  endTime: new Date().toLocaleString('sv-SE', {
+    timeZone: 'Asia/Bangkok', hour12: false
+  }).slice(0, 16).replace(' ', 'T'),
+  offeringId: '',
+  serviceCode: '',
+  validityDay: 0,
+  mainPoint: 0,
+  isIR: false,
+  price: 0,
+  is5G: false,
+  remark: '',
+  requiredCounterName: false,
+  excludedCounterName: false,
+  sms: '',
+  whitelist: false,
+  extra: 0,
+  isTopping: false,
+  smsLa: '',
+  expiryLastDayOfMonth: 0,
+  isSupporting5G: false,
+  subCos: '',
+  isCbsCharge: false,
+  isAdditional: false,
+  cancelable: false,
+  isLmm: false,
+  isWhitelistAdditional: false,
+  isFtthBundle: false,
+  isLocation: false,
+  needsOffering: false,
+  channels: [],     //  array ສຳລັບ multiselect
+  createdBy: username,
+  updatedBy: username,
+};
+
+export default function PackageFormDialog({ open, onClose, onSuccess }) {
+  // hooks ທຸກຕົວຢູ່ເທິງສຸດ
   const [formData, setFormData] = useState(initialState);
   const [loading, setLoading] = useState(false);
+  const [subCosOptions, setSubCosOptions] = useState([]);
+  const [loadingSubCos, setLoadingSubCos] = useState(false);
+  const [channelsOptions, setChannelsOptions] = useState([]);
+  const [loadingChannels, setLoadingChannels] = useState(false);
+
+  useEffect(() => {
+    fetchSubCos();
+    fetchChannels();
+  }, []);
+
+  const fetchSubCos = async () => {
+    setLoadingSubCos(true);
+    try {
+      const res = await AxiosReq3.get('/WhiteListNethub/subcos', {
+        headers: {
+          Authorization: "Bearer " + cookie.get("ONE_TOKEN"),
+          'Content-Type': 'application/json'
+        },
+      });
+      const data = res.data?.data ?? res.data ?? [];
+      const options = data.map((item) => ({
+        value: item.subcos,   // ສົ່ງ subcos string ໄປ backend
+        label: item.type,     // ສະແດງ type ໃນ dropdown
+      }));
+      setSubCosOptions(options);
+    } catch (err) {
+      console.error('Failed to fetch subCos:', err);
+      setSubCosOptions([]);
+    } finally {
+      setLoadingSubCos(false);
+    }
+  };
+
+  const fetchChannels = async () => {
+    setLoadingChannels(true);
+    try {
+      const res = await AxiosReq3.get('/WhiteListNethub/channels', {
+        headers: {
+          Authorization: "Bearer " + cookie.get("ONE_TOKEN"),
+          'Content-Type': 'application/json'
+        },
+      });
+      const data = res.data?.data ?? res.data ?? [];
+      //console.log("channels data", data);
+      const options = data.map((item) => ({
+        value: item.channels,
+        label: item.channels,
+      }));
+      setChannelsOptions(options);
+    } catch (err) {
+      console.error('Failed to fetch channels:', err);
+      setChannelsOptions([]);
+    } finally {
+      setLoadingChannels(false);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -74,12 +124,19 @@ export default function PackageFormDialog({ open, onClose, onSuccess }) {
     setFormData(prev => ({ ...prev, [name]: checked }));
   };
 
+  // multiselect handler
+  const handleMultiSelect = (name, value) => {
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleClose = () => {
+    setFormData(initialState);
+    onClose();
+  };
+
   const handleSubmit = async () => {
     setLoading(true);
-
-    //const currentUser = cookie.get("ONE_USER") || "admin";
     const username = localStorage.getItem("USERNAME") || '';
-    // Format datetime fields - keep ISO 8601 'T' separator for C# System.Text.Json
     const formatDate = (val) => {
       if (!val) return null;
       let dateStr = val.includes('T') ? val : val.replace(' ', 'T');
@@ -87,7 +144,6 @@ export default function PackageFormDialog({ open, onClose, onSuccess }) {
       return dateStr;
     };
 
-    // Build payload matching backend PackageInsertRequest exactly
     const payload = {
       code: formData.code || '',
       counterName: formData.counterName || '',
@@ -120,11 +176,10 @@ export default function PackageFormDialog({ open, onClose, onSuccess }) {
       isFtthBundle: !!formData.isFtthBundle,
       isLocation: !!formData.isLocation,
       needsOffering: !!formData.needsOffering,
-      channels: formData.channels || '',
+      channels: formData.channels.join('|') || '',
       createdBy: username,
     };
 
-    console.log("Submitting Payload:", payload);
     try {
       const res = await AxiosReq3.post('/PackageNethub', payload, {
         headers: {
@@ -132,24 +187,16 @@ export default function PackageFormDialog({ open, onClose, onSuccess }) {
           'Content-Type': 'application/json'
         },
       });
-      console.log("API Response:", res);
       if (res.status === 200 || res.status === 201) {
-        toast_success({ text: "ສ້າງແພັກເກັດສຳເລັດ (Created Successfully)" });
+        toast_success({ text: "ສ້າງແພັກເກັດສຳເລັດ" });
         onSuccess();
         handleClose();
       }
     } catch (error) {
-      console.error("API Error Object:", error);
-      console.error("API Error Response Data:", error.response?.data);
       toast_error({ text: "ເກີດຂໍ້ຜິດພາດ: " + (error.response?.data?.message || error.message) });
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleClose = () => {
-    setFormData(initialState);
-    onClose();
   };
 
   const formFields = [
@@ -168,10 +215,10 @@ export default function PackageFormDialog({ open, onClose, onSuccess }) {
     { name: 'remark', label: 'Remark', type: 'text' },
     { name: 'sms', label: 'SMS', type: 'text' },
     { name: 'smsLa', label: 'SMS LA', type: 'text' },
-    { name: 'subCos', label: 'Sub Cos', type: 'text' },
-    { name: 'channels', label: 'Channels', type: 'text' },
-    { name: 'requiredCounterName', label: 'Req. Counter', type: 'text' },
-    { name: 'excludedCounterName', label: 'Excl. Counter', type: 'text' },
+    { name: 'subCos', label: 'Sub Cos', type: 'select', options: subCosOptions, loading: loadingSubCos },
+    { name: 'channels', label: 'Channels', type: 'multiselect', options: channelsOptions, loading: loadingChannels },
+    { name: 'requiredCounterName', label: 'RequiredCounter', type: 'checkbox' },
+    { name: 'excludedCounterName', label: 'ExcludedCounter', type: 'checkbox' },
     { name: 'whitelist', label: 'Whitelist', type: 'checkbox' },
     { name: 'isIR', label: 'Is IR', type: 'checkbox' },
     { name: 'is5G', label: 'Is 5G', type: 'checkbox' },
@@ -187,8 +234,99 @@ export default function PackageFormDialog({ open, onClose, onSuccess }) {
     { name: 'needsOffering', label: 'Needs Offering', type: 'checkbox' },
   ];
 
+  // renderField ຢູ່ໃນ component, ຮັບ field ເປັນ parameter
+  const renderField = (field) => {
+    if (field.type === 'checkbox') {
+      return (
+        <FormControlLabel
+          control={
+            <Checkbox
+              size="small"
+              checked={!!formData[field.name]}
+              onChange={handleChecked}
+              name={field.name}
+              color="primary"
+              sx={{ py: 0 }}
+            />
+          }
+          label=""
+          sx={{ m: 0 }}
+        />
+      );
+    }
+
+    if (field.type === 'select') {
+      return field.loading ? (
+        <CircularProgress size={20} />
+      ) : (
+        <Select
+          size="small"
+          fullWidth
+          value={formData[field.name] || ''}
+          onChange={(e) => setFormData(prev => ({ ...prev, [field.name]: e.target.value }))}
+          input={<OutlinedInput />}
+          sx={{ bgcolor: '#ffffff' }}
+        >
+          <MenuItem value="">
+            {/* <em>-- ເລືອກ --</em> */}
+          </MenuItem>
+          {field.options.map((opt) => (
+            <MenuItem key={opt.value} value={opt.value}>
+              {opt.label} |
+            </MenuItem>
+          ))}
+        </Select>
+      );
+    }
+
+    if (field.type === 'multiselect') {
+      return field.loading ? (
+        <CircularProgress size={20} />
+      ) : (
+        <Select
+          multiple
+          size="small"
+          fullWidth
+          value={formData[field.name] || []}
+          onChange={(e) => handleMultiSelect(field.name, e.target.value)}
+          input={<OutlinedInput />}
+          renderValue={(selected) => (
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+              {selected.map((val) => {
+                const opt = field.options.find(o => o.value === val);
+                return <Chip key={val} label={opt?.label ?? val} size="small" />;
+              })}
+            </Box>
+          )}
+          sx={{ bgcolor: '#ffffff' }}
+        >
+          {field.options.map((opt) => (
+            <MenuItem key={opt.value} value={opt.value}>
+              {opt.label} | 
+            </MenuItem>
+          ))}
+        </Select>
+      );
+    }
+
+    // text, number, datetime-local
+    return (
+      <TextField
+        fullWidth
+        size="small"
+        name={field.name}
+        type={field.type}
+        value={formData[field.name] ?? ''}
+        onChange={handleChange}
+        InputLabelProps={{ shrink: true }}
+        sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#ffffff' } }}
+      />
+    );
+  };
+
   return (
-    <Dialog open={open} onClose={handleClose} maxWidth="xl" fullWidth PaperProps={{ sx: { bgcolor: '#f9fafb' } }}>
+    <Dialog open={open} onClose={handleClose} maxWidth="xl" fullWidth
+      PaperProps={{ sx: { bgcolor: '#f9fafb' } }}>
       <DialogContent sx={{ p: 4, pt: 5 }}>
         <Grid container spacing={4} sx={{ mb: 2 }}>
           {formFields.map((field, idx) => (
@@ -197,36 +335,7 @@ export default function PackageFormDialog({ open, onClose, onSuccess }) {
                 <Typography variant="body2" sx={{ fontWeight: 500, color: '#333', mb: 1 }}>
                   {field.label}
                 </Typography>
-                {field.type === 'checkbox' ? (
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        size="small"
-                        checked={formData[field.name]}
-                        onChange={handleChecked}
-                        name={field.name}
-                        color="primary"
-                        sx={{ py: 0 }}
-                      />
-                    }
-                    label={<Typography variant="body2" color="textSecondary">{field.checkboxLabel}</Typography>}
-                    sx={{ m: 0 }}
-                  />
-                ) : (
-                  <TextField
-                    fullWidth
-                    size="small"
-                    name={field.name}
-                    type={field.type}
-                    placeholder={field.placeholder}
-                    value={formData[field.name]}
-                    onChange={handleChange}
-                    InputLabelProps={{ shrink: true }}
-                    sx={{
-                      '& .MuiOutlinedInput-root': { bgcolor: '#ffffff' }
-                    }}
-                  />
-                )}
+                {renderField(field)}
               </Box>
             </Grid>
           ))}
