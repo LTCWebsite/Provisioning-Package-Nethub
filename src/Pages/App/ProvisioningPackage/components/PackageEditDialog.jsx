@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {
   Dialog, DialogContent, Button, Grid, TextField,
-  FormControlLabel, Checkbox, Typography, Box, IconButton, Divider
+  FormControlLabel, Checkbox, Typography, Box, IconButton, Divider,
+  Select, MenuItem, OutlinedInput, Chip, CircularProgress
 } from '@mui/material';
 import { AxiosReq3 } from '../../../../Components/Axios';
 import cookie from 'js-cookie';
@@ -12,9 +13,23 @@ export default function PackageEditDialog({ open, onClose, onSuccess, data }) {
   const username = localStorage.getItem("USERNAME") || '';
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
+  const [subCosOptions, setSubCosOptions] = useState([]);
+  const [loadingSubCos, setLoadingSubCos] = useState(false);
+  const [channelsOptions, setChannelsOptions] = useState([]);
+  const [loadingChannels, setLoadingChannels] = useState(false);
+
+  useEffect(() => {
+    if (open) {
+      fetchSubCos();
+      fetchChannels();
+    }
+  }, [open]);
 
   useEffect(() => {
     if (data && open) {
+      // parse channels from pipe-separated string to array
+      const channelsRaw = data.channels || '';
+      const channelsArr = channelsRaw ? channelsRaw.split('|').filter(Boolean) : [];
       setFormData({
         ...data,
         refillStopDay: data.refillStopDay || 0,
@@ -40,9 +55,56 @@ export default function PackageEditDialog({ open, onClose, onSuccess, data }) {
         isFtthBundle: !!data.isFtthBundle,
         isLocation: !!data.isLocation,
         needsOffering: !!data.needsOffering,
+        channels: channelsArr,
       });
     }
   }, [data, open]);
+
+  const fetchSubCos = async () => {
+    setLoadingSubCos(true);
+    try {
+      const res = await AxiosReq3.get('/WhiteListNethub/subcos', {
+        headers: {
+          Authorization: "Bearer " + cookie.get("ONE_TOKEN"),
+          'Content-Type': 'application/json'
+        },
+      });
+      const data = res.data?.data ?? res.data ?? [];
+      const options = data.map((item) => ({
+        value: item.subcos,
+        label: item.type,
+      }));
+      setSubCosOptions(options);
+    } catch (err) {
+      console.error('Failed to fetch subCos:', err);
+      setSubCosOptions([]);
+    } finally {
+      setLoadingSubCos(false);
+    }
+  };
+
+  const fetchChannels = async () => {
+    setLoadingChannels(true);
+    try {
+      const res = await AxiosReq3.get('/WhiteListNethub/channels', {
+        headers: {
+          Authorization: "Bearer " + cookie.get("ONE_TOKEN"),
+          'Content-Type': 'application/json'
+        },
+      });
+      const data = res.data?.data ?? res.data ?? [];
+      const options = data.map((item) => ({
+        value: item.channels,
+        label: item.channels,
+      }));
+      setChannelsOptions(options);
+    } catch (err) {
+      console.error('Failed to fetch channels:', err);
+      setChannelsOptions([]);
+    } finally {
+      setLoadingChannels(false);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -52,6 +114,11 @@ export default function PackageEditDialog({ open, onClose, onSuccess, data }) {
   const handleChecked = (e) => {
     const { name, checked } = e.target;
     setFormData(prev => ({ ...prev, [name]: checked }));
+  };
+
+  // multiselect handler
+  const handleMultiSelect = (name, value) => {
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async () => {
@@ -97,7 +164,7 @@ export default function PackageEditDialog({ open, onClose, onSuccess, data }) {
       isFtthBundle: !!formData.isFtthBundle,
       isLocation: !!formData.isLocation,
       needsOffering: !!formData.needsOffering,
-      channels: formData.channels || '',
+      channels: Array.isArray(formData.channels) ? formData.channels.join('|') : (formData.channels || ''),
       updatedBy: username,
       updatedAt: new Date().toISOString()
     };
@@ -137,8 +204,8 @@ export default function PackageEditDialog({ open, onClose, onSuccess, data }) {
     { name: 'remark', label: 'Remark', type: 'text' },
     { name: 'sms', label: 'SMS', type: 'text' },
     { name: 'smsLa', label: 'SMS LA', type: 'text' },
-    { name: 'subCos', label: 'Sub Cos', type: 'text' },
-    { name: 'channels', label: 'Channels', type: 'text' },
+    { name: 'subCos', label: 'Sub Cos', type: 'select', options: subCosOptions, loading: loadingSubCos },
+    { name: 'channels', label: 'Channels', type: 'multiselect', options: channelsOptions, loading: loadingChannels },
     { name: 'requiredCounterName', label: 'RequiredCounter', type: 'checkbox' },
     { name: 'excludedCounterName', label: 'ExcludedCounter', type: 'checkbox' },
     { name: 'whitelist', label: 'Whitelist', type: 'checkbox' },
@@ -155,6 +222,94 @@ export default function PackageEditDialog({ open, onClose, onSuccess, data }) {
     { name: 'isLocation', label: 'Location', type: 'checkbox' },
     { name: 'needsOffering', label: 'Needs Offering', type: 'checkbox' },
   ];
+
+  const renderField = (field) => {
+    if (field.type === 'checkbox') {
+      return (
+        <FormControlLabel
+          control={
+            <Checkbox
+              size="small"
+              checked={!!formData[field.name]}
+              onChange={handleChecked}
+              name={field.name}
+              color="primary"
+              sx={{ py: 0 }}
+            />
+          }
+          label=""
+          sx={{ m: 0 }}
+        />
+      );
+    }
+
+    if (field.type === 'select') {
+      return field.loading ? (
+        <CircularProgress size={20} />
+      ) : (
+        <Select
+          size="small"
+          fullWidth
+          value={formData[field.name] || ''}
+          onChange={(e) => setFormData(prev => ({ ...prev, [field.name]: e.target.value }))}
+          input={<OutlinedInput />}
+          sx={{ bgcolor: '#ffffff' }}
+        >
+          <MenuItem value="">
+          </MenuItem>
+          {field.options.map((opt) => (
+            <MenuItem key={opt.value} value={opt.value}>
+              {opt.label} |
+            </MenuItem>
+          ))}
+        </Select>
+      );
+    }
+
+    if (field.type === 'multiselect') {
+      return field.loading ? (
+        <CircularProgress size={20} />
+      ) : (
+        <Select
+          multiple
+          size="small"
+          fullWidth
+          value={formData[field.name] || []}
+          onChange={(e) => handleMultiSelect(field.name, e.target.value)}
+          input={<OutlinedInput />}
+          renderValue={(selected) => (
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+              {selected.map((val) => {
+                const opt = field.options.find(o => o.value === val);
+                return <Chip key={val} label={opt?.label ?? val} size="small" />;
+              })}
+            </Box>
+          )}
+          sx={{ bgcolor: '#ffffff' }}
+        >
+          {field.options.map((opt) => (
+            <MenuItem key={opt.value} value={opt.value}>
+              {opt.label} | 
+            </MenuItem>
+          ))}
+        </Select>
+      );
+    }
+
+    // text, number, datetime-local
+    return (
+      <TextField
+        fullWidth
+        size="small"
+        name={field.name}
+        type={field.type}
+        value={formData[field.name] ?? ''}
+        onChange={handleChange}
+        InputLabelProps={{ shrink: true }}
+        sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#ffffff' } }}
+      />
+    );
+  };
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="xl" fullWidth PaperProps={{ sx: { bgcolor: '#f9fafb' } }}>
@@ -173,35 +328,7 @@ export default function PackageEditDialog({ open, onClose, onSuccess, data }) {
                 <Typography variant="body2" sx={{ fontWeight: 500, color: '#333', mb: 1 }}>
                   {field.label}
                 </Typography>
-                {field.type === 'checkbox' ? (
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        size="small"
-                        checked={!!formData[field.name]}
-                        onChange={handleChecked}
-                        name={field.name}
-                        color="primary"
-                        sx={{ py: 0 }}
-                      />
-                    }
-                    label={<Typography variant="body2" color="textSecondary">{field.label}</Typography>}
-                    sx={{ m: 0 }}
-                  />
-                ) : (
-                  <TextField
-                    fullWidth
-                    size="small"
-                    name={field.name}
-                    type={field.type}
-                    value={formData[field.name] || ''}
-                    onChange={handleChange}
-                    InputLabelProps={{ shrink: true }}
-                    sx={{
-                      '& .MuiOutlinedInput-root': { bgcolor: '#ffffff' }
-                    }}
-                  />
-                )}
+                {renderField(field)}
               </Box>
             </Grid>
           ))}
