@@ -39,7 +39,7 @@ const initialState = {
   smsLa: '',
   expiryLastDayOfMonth: 0,
   isSupporting5G: false,
-  subCos: '',
+  subCos: [],
   isCbsCharge: false,
   isAdditional: false,
   cancelable: false,
@@ -57,7 +57,8 @@ export default function PackageFormDialog({ open, onClose, onSuccess }) {
   // hooks ທຸກຕົວຢູ່ເທິງສຸດ
   const [formData, setFormData] = useState(initialState);
   const [loading, setLoading] = useState(false);
-  const [subCosOptions, setSubCosOptions] = useState([]);
+  const [subCosOptions, setSubCosOptions] = useState([]);   // grouped type options
+  const [subCosRawData, setSubCosRawData] = useState([]);   // raw API data for subcos→type mapping
   const [loadingSubCos, setLoadingSubCos] = useState(false);
   const [channelsOptions, setChannelsOptions] = useState([]);
   const [loadingChannels, setLoadingChannels] = useState(false);
@@ -76,17 +77,18 @@ export default function PackageFormDialog({ open, onClose, onSuccess }) {
           'Content-Type': 'application/json'
         },
       });
-      const data = res.data?.data ?? res.data ?? [];
-      // Group by type, join all subcos values with '|'
+      const rawData = res.data?.data ?? res.data ?? [];
+      setSubCosRawData(rawData);
+      // Group by offeringName
       const grouped = {};
-      data.forEach((item) => {
-        const typeKey = item.offeringName || 'Other';
+      rawData.forEach((item) => {
+        const typeKey = item.offeringName || item.type || 'Other';
         if (!grouped[typeKey]) grouped[typeKey] = [];
         grouped[typeKey].push(item.subcos);
       });
       const options = Object.keys(grouped).map((type) => ({
-        value: grouped[type].join('|'),  // ສົ່ງທັງໝົດ subcos ຂອງ type ນີ້ໄປ backend
-        label: type,                      // ສະແດງຊື່ type (offeringName) ໃນ dropdown
+        subcosList: grouped[type],
+        label: type,
       }));
       setSubCosOptions(options);
     } catch (err) {
@@ -174,7 +176,7 @@ export default function PackageFormDialog({ open, onClose, onSuccess }) {
       isTopping: !!formData.isTopping,
       expiryLastDayOfMonth: !!formData.expiryLastDayOfMonth,
       isSupporting5G: !!formData.isSupporting5G,
-      subCos: formData.subCos || '',
+      subCos: Array.isArray(formData.subCos) ? formData.subCos.join('|') : (formData.subCos || ''),
       isCbsCharge: !!formData.isCbsCharge,
       isAdditional: !!formData.isAdditional,
       cancelable: !!formData.cancelable,
@@ -222,7 +224,7 @@ export default function PackageFormDialog({ open, onClose, onSuccess }) {
     { name: 'remark', label: 'Remark', type: 'text' },
     { name: 'sms', label: 'SMS', type: 'text' },
     { name: 'smsLa', label: 'SMS LA', type: 'text' },
-    { name: 'subCos', label: 'Sub Cos', type: 'select', options: subCosOptions, loading: loadingSubCos },
+    { name: 'subCos', label: 'Sub Cos', type: 'subcos-multiselect', loading: loadingSubCos },
     { name: 'channels', label: 'Channels', type: 'multiselect', options: channelsOptions, loading: loadingChannels },
     { name: 'requiredCounterName', label: 'RequiredCounter', type: 'checkbox' },
     { name: 'excludedCounterName', label: 'ExcludedCounter', type: 'checkbox' },
@@ -262,21 +264,70 @@ export default function PackageFormDialog({ open, onClose, onSuccess }) {
       );
     }
 
-    if (field.type === 'select') {
-      return field.loading ? (
-        <CircularProgress size={20} />
-      ) : (
+    if (field.type === 'subcos-multiselect') {
+      if (field.loading) return <CircularProgress size={20} />;
+
+      const selectedSubCos = Array.isArray(formData.subCos) ? formData.subCos : [];
+
+      // Find type name for a subcos value
+      const getOfferingName = (subCosValue) => {
+        const found = subCosRawData.find(item => String(item.subcos) === String(subCosValue));
+        return found?.offeringName || found?.type || '';
+      };
+
+      // Handle selecting a type → add all its subcos
+      const handleTypeSelect = (typeLabel) => {
+        const typeOpt = subCosOptions.find(o => o.label === typeLabel);
+        if (!typeOpt) return;
+        const newValues = [...new Set([...selectedSubCos, ...typeOpt.subcosList])];
+        setFormData(prev => ({ ...prev, subCos: newValues }));
+      };
+
+      // Handle removing a single subcos chip
+      const handleDeleteSubCos = (e, subCosValue) => {
+        e.stopPropagation();
+        const newValues = selectedSubCos.filter(v => v !== subCosValue);
+        setFormData(prev => ({ ...prev, subCos: newValues }));
+      };
+
+      return (
         <Select
           size="small"
           fullWidth
           displayEmpty
-          value={formData.subCos || ''}
-          onChange={(e) => setFormData(prev => ({ ...prev, subCos: e.target.value }))}
+          value=""
+          onChange={(e) => handleTypeSelect(e.target.value)}
           input={<OutlinedInput />}
-          renderValue={(selected) => {
-            if (!selected) return <em style={{ color: '#aaa' }}>-- ເລືອກ --</em>;
-            const opt = subCosOptions.find(o => o.value === selected);
-            return opt?.label ?? selected;
+          renderValue={() => {
+            if (selectedSubCos.length === 0) {
+              return <em style={{ color: '#aaa' }}>-- ເລືອກ Type ເພື່ອເພີ່ມ SubCos --</em>;
+            }
+            return (
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, maxHeight: 120, overflowY: 'auto' }}>
+                {selectedSubCos.map((val) => {
+                  const offName = getOfferingName(val);
+                  const chipLabel = offName ? `${offName} : ${val}` : val;
+                  return (
+                    <Chip
+                      key={val}
+                      label={chipLabel}
+                      size="small"
+                      onDelete={(e) => handleDeleteSubCos(e, val)}
+                      onMouseDown={(e) => e.stopPropagation()}
+                      sx={{
+                        bgcolor: '#e3f2fd',
+                        color: '#1565c0',
+                        fontWeight: 500,
+                        '& .MuiChip-deleteIcon': {
+                          color: '#1565c0',
+                          '&:hover': { color: '#c62828' },
+                        },
+                      }}
+                    />
+                  );
+                })}
+              </Box>
+            );
           }}
           MenuProps={{
             PaperProps: {
@@ -293,12 +344,14 @@ export default function PackageFormDialog({ open, onClose, onSuccess }) {
               },
             },
           }}
-          sx={{ bgcolor: '#ffffff' }}
+          sx={{ bgcolor: '#ffffff', '& .MuiSelect-select': { minHeight: '40px !important', display: 'flex', alignItems: 'center' } }}
         >
-          <MenuItem value=""><em>-- ເລືອກ --</em></MenuItem>
+          <MenuItem value="" disabled>
+            <em>-- ເລືອກ Type ເພື່ອເພີ່ມ SubCos --</em>
+          </MenuItem>
           {subCosOptions.map((opt) => (
-            <MenuItem key={opt.label} value={opt.value}>
-              📦 {opt.label}
+            <MenuItem key={opt.label} value={opt.label}>
+              📦 {opt.label} ({opt.subcosList.length} subcos)
             </MenuItem>
           ))}
         </Select>
