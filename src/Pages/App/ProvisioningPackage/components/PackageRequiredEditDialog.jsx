@@ -88,6 +88,9 @@ export default function PackageRequiredEditDialog({ open, onClose, onSuccess, da
       </Box>
       <Divider />
       <DialogContent sx={{ p: 4 }}>
+        <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#1a237e', mb: 2, pb: 0.5, borderBottom: '2px solid #e8eaf6' }}>
+          📋 ຂໍ້ມູນທົ່ວໄປ (General Information)
+        </Typography>
         <Grid container spacing={3}>
           {/* packageId */}
           <Grid item xs={12} sm={6}>
@@ -102,6 +105,21 @@ export default function PackageRequiredEditDialog({ open, onClose, onSuccess, da
                   onChange={handleChange}
                   displayEmpty
                   sx={{ bgcolor: '#ffffff' }}
+                  MenuProps={{
+                    PaperProps: {
+                      sx: {
+                        maxHeight: 400,
+                        '& .MuiList-root': {
+                          display: 'flex',
+                          flexDirection: 'column',
+                        },
+                        '& .MuiMenuItem-root': {
+                          display: 'flex',
+                          padding: '8px 16px',
+                        },
+                      },
+                    },
+                  }}
                   renderValue={(selected) => {
                     if (!selected) {
                       return "ເລືອກ Package ID";
@@ -133,6 +151,21 @@ export default function PackageRequiredEditDialog({ open, onClose, onSuccess, da
                   onChange={handleChange}
                   displayEmpty
                   sx={{ bgcolor: '#ffffff' }}
+                  MenuProps={{
+                    PaperProps: {
+                      sx: {
+                        maxHeight: 400,
+                        '& .MuiList-root': {
+                          display: 'flex',
+                          flexDirection: 'column',
+                        },
+                        '& .MuiMenuItem-root': {
+                          display: 'flex',
+                          padding: '8px 16px',
+                        },
+                      },
+                    },
+                  }}
                   renderValue={(selected) => {
                     if (!selected) {
                       return "ເລືອກ Counter Name";

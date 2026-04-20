@@ -82,6 +82,9 @@ export default function PackageRequiredFormDialog({ open, onClose, onSuccess }) 
       </Box>
       <Divider />
       <DialogContent sx={{ p: 4 }}>
+        <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#1a237e', mb: 2, pb: 0.5, borderBottom: '2px solid #e8eaf6' }}>
+          📋 ຂໍ້ມູນທົ່ວໄປ (General Information)
+        </Typography>
         <Grid container spacing={3}>
           {/* packageId */}
           <Grid item xs={12} sm={6}>
@@ -105,6 +108,21 @@ export default function PackageRequiredFormDialog({ open, onClose, onSuccess }) 
                   onChange={handleChange}
                   displayEmpty
                   sx={{ bgcolor: '#ffffff' }}
+                  MenuProps={{
+                    PaperProps: {
+                      sx: {
+                        maxHeight: 400,
+                        '& .MuiList-root': {
+                          display: 'flex',
+                          flexDirection: 'column',
+                        },
+                        '& .MuiMenuItem-root': {
+                          display: 'flex',
+                          padding: '8px 16px',
+                        },
+                      },
+                    },
+                  }}
                   renderValue={(selected) => {
                     if (selected.length === 0) {
                       return <Typography sx={{ color: '#999' }}>ເລືອກ Package ID</Typography>;
@@ -115,7 +133,7 @@ export default function PackageRequiredFormDialog({ open, onClose, onSuccess }) 
                   <MenuItem value="" disabled>ເລືອກ Package ID</MenuItem>
                   {packages.map((pkg, idx) => (
                     <MenuItem key={idx} value={pkg.id}>
-                      {pkg.id} ||
+                      {pkg.id}
                     </MenuItem>
                   ))}
                 </Select>
@@ -136,6 +154,21 @@ export default function PackageRequiredFormDialog({ open, onClose, onSuccess }) 
                   onChange={handleChange}
                   displayEmpty
                   sx={{ bgcolor: '#ffffff' }}
+                  MenuProps={{
+                    PaperProps: {
+                      sx: {
+                        maxHeight: 400,
+                        '& .MuiList-root': {
+                          display: 'flex',
+                          flexDirection: 'column',
+                        },
+                        '& .MuiMenuItem-root': {
+                          display: 'flex',
+                          padding: '8px 16px',
+                        },
+                      },
+                    },
+                  }}
                   renderValue={(selected) => {
                     if (selected.length === 0) {
                       return <Typography sx={{ color: '#999' }}>ເລືອກ Counter Name</Typography>;
@@ -146,7 +179,7 @@ export default function PackageRequiredFormDialog({ open, onClose, onSuccess }) 
                   <MenuItem value="" disabled>ເລືອກ Counter Name</MenuItem>
                   {packages.map((pkg, idx) => (
                     <MenuItem key={idx} value={pkg.counterName}>
-                      {pkg.counterName} ||
+                      {pkg.counterName}
                     </MenuItem>
                   ))}
                 </Select>

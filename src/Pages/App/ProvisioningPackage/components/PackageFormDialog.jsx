@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   Dialog, DialogContent, Button, Grid, TextField,
-  FormControlLabel, Checkbox, Typography, Box,
+  FormControlLabel, Checkbox, Typography, Box, Divider,
   Select, MenuItem, OutlinedInput, Chip, CircularProgress
 } from '@mui/material';
 import { AxiosReq3 } from '../../../../Components/Axios';
@@ -77,9 +77,16 @@ export default function PackageFormDialog({ open, onClose, onSuccess }) {
         },
       });
       const data = res.data?.data ?? res.data ?? [];
-      const options = data.map((item) => ({
-        value: item.subcos,   // ສົ່ງ subcos string ໄປ backend
-        label: item.type,     // ສະແດງ type ໃນ dropdown
+      // Group by type, join all subcos values with '|'
+      const grouped = {};
+      data.forEach((item) => {
+        const typeKey = item.offeringName || 'Other';
+        if (!grouped[typeKey]) grouped[typeKey] = [];
+        grouped[typeKey].push(item.subcos);
+      });
+      const options = Object.keys(grouped).map((type) => ({
+        value: grouped[type].join('|'),  // ສົ່ງທັງໝົດ subcos ຂອງ type ນີ້ໄປ backend
+        label: type,                      // ສະແດງຊື່ type (offeringName) ໃນ dropdown
       }));
       setSubCosOptions(options);
     } catch (err) {
@@ -262,17 +269,36 @@ export default function PackageFormDialog({ open, onClose, onSuccess }) {
         <Select
           size="small"
           fullWidth
-          value={formData[field.name] || ''}
-          onChange={(e) => setFormData(prev => ({ ...prev, [field.name]: e.target.value }))}
+          displayEmpty
+          value={formData.subCos || ''}
+          onChange={(e) => setFormData(prev => ({ ...prev, subCos: e.target.value }))}
           input={<OutlinedInput />}
+          renderValue={(selected) => {
+            if (!selected) return <em style={{ color: '#aaa' }}>-- ເລືອກ --</em>;
+            const opt = subCosOptions.find(o => o.value === selected);
+            return opt?.label ?? selected;
+          }}
+          MenuProps={{
+            PaperProps: {
+              sx: {
+                maxHeight: 400,
+                '& .MuiList-root': {
+                  display: 'flex',
+                  flexDirection: 'column',
+                },
+                '& .MuiMenuItem-root': {
+                  display: 'flex',
+                  padding: '8px 16px',
+                },
+              },
+            },
+          }}
           sx={{ bgcolor: '#ffffff' }}
         >
-          <MenuItem value="">
-            {/* <em>-- ເລືອກ --</em> */}
-          </MenuItem>
-          {field.options.map((opt) => (
-            <MenuItem key={opt.value} value={opt.value}>
-              {opt.label} |
+          <MenuItem value=""><em>-- ເລືອກ --</em></MenuItem>
+          {subCosOptions.map((opt) => (
+            <MenuItem key={opt.label} value={opt.value}>
+              📦 {opt.label}
             </MenuItem>
           ))}
         </Select>
@@ -298,11 +324,26 @@ export default function PackageFormDialog({ open, onClose, onSuccess }) {
               })}
             </Box>
           )}
+          MenuProps={{
+            PaperProps: {
+              sx: {
+                maxHeight: 300,
+                '& .MuiList-root': {
+                  display: 'flex',
+                  flexDirection: 'column',
+                },
+                '& .MuiMenuItem-root': {
+                  display: 'flex',
+                  padding: '8px 16px',
+                },
+              },
+            },
+          }}
           sx={{ bgcolor: '#ffffff' }}
         >
           {field.options.map((opt) => (
             <MenuItem key={opt.value} value={opt.value}>
-              {opt.label} | 
+              {opt.label}
             </MenuItem>
           ))}
         </Select>
@@ -324,18 +365,55 @@ export default function PackageFormDialog({ open, onClose, onSuccess }) {
     );
   };
 
+  const textFields = formFields.filter(f => f.type !== 'checkbox');
+  const checkboxFields = formFields.filter(f => f.type === 'checkbox');
+
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="xl" fullWidth
       PaperProps={{ sx: { bgcolor: '#f9fafb' } }}>
-      <DialogContent sx={{ p: 4, pt: 5 }}>
-        <Grid container spacing={4} sx={{ mb: 2 }}>
-          {formFields.map((field, idx) => (
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2, bgcolor: '#f5f5f5' }}>
+        <Typography variant="h6" sx={{ fontWeight: 'bold' }}>ເພີ່ມ Package</Typography>
+      </Box>
+      <DialogContent sx={{ p: 4, pt: 3 }}>
+        {/* ===== ສ່ວນ Text / Input Fields ===== */}
+        <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#1a237e', mb: 2, pb: 0.5, borderBottom: '2px solid #e8eaf6' }}>
+          📋 ຂໍ້ມູນທົ່ວໄປ (General Information)
+        </Typography>
+        <Grid container spacing={3} sx={{ mb: 3 }}>
+          {textFields.map((field, idx) => (
             <Grid item xs={12} sm={6} md={3} key={idx}>
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                 <Typography variant="body2" sx={{ fontWeight: 500, color: '#333', mb: 1 }}>
                   {field.label}
                 </Typography>
                 {renderField(field)}
+              </Box>
+            </Grid>
+          ))}
+        </Grid>
+
+        <Divider sx={{ my: 2 }} />
+
+        {/* ===== ສ່ວນ Checkbox Fields ===== */}
+        <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#1a237e', mb: 2, pb: 0.5, borderBottom: '2px solid #e8eaf6' }}>
+          ⚙️ ການຕັ້ງຄ່າ (Settings)
+        </Typography>
+        <Grid container spacing={2}>
+          {checkboxFields.map((field, idx) => (
+            <Grid item xs={6} sm={4} md={2} key={idx}>
+              <Box sx={{
+                display: 'flex',
+                alignItems: 'center',
+                bgcolor: '#fff',
+                borderRadius: 1,
+                px: 1.5,
+                py: 0.5,
+                border: '1px solid #e0e0e0',
+              }}>
+                {renderField(field)}
+                <Typography variant="body2" sx={{ fontWeight: 500, color: '#333', ml: 0.5 }}>
+                  {field.label}
+                </Typography>
               </Box>
             </Grid>
           ))}

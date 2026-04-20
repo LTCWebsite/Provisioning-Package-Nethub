@@ -21,6 +21,7 @@ export default function AdditionalViewDialog({ open, onClose, data }) {
     {
       // title: 'ຂໍ້ມູນການບັນທຶກ (Audit Info)',
       // icon: '🕐',
+
       fields: [
         { label: 'Created At', field: 'createdAt' },
         { label: 'Created By', field: 'createdBy' },

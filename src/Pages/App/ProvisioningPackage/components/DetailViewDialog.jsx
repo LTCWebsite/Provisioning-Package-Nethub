@@ -161,6 +161,7 @@ export default function DetailViewDialog({ open, onClose, data, title, icon = 'ð
                 ))}
               </Grid>
             )}
+            <br />
           </Box>
         ))}
       </DialogContent>

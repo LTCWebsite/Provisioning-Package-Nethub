@@ -101,6 +101,9 @@ export default function PackageExcludedFormDialog({ open, onClose, onSuccess }) 
       </Box>
       <Divider />
       <DialogContent sx={{ p: 4 }}>
+        <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#1a237e', mb: 2, pb: 0.5, borderBottom: '2px solid #e8eaf6' }}>
+          📋 ຂໍ້ມູນທົ່ວໄປ (General Information)
+        </Typography>
         <Grid container spacing={3}>
           {/* packageId Dropdown */}
           <Grid item xs={12} sm={6}>
@@ -115,6 +118,21 @@ export default function PackageExcludedFormDialog({ open, onClose, onSuccess }) 
                   onChange={handleChange}
                   displayEmpty
                   sx={{ bgcolor: '#ffffff' }}
+                  MenuProps={{
+                    PaperProps: {
+                      sx: {
+                        maxHeight: 400,
+                        '& .MuiList-root': {
+                          display: 'flex',
+                          flexDirection: 'column',
+                        },
+                        '& .MuiMenuItem-root': {
+                          display: 'flex',
+                          padding: '8px 16px',
+                        },
+                      },
+                    },
+                  }}
                   renderValue={(selected) => {
                     if (selected.length === 0) {
                       return <Typography sx={{ color: '#999' }}>ເລືອກ Package</Typography>;
@@ -125,7 +143,7 @@ export default function PackageExcludedFormDialog({ open, onClose, onSuccess }) 
                   <MenuItem value="" disabled>ເລືອກ Package</MenuItem>
                   {packages.map((pkg) => (
                     <MenuItem key={pkg.id} value={pkg.id}>
-                      {pkg.id} ||
+                      {pkg.id}
                     </MenuItem>
                   ))}
                 </Select>
@@ -146,6 +164,21 @@ export default function PackageExcludedFormDialog({ open, onClose, onSuccess }) 
                   onChange={handleChange}
                   displayEmpty
                   sx={{ bgcolor: '#ffffff' }}
+                  MenuProps={{
+                    PaperProps: {
+                      sx: {
+                        maxHeight: 400,
+                        '& .MuiList-root': {
+                          display: 'flex',
+                          flexDirection: 'column',
+                        },
+                        '& .MuiMenuItem-root': {
+                          display: 'flex',
+                          padding: '8px 16px',
+                        },
+                      },
+                    },
+                  }}
                   renderValue={(selected) => {
                     if (selected.length === 0) {
                       return <Typography sx={{ color: '#999' }}>ເລືອກ Counter Name</Typography>;
@@ -156,7 +189,7 @@ export default function PackageExcludedFormDialog({ open, onClose, onSuccess }) 
                   <MenuItem value="" disabled>ເລືອກ Counter Name</MenuItem>
                   {[...new Set(packages.map(pkg => pkg.counterName))].filter(Boolean).map((name) => (
                     <MenuItem key={name} value={name}>
-                      {name}  ||
+                      {name}
                     </MenuItem>
                   ))}
                 </Select>
@@ -198,10 +231,26 @@ export default function PackageExcludedFormDialog({ open, onClose, onSuccess }) 
               />
             </Box>
           </Grid>
+        </Grid>
 
+        <Divider sx={{ my: 2 }} />
+
+        {/* ===== ສ່ວນ Checkbox ===== */}
+        <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#1a237e', mb: 2, pb: 0.5, borderBottom: '2px solid #e8eaf6' }}>
+          ⚙️ ການຕັ້ງຄ່າ (Settings)
+        </Typography>
+        <Grid container spacing={2}>
           {/* requireExpiryCheck */}
-          <Grid item xs={12} sm={6}>
-            <Box sx={{ display: 'flex', alignItems: 'center', height: '100%', pt: 3 }}>
+          <Grid item xs={6} sm={4} md={3}>
+            <Box sx={{
+              display: 'flex',
+              alignItems: 'center',
+              bgcolor: '#fff',
+              borderRadius: 1,
+              px: 1.5,
+              py: 0.5,
+              border: '1px solid #e0e0e0',
+            }}>
               <FormControlLabel
                 control={
                   <Checkbox
@@ -209,30 +258,14 @@ export default function PackageExcludedFormDialog({ open, onClose, onSuccess }) 
                     onChange={handleCheckboxChange}
                     name="requireExpiryCheck"
                     color="primary"
+                    size="small"
                   />
                 }
                 label="Require Expiry Check"
+                sx={{ m: 0 }}
               />
             </Box>
           </Grid>
-
-          {/* Audit Fields */}
-          {/* <Grid item xs={12} sm={6}>
-            <Typography variant="body2" sx={{ fontWeight: 500, color: '#333', mb: 1 }}>Created By</Typography>
-            <TextField fullWidth size="small" name="createdBy" value={formData.createdBy} onChange={handleChange} />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Typography variant="body2" sx={{ fontWeight: 500, color: '#333', mb: 1 }}>Created At</Typography>
-            <TextField fullWidth size="small" type="datetime-local" name="createdAt" value={formData.createdAt} onChange={handleChange} InputLabelProps={{ shrink: true }} />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Typography variant="body2" sx={{ fontWeight: 500, color: '#333', mb: 1 }}>Updated By</Typography>
-            <TextField fullWidth size="small" name="updatedBy" value={formData.updatedBy} onChange={handleChange} />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Typography variant="body2" sx={{ fontWeight: 500, color: '#333', mb: 1 }}>Updated At</Typography>
-            <TextField fullWidth size="small" type="datetime-local" name="updatedAt" value={formData.updatedAt} onChange={handleChange} InputLabelProps={{ shrink: true }} />
-          </Grid> */}
         </Grid>
 
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>

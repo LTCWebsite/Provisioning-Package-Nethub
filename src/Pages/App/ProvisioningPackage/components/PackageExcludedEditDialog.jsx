@@ -106,6 +106,9 @@ export default function PackageExcludedEditDialog({ open, onClose, onSuccess, da
       </Box>
       <Divider />
       <DialogContent sx={{ p: 4 }}>
+        <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#1a237e', mb: 2, pb: 0.5, borderBottom: '2px solid #e8eaf6' }}>
+          📋 ຂໍ້ມູນທົ່ວໄປ (General Information)
+        </Typography>
         <Grid container spacing={3}>
           {/* packageId Dropdown */}
           <Grid item xs={12} sm={6}>
@@ -120,6 +123,21 @@ export default function PackageExcludedEditDialog({ open, onClose, onSuccess, da
                   onChange={handleChange}
                   displayEmpty
                   sx={{ bgcolor: '#ffffff' }}
+                  MenuProps={{
+                    PaperProps: {
+                      sx: {
+                        maxHeight: 400,
+                        '& .MuiList-root': {
+                          display: 'flex',
+                          flexDirection: 'column',
+                        },
+                        '& .MuiMenuItem-root': {
+                          display: 'flex',
+                          padding: '8px 16px',
+                        },
+                      },
+                    },
+                  }}
                   renderValue={(selected) => {
                     if (!selected) {
                       return "ເລືອກ Package";
@@ -151,6 +169,21 @@ export default function PackageExcludedEditDialog({ open, onClose, onSuccess, da
                   onChange={handleChange}
                   displayEmpty
                   sx={{ bgcolor: '#ffffff' }}
+                  MenuProps={{
+                    PaperProps: {
+                      sx: {
+                        maxHeight: 400,
+                        '& .MuiList-root': {
+                          display: 'flex',
+                          flexDirection: 'column',
+                        },
+                        '& .MuiMenuItem-root': {
+                          display: 'flex',
+                          padding: '8px 16px',
+                        },
+                      },
+                    },
+                  }}
                   renderValue={(selected) => {
                     if (!selected) {
                       return "ເລືອກ Counter Name";
@@ -203,10 +236,26 @@ export default function PackageExcludedEditDialog({ open, onClose, onSuccess, da
               />
             </Box>
           </Grid>
+        </Grid>
 
+        <Divider sx={{ my: 2 }} />
+
+        {/* ===== ສ່ວນ Checkbox ===== */}
+        <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#1a237e', mb: 2, pb: 0.5, borderBottom: '2px solid #e8eaf6' }}>
+          ⚙️ ການຕັ້ງຄ່າ (Settings)
+        </Typography>
+        <Grid container spacing={2}>
           {/* requireExpiryCheck */}
-          <Grid item xs={12} sm={6}>
-            <Box sx={{ display: 'flex', alignItems: 'center', height: '100%', pt: 3 }}>
+          <Grid item xs={6} sm={4} md={3}>
+            <Box sx={{
+              display: 'flex',
+              alignItems: 'center',
+              bgcolor: '#fff',
+              borderRadius: 1,
+              px: 1.5,
+              py: 0.5,
+              border: '1px solid #e0e0e0',
+            }}>
               <FormControlLabel
                 control={
                   <Checkbox
@@ -214,9 +263,11 @@ export default function PackageExcludedEditDialog({ open, onClose, onSuccess, da
                     onChange={handleCheckboxChange}
                     name="requireExpiryCheck"
                     color="primary"
+                    size="small"
                   />
                 }
                 label="Require Expiry Check"
+                sx={{ m: 0 }}
               />
             </Box>
           </Grid>

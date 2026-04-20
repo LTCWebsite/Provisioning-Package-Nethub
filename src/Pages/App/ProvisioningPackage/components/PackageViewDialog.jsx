@@ -1,11 +1,58 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Dialog, DialogTitle, DialogContent, DialogActions,
   Button, Grid, Typography, Box, Chip, Divider, IconButton
 } from '@mui/material';
 import CloseIcon from '@material-ui/icons/Close';
+import { AxiosReq3 } from '../../../../Components/Axios';
+import cookie from 'js-cookie';
 
 export default function PackageViewDialog({ open, onClose, data }) {
+  const [subCosOptions, setSubCosOptions] = useState([]);
+
+  useEffect(() => {
+    if (open) {
+      fetchSubCos();
+    }
+  }, [open]);
+
+  const fetchSubCos = async () => {
+    try {
+      const res = await AxiosReq3.get('/WhiteListNethub/subcos', {
+        headers: {
+          Authorization: "Bearer " + cookie.get("ONE_TOKEN"),
+          'Content-Type': 'application/json'
+        },
+      });
+      const apiData = res.data?.data ?? res.data ?? [];
+      setSubCosOptions(apiData);
+    } catch (err) {
+      console.error('Failed to fetch subCos:', err);
+      setSubCosOptions([]);
+    }
+  };
+
+  const getSubCosDisplay = (subCosValue) => {
+    if (!subCosValue) return null;
+    const values = String(subCosValue).split(/\||,/).map(v => v.trim()).filter(Boolean);
+
+    return (
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, py: 0.5 }}>
+        {values.map((val, idx) => {
+          // Use String comparison to handle both number and string types from API
+          const found = subCosOptions.find(item => String(item.subcos) === String(val));
+          const offeringName = found?.offeringName || found?.type || '';
+          const displayText = offeringName ? `${offeringName} : ${val}` : val;
+          return (
+            <Typography key={idx} variant="body2" sx={{ display: 'block', color: '#263238', fontWeight: 500 }}>
+              • {displayText}
+            </Typography>
+          );
+        })}
+      </Box>
+    );
+  };
+
   if (!data) return null;
 
   const generalFields = [
@@ -26,7 +73,7 @@ export default function PackageViewDialog({ open, onClose, data }) {
     { label: 'Remark', value: data.remark },
     { label: 'SMS', value: data.sms },
     { label: 'SMS LA', value: data.smsLa },
-    { label: 'Sub Cos', value: data.subCos },
+    { label: 'Sub Cos', value: getSubCosDisplay(data.subCos) },
     { label: 'Channels', value: data.channels },
     { label: 'Extra', value: data.extra },
     { label: 'Expiry Last Day Of Month', value: data.expiryLastDayOfMonth },
@@ -58,8 +105,13 @@ export default function PackageViewDialog({ open, onClose, data }) {
   ];
 
   const renderValue = (val) => {
-    if (val === null || val === undefined || val === '') return '—';
-    return String(val);
+    if (val === null || val === undefined || val === '') return <Typography variant="body2" sx={{ color: '#9e9e9e' }}>—</Typography>;
+    if (React.isValidElement(val)) return val;
+    return (
+      <Typography variant="body2" sx={{ color: '#263238', wordBreak: 'break-word' }}>
+        {String(val)}
+      </Typography>
+    );
   };
 
   const SectionTitle = ({ children }) => (
@@ -89,12 +141,9 @@ export default function PackageViewDialog({ open, onClose, data }) {
       >
         {label}
       </Typography>
-      <Typography
-        variant="body2"
-        sx={{ color: '#263238', wordBreak: 'break-word' }}
-      >
+      <Box sx={{ flexGrow: 1 }}>
         {renderValue(value)}
-      </Typography>
+      </Box>
     </Box>
   );
 
@@ -191,6 +240,7 @@ export default function PackageViewDialog({ open, onClose, data }) {
 
         {/* Boolean Flags */}
         {/* <SectionTitle>⚙️ ການຕັ້ງຄ່າ (Settings)</SectionTitle> */}
+        <br />
         <Box
           sx={{
             display: 'flex',

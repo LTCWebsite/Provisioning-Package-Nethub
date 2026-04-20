@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {
   Dialog, DialogContent, Button, Grid, TextField,
-  Typography, Box, Divider, IconButton, MenuItem, Select, FormControl
+  Typography, Box, Divider, IconButton, MenuItem, Select, FormControl,
+  OutlinedInput, CircularProgress
 } from '@mui/material';
 import { AxiosReq3 } from '../../../../Components/Axios';
 import cookie from 'js-cookie';
@@ -32,15 +33,20 @@ export default function AdditionalFormDialog({ open, onClose, onSuccess }) {
   const [formData, setFormData] = useState(initialState);
   const [loading, setLoading] = useState(false);
   const [packages, setPackages] = useState([]);
+  const [subCosOptions, setSubCosOptions] = useState([]);
+  const [loadingSubCos, setLoadingSubCos] = useState(false);
+  const [loadingPackages, setLoadingPackages] = useState(false);
 
   useEffect(() => {
     if (open) {
       fetchPackages();
+      fetchSubCos();
     }
   }, [open]);
 
 
   const fetchPackages = async () => {
+    setLoadingPackages(true);
     const token = cookie.get("ONE_TOKEN");
     if (!token) return;
 
@@ -54,6 +60,31 @@ export default function AdditionalFormDialog({ open, onClose, onSuccess }) {
       }
     } catch (error) {
       console.error('Error fetching packages:', error);
+    } finally {
+      setLoadingPackages(false);
+    }
+  };
+
+  const fetchSubCos = async () => {
+    setLoadingSubCos(true);
+    try {
+      const res = await AxiosReq3.get('/WhiteListNethub/subcos', {
+        headers: {
+          Authorization: "Bearer " + cookie.get("ONE_TOKEN"),
+          'Content-Type': 'application/json'
+        },
+      });
+      const data = res.data?.data ?? res.data ?? [];
+      const options = data.map((item) => ({
+        value: item.subcos,
+        label: item.offeringName,
+      }));
+      setSubCosOptions(options);
+    } catch (err) {
+      console.error('Failed to fetch subCos:', err);
+      setSubCosOptions([]);
+    } finally {
+      setLoadingSubCos(false);
     }
   };
 
@@ -131,6 +162,9 @@ export default function AdditionalFormDialog({ open, onClose, onSuccess }) {
       </Box>
       <Divider />
       <DialogContent sx={{ p: 4 }}>
+        <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#1a237e', mb: 2, pb: 0.5, borderBottom: '2px solid #e8eaf6' }}>
+          📋 ຂໍ້ມູນທົ່ວໄປ (General Information)
+        </Typography>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={4}>
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -138,34 +172,103 @@ export default function AdditionalFormDialog({ open, onClose, onSuccess }) {
                 Package (ID)
               </Typography>
               <FormControl fullWidth size="small">
-                <Select
-                  name="packageId"
-                  value={formData.packageId}
-                  onChange={handleChange}
-                  displayEmpty
-                  sx={{ bgcolor: '#ffffff' }}
-                  renderValue={(selected) => {
-                    if (!selected) {
-                      return "ເລືອກ Id Package";
-                    }
-                    const selectedPkg = packages.find(p => p.id === selected);
-                    return selectedPkg ? `${selectedPkg.id} - ${selectedPkg.counterName}` : selected;
-                  }}
-                >
-                  <MenuItem value="" disabled>ເລືອກ Id Package</MenuItem>
-                  {packages.map((pkg) => (
-                    <MenuItem key={pkg.id} value={pkg.id} sx={{ borderBottom: '1px solid #f0f0f0' }}>
-                      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                        <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                          Package Id: {pkg.id} - {pkg.counterName}  ||
-                        </Typography>
-                        {/* <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-                          Name: {pkg.counterName}
-                        </Typography> */}
-                      </Box>
+                {loadingPackages || loadingSubCos ? (
+                  <CircularProgress size={20} />
+                ) : (
+                  <Select
+                    name="packageId"
+                    value={formData.packageId}
+                    onChange={handleChange}
+                    displayEmpty
+                    input={<OutlinedInput />}
+                    renderValue={(selected) => {
+                      if (!selected) {
+                        return <em style={{ color: '#aaa' }}>ເລືອກ Id Package</em>;
+                      }
+                      const selectedPkg = packages.find(p => p.id === selected);
+                      return selectedPkg ? `${selectedPkg.id} - ${selectedPkg.counterName}` : selected;
+                    }}
+                    MenuProps={{
+                      PaperProps: {
+                        sx: {
+                          maxHeight: 400,
+                          '& .MuiList-root': {
+                            display: 'flex',
+                            flexDirection: 'column',
+                          },
+                          '& .MuiMenuItem-root': {
+                            display: 'flex',
+                            padding: '8px 16px',
+                          },
+                        },
+                      },
+                    }}
+                    sx={{ bgcolor: '#ffffff' }}
+                  >
+                    <MenuItem value="" disabled>
+                      <em>ເລືອກ Id Package</em>
                     </MenuItem>
-                  ))}
-                </Select>
+                    {(() => {
+                      // Group packages by subCos
+                      const grouped = {};
+                      packages.forEach((pkg) => {
+                        const subCosKey = pkg.subCos || 'Other';
+                        if (!grouped[subCosKey]) grouped[subCosKey] = [];
+                        grouped[subCosKey].push(pkg);
+                      });
+
+                      const items = [];
+                      Object.keys(grouped).forEach((subCosKey) => {
+                        // Find subCos label from options
+                        const subCosOpt = subCosOptions.find(o => o.value === subCosKey);
+                        const subCosLabel = subCosOpt ? subCosOpt.label : subCosKey;
+
+                        // Add subCos group header
+                        items.push(
+                          <MenuItem
+                            key={`header-${subCosKey}`}
+                            disabled
+                            sx={{
+                              bgcolor: '#e3f2fd',
+                              fontWeight: 'bold',
+                              fontSize: '0.85rem',
+                              color: '#1565c0',
+                              borderBottom: '1px solid #bbdefb',
+                              py: 1,
+                              '&.Mui-disabled': {
+                                opacity: 1,
+                              },
+                            }}
+                          >
+                            📦 {subCosLabel}
+                          </MenuItem>
+                        );
+
+                        // Add packages under this subCos
+                        grouped[subCosKey].forEach((pkg) => {
+                          items.push(
+                            <MenuItem
+                              key={pkg.id}
+                              value={pkg.id}
+                              sx={{
+                                pl: 4,
+                                borderBottom: '1px solid #f0f0f0',
+                              }}
+                            >
+                              <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                                <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                                  ID: {pkg.id} - {pkg.counterName}
+                                </Typography>
+                              </Box>
+                            </MenuItem>
+                          );
+                        });
+                      });
+
+                      return items;
+                    })()}
+                  </Select>
+                )}
               </FormControl>
             </Box>
           </Grid>
