@@ -61,6 +61,7 @@ export default function PackageEditDialog({ open, onClose, onSuccess, data }) {
         needsOffering: !!data.needsOffering,
         channels: channelsArr,
         subCos: subCosArr,
+        paymentType: data.paymentType != null ? String(data.paymentType) : '0',
       });
     }
   }, [data, open]);
@@ -76,10 +77,10 @@ export default function PackageEditDialog({ open, onClose, onSuccess, data }) {
       });
       const rawData = res.data?.data ?? res.data ?? [];
       setSubCosRawData(rawData); // ເກັບ raw data ສຳລັບ mapping subcos → type
-      // Group by type
+      // Group by offeringName (Type)
       const grouped = {};
       rawData.forEach((item) => {
-        const typeKey = item.type || 'Other';
+        const typeKey = item.offeringName || item.type || 'Other';
         if (!grouped[typeKey]) grouped[typeKey] = [];
         grouped[typeKey].push(item.subcos);
       });
@@ -180,6 +181,7 @@ export default function PackageEditDialog({ open, onClose, onSuccess, data }) {
       isLocation: !!formData.isLocation,
       needsOffering: !!formData.needsOffering,
       channels: Array.isArray(formData.channels) ? formData.channels.join('|') : (formData.channels || ''),
+      paymentType: formData.paymentType?.toString() || '0',
       updatedBy: username,
       updatedAt: new Date().toISOString()
     };
@@ -219,6 +221,7 @@ export default function PackageEditDialog({ open, onClose, onSuccess, data }) {
     { name: 'remark', label: 'Remark', type: 'text' },
     { name: 'sms', label: 'SMS', type: 'text' },
     { name: 'smsLa', label: 'SMS LA', type: 'text' },
+    { name: 'paymentType', label: 'Payment Type', type: 'select', options: [{ value: '0', label: '0' }, { value: '1', label: '1' }] },
     { name: 'subCos', label: 'Sub Cos', type: 'subcos-multiselect', loading: loadingSubCos },
     { name: 'channels', label: 'Channels', type: 'multiselect', options: channelsOptions, loading: loadingChannels },
     { name: 'requiredCounterName', label: 'RequiredCounter', type: 'checkbox' },
@@ -265,8 +268,8 @@ export default function PackageEditDialog({ open, onClose, onSuccess, data }) {
 
       // Find type name for a subcos value
       const getOfferingName = (subCosValue) => {
-        const found = subCosRawData.find(item => item.subcos === subCosValue);
-        return found?.offeringName || '';
+        const found = subCosRawData.find(item => String(item.subcos) === String(subCosValue));
+        return found?.offeringName || found?.type || '';
       };
 
       // Handle selecting a type → add all its subcos
@@ -344,8 +347,18 @@ export default function PackageEditDialog({ open, onClose, onSuccess, data }) {
             <em>-- ເລືອກ Type ເພື່ອເພີ່ມ SubCos --</em>
           </MenuItem>
           {subCosOptions.map((opt) => (
-            <MenuItem key={opt.label} value={opt.label}>
-              📦 {opt.label} ({opt.subcosList.length} subcos)
+            <MenuItem key={opt.label} value={opt.label} sx={{ borderBottom: '1px solid #eee', py: 1 }}>
+              <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+                <Typography variant="subtitle2" sx={{ fontWeight: 'bold', color: '#1a237e' }}>
+                  📦 Type: {opt.label}
+                </Typography>
+                <Typography variant="caption" sx={{ color: '#666', whiteSpace: 'normal', mt: 0.5 }}>
+                  Subcos: {opt.subcosList.join(' | ')}
+                </Typography>
+                <Typography variant="caption" sx={{ color: '#1565c0', fontWeight: 600, mt: 0.5 }}>
+                  ({opt.subcosList.length} subcos)
+                </Typography>
+              </Box>
             </MenuItem>
           ))}
         </Select>
@@ -388,6 +401,45 @@ export default function PackageEditDialog({ open, onClose, onSuccess, data }) {
           }}
           sx={{ bgcolor: '#ffffff' }}
         >
+          {field.options.map((opt) => (
+            <MenuItem key={opt.value} value={opt.value}>
+              {opt.label}
+            </MenuItem>
+          ))}
+        </Select>
+      );
+    }
+
+    if (field.type === 'select') {
+      return (
+        <Select
+          size="small"
+          fullWidth
+          name={field.name}
+          value={formData[field.name] ?? ''}
+          onChange={handleChange}
+          displayEmpty
+          input={<OutlinedInput />}
+          MenuProps={{
+            PaperProps: {
+              sx: {
+                maxHeight: 300,
+                '& .MuiList-root': {
+                  display: 'flex',
+                  flexDirection: 'column',
+                },
+                '& .MuiMenuItem-root': {
+                  display: 'flex',
+                  padding: '8px 16px',
+                },
+              },
+            },
+          }}
+          sx={{ bgcolor: '#ffffff' }}
+        >
+          <MenuItem value="" disabled>
+            <em>-- ເລືອກ --</em>
+          </MenuItem>
           {field.options.map((opt) => (
             <MenuItem key={opt.value} value={opt.value}>
               {opt.label}

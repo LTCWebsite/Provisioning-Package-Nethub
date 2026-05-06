@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Button, Box } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Button, Box, Typography } from '@mui/material';
 import Visibility from '@material-ui/icons/Visibility';
 import Edit from '@material-ui/icons/Edit';
 import CrudTable from './CrudTable';
@@ -7,6 +7,7 @@ import PackageFormDialog from './PackageFormDialog';
 import PackageViewDialog from './PackageViewDialog';
 import PackageEditDialog from './PackageEditDialog';
 import { AxiosReq3 } from '../../../../Components/Axios';
+import cookie from 'js-cookie';
 
 export default function TablePackage() {
   const [openForm, setOpenForm] = useState(false);
@@ -14,6 +15,50 @@ export default function TablePackage() {
   const [openEdit, setOpenEdit] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [subCosMapping, setSubCosMapping] = useState([]);
+
+  useEffect(() => {
+    fetchSubCosMapping();
+  }, []);
+
+  const fetchSubCosMapping = async () => {
+    try {
+      const res = await AxiosReq3.get('/WhiteListNethub/subcos', {
+        headers: {
+          Authorization: "Bearer " + cookie.get("ONE_TOKEN"),
+          'Content-Type': 'application/json'
+        },
+      });
+      const data = res.data?.data ?? res.data ?? [];
+      setSubCosMapping(data);
+    } catch (err) {
+      console.error('Failed to fetch subCos mapping:', err);
+    }
+  };
+
+  const getSubCosDisplayText = (subCosValue) => {
+    if (!subCosValue) return '—';
+    const values = String(subCosValue).split(/\||,/).map(v => v.trim()).filter(Boolean);
+
+    // Group values by Type for table cell display
+    const groupedByOffering = {};
+    values.forEach(val => {
+      const found = subCosMapping.find(item => String(item.subcos) === String(val));
+      const offName = found?.offeringName || found?.type || 'Other';
+      if (!groupedByOffering[offName]) groupedByOffering[offName] = [];
+      groupedByOffering[offName].push(val);
+    });
+
+    return (
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+        {Object.keys(groupedByOffering).map(offName => (
+          <Typography key={offName} variant="caption" sx={{ display: 'block', fontSize: '11px', lineHeight: 1.2 }}>
+            <span style={{ fontWeight: 'bold', color: '#1a237e' }}>{offName}:</span> {groupedByOffering[offName].join(', ')}
+          </Typography>
+        ))}
+      </Box>
+    );
+  };
 
   const columns = [
     //{ title: 'ID', field: 'id' },
@@ -22,6 +67,7 @@ export default function TablePackage() {
     { title: 'Offering ID', field: 'offeringId' },
     { title: 'Service Code', field: 'serviceCode' },
     { title: 'Price', field: 'price', type: 'numeric' },
+    //{ title: 'Payment Type', field: 'paymentType' },
     { title: 'Validity Day', field: 'validityDay', type: 'numeric' },
     { title: 'Main Point', field: 'mainPoint', type: 'numeric' },
     { title: 'Refill Stop Day', field: 'refillStopDay' },
@@ -29,6 +75,12 @@ export default function TablePackage() {
     { title: 'End Time', field: 'endTime' },
     { title: 'SMS', field: 'sms' },
     { title: 'SMS LA', field: 'smsLa' },
+    // { 
+    //   title: 'Sub Cos (Type & Subcos)', 
+    //   field: 'subCos',
+    //   render: rowData => getSubCosDisplayText(rowData.subCos),
+    //   cellStyle: { minWidth: '250px' }
+    // },
     // { title: 'Remark', field: 'remark' },
     // { title: 'Is IR', field: 'isIR', type: 'boolean' },
     // { title: 'Is 5G', field: 'is5G', type: 'boolean' },

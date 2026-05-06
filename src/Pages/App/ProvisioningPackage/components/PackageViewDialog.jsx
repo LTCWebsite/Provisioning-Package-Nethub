@@ -41,7 +41,7 @@ export default function PackageViewDialog({ open, onClose, data }) {
         {values.map((val, idx) => {
           // Use String comparison to handle both number and string types from API
           const found = subCosOptions.find(item => String(item.subcos) === String(val));
-          const offeringName = found?.offeringName || found?.type || '';
+          const offeringName = found?.type || found?.offeringName || '';
           const displayText = offeringName ? `${offeringName} : ${val}` : val;
           return (
             <Typography key={idx} variant="body2" sx={{ display: 'block', color: '#263238', fontWeight: 500 }}>
@@ -62,6 +62,7 @@ export default function PackageViewDialog({ open, onClose, data }) {
     { label: 'Offering ID', value: data.offeringId },
     { label: 'Service Code', value: data.serviceCode },
     { label: 'Price', value: data.price },
+    { label: 'Payment Type', value: data.paymentType },
     { label: 'Validity Day', value: data.validityDay },
     { label: 'Main Point', value: data.mainPoint },
     { label: 'Refill Stop Day', value: data.refillStopDay },

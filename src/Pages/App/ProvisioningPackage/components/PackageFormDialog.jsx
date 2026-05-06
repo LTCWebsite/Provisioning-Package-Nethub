@@ -37,6 +37,7 @@ const initialState = {
   extra: 0,
   isTopping: false,
   smsLa: '',
+  paymentType: '0',
   expiryLastDayOfMonth: 0,
   isSupporting5G: false,
   subCos: [],
@@ -82,7 +83,7 @@ export default function PackageFormDialog({ open, onClose, onSuccess }) {
       // Group by offeringName
       const grouped = {};
       rawData.forEach((item) => {
-        const typeKey = item.offeringName || item.type || 'Other';
+        const typeKey = item.type || item.offeringName || 'Other';
         if (!grouped[typeKey]) grouped[typeKey] = [];
         grouped[typeKey].push(item.subcos);
       });
@@ -109,10 +110,10 @@ export default function PackageFormDialog({ open, onClose, onSuccess }) {
         },
       });
       const data = res.data?.data ?? res.data ?? [];
-      //console.log("channels data", data);
+      console.log("channels data:", data);
       const options = data.map((item) => ({
-        value: item.channels,
-        label: item.channels,
+        value: item.channel1,
+        label: item.channel1,
       }));
       setChannelsOptions(options);
     } catch (err) {
@@ -186,8 +187,12 @@ export default function PackageFormDialog({ open, onClose, onSuccess }) {
       isLocation: !!formData.isLocation,
       needsOffering: !!formData.needsOffering,
       channels: formData.channels.join('|') || '',
+      paymentType: formData.paymentType?.toString() || '0',
       createdBy: username,
     };
+
+    console.log('payload paymentType:', payload.paymentType, typeof payload.paymentType);
+    console.log('full payload:', JSON.stringify(payload));
 
     try {
       const res = await AxiosReq3.post('/PackageNethub', payload, {
@@ -224,8 +229,9 @@ export default function PackageFormDialog({ open, onClose, onSuccess }) {
     { name: 'remark', label: 'Remark', type: 'text' },
     { name: 'sms', label: 'SMS', type: 'text' },
     { name: 'smsLa', label: 'SMS LA', type: 'text' },
-    { name: 'subCos', label: 'Sub Cos', type: 'subcos-multiselect', loading: loadingSubCos },
+    { name: 'paymentType', label: 'Payment Type', type: 'select', options: [{ value: '0', label: '0' }, { value: '1', label: '1' }] },
     { name: 'channels', label: 'Channels', type: 'multiselect', options: channelsOptions, loading: loadingChannels },
+    { name: 'subCos', label: 'Sub Cos', type: 'subcos-multiselect', loading: loadingSubCos },
     { name: 'requiredCounterName', label: 'RequiredCounter', type: 'checkbox' },
     { name: 'excludedCounterName', label: 'ExcludedCounter', type: 'checkbox' },
     { name: 'whitelist', label: 'Whitelist', type: 'checkbox' },
@@ -350,8 +356,18 @@ export default function PackageFormDialog({ open, onClose, onSuccess }) {
             <em>-- ເລືອກ Type ເພື່ອເພີ່ມ SubCos --</em>
           </MenuItem>
           {subCosOptions.map((opt) => (
-            <MenuItem key={opt.label} value={opt.label}>
-              📦 {opt.label} ({opt.subcosList.length} subcos)
+            <MenuItem key={opt.label} value={opt.label} sx={{ borderBottom: '1px solid #eee', py: 1 }}>
+              <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+                <Typography variant="subtitle2" sx={{ fontWeight: 'bold', color: '#1a237e' }}>
+                  📦 Type: {opt.label}
+                </Typography>
+                <Typography variant="caption" sx={{ color: '#666', whiteSpace: 'normal', mt: 0.5 }}>
+                  Subcos: {opt.subcosList.join(' | ')}
+                </Typography>
+                <Typography variant="caption" sx={{ color: '#1565c0', fontWeight: 600, mt: 0.5 }}>
+                  ({opt.subcosList.length} subcos)
+                </Typography>
+              </Box>
             </MenuItem>
           ))}
         </Select>
@@ -394,6 +410,45 @@ export default function PackageFormDialog({ open, onClose, onSuccess }) {
           }}
           sx={{ bgcolor: '#ffffff' }}
         >
+          {field.options.map((opt) => (
+            <MenuItem key={opt.value} value={opt.value}>
+              {opt.label}
+            </MenuItem>
+          ))}
+        </Select>
+      );
+    }
+
+    if (field.type === 'select') {
+      return (
+        <Select
+          size="small"
+          fullWidth
+          name={field.name}
+          value={formData[field.name] ?? ''}
+          onChange={handleChange}
+          displayEmpty
+          input={<OutlinedInput />}
+          MenuProps={{
+            PaperProps: {
+              sx: {
+                maxHeight: 300,
+                '& .MuiList-root': {
+                  display: 'flex',
+                  flexDirection: 'column',
+                },
+                '& .MuiMenuItem-root': {
+                  display: 'flex',
+                  padding: '8px 16px',
+                },
+              },
+            },
+          }}
+          sx={{ bgcolor: '#ffffff' }}
+        >
+          <MenuItem value="" disabled>
+            {/* <em>-- ເລືອກ --</em> */}
+          </MenuItem>
           {field.options.map((opt) => (
             <MenuItem key={opt.value} value={opt.value}>
               {opt.label}
